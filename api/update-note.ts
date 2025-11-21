@@ -5,7 +5,7 @@ import { Note } from "@prisma/client";
 
 export const updateNote = async (
   note: Omit<Note, "createdAt" | "updatedAt" | "user">
-) => {
+): Promise<Note> => {
   return await prisma.note.update({
     where: {
       id: note.id,

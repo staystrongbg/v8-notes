@@ -24,10 +24,10 @@ export const EditNoteForm = ({ note }: { note: Note | null }) => {
 
   const form = useForm<z.infer<typeof newNoteFormSchema>>({
     resolver: zodResolver(newNoteFormSchema),
-    defaultValues:{
+    defaultValues: {
       title: note?.title || "",
       text: note?.text || "",
-    } 
+    }
   });
 
   if (!note) {
@@ -49,7 +49,8 @@ export const EditNoteForm = ({ note }: { note: Note | null }) => {
       });
     }
   };
-
+  const isLoading = form.formState.isSubmitting;
+  const error = form.formState.errors.root?.message;
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <FieldGroup>
@@ -85,10 +86,11 @@ export const EditNoteForm = ({ note }: { note: Note | null }) => {
             </Field>
           )}
         />
+        {error && <p className="text-red-500">{error}</p>}
         <div className="flex gap-2 items-center">
           <Button
             type="button"
-            disabled={form.formState.isSubmitting}
+            disabled={isLoading}
             variant={"destructive"}
             onClick={() => router.back()}
           >
@@ -96,10 +98,10 @@ export const EditNoteForm = ({ note }: { note: Note | null }) => {
           </Button>
           <Button
             type="submit"
-            disabled={form.formState.isSubmitting}
+            disabled={isLoading}
             variant={"tertiary"}
           >
-            {form.formState.isSubmitting ? (
+            {isLoading ? (
               <>
                 <Loader2 className="animate-spin" />
                 <p>Updating...</p>

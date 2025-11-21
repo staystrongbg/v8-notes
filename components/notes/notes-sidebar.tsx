@@ -8,7 +8,6 @@ import {
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
 import { LINKS } from "../../constants";
-import Link from "next/link";
 import { ActiveLink } from "../layout/active-link";
 
 export const NotesSidebar = () => {

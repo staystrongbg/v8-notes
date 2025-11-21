@@ -47,7 +47,8 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
     router.back();
     form.reset();
   };
-
+  const isLoading = form.formState.isSubmitting
+  const error = form.formState.errors.root?.message
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
       <FieldGroup>
@@ -83,12 +84,13 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
             </Field>
           )}
         />
+        {error && <p className="text-red-500">{error}</p>}
         <div className="flex gap-2 items-center">
           <Button
             variant={"destructive"}
             type="button"
             onClick={onCancel}
-            disabled={form.formState.isSubmitting}
+            disabled={isLoading}
             className="flex-1"
           >
             Cancel
@@ -96,10 +98,10 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
           <Button
             variant={"tertiary"}
             type="submit"
-            disabled={form.formState.isSubmitting}
+            disabled={isLoading}
             className="flex-2"
           >
-            {form.formState.isSubmitting ? (
+            {isLoading ? (
               <>
                 <Loader2 className="animate-spin" />
                 <p>Creating...</p>

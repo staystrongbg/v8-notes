@@ -39,6 +39,8 @@ export default function UpdateEmailForm() {
     }
   };
 
+  const isLoading = form.formState.isSubmitting;
+  const error = form.formState.errors.root?.message;
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <FieldGroup>
@@ -60,13 +62,13 @@ export default function UpdateEmailForm() {
             </Field>
           )}
         />
-
+        {error && <p className="text-red-500">{error}</p>}
         <Button
-          disabled={form.formState.isSubmitting}
+          disabled={isLoading}
           variant={"tertiary"}
           type="submit"
         >
-          {form.formState.isSubmitting ? (
+          {isLoading ? (
             <>
               <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
               <span>Updating email...</span>

@@ -10,6 +10,7 @@ import { Input } from "../ui/input";
 import { Field, FieldError, FieldLabel } from "../ui/field";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
 
 const signupSchema = z
   .object({
@@ -50,6 +51,8 @@ export const SignUpForm = () => {
     }
   };
 
+  const isLoading = form.formState.isSubmitting;
+  const error = form.formState.errors.root?.message;
   return (
     <>
       <form
@@ -138,8 +141,12 @@ export const SignUpForm = () => {
               </Field>
             )}
           />
-          <Button type="submit" variant="tertiary">
-            Sign Up
+          {error && <p className="text-red-500">{error}</p>}
+          <Button disabled={isLoading} type="submit" variant="tertiary">
+            {isLoading ?
+              <>
+                <span><Loader2 />Signing up...</span>
+              </> : "Sign up"}
           </Button>
           <Link href="/sign-in">Already have an account? Sign in</Link>
         </FieldGroup>

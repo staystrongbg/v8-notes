@@ -4,8 +4,4 @@ export const {
   signIn,
   signUp,
   signOut,
-  useSession,
-  changeEmail,
-  changePassword,
-  updateUser,
-} = createAuthClient();
+  useSession, changeEmail, changePassword, updateUser, } = createAuthClient();

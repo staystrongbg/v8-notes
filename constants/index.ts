@@ -1,4 +1,4 @@
-import { LogInIcon, Book, HomeIcon, User2Icon, InfoIcon } from "lucide-react";
+import { Book, HomeIcon, InfoIcon } from "lucide-react";
 export const LINKS = [
   {
     name: "home",
@@ -18,17 +18,11 @@ export const LINKS = [
     icon: InfoIcon,
     position: "start",
   },
-
-  // {
-  //   name: "sign in",
-  //   href: "/sign-in",
-  //   icon: LogInIcon,
-  //   position: "end",
-  // },
-  // {
-  //   name: "sign up",
-  //   href: "/sign-up",
-  //   icon: User2Icon,
-  //   position: "end",
-  // },
 ];
+
+
+export const githubClientId = process.env.GITHUB_CLIENT_ID as string;
+export const githubClientSecret = process.env.GITHUB_CLIENT_SECRET as string;
+
+export const googleClientId = process.env.GOOGLE_CLIENT_ID as string;
+export const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET as string;

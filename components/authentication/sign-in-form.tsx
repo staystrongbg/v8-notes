@@ -13,6 +13,7 @@ import Link from "next/link";
 import { Loader2Icon } from "lucide-react";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 const signInSchema = z.object({
   email: z.email("Invalid email"),
@@ -49,6 +50,7 @@ export const SignInForm = () => {
       form.reset();
     }
   };
+  const isLoading = form.formState.isSubmitting;
   const error = form.formState.errors.root?.message;
   return (
     <>
@@ -102,9 +104,9 @@ export const SignInForm = () => {
           <Button
             type="submit"
             variant="tertiary"
-            disabled={form.formState.isSubmitting}
+            disabled={isLoading}
           >
-            {form.formState.isSubmitting ? (
+            {isLoading ? (
               <>
                 <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
                 <span>Signing in...</span>
@@ -114,6 +116,28 @@ export const SignInForm = () => {
             )}
           </Button>
         </FieldGroup>
+        <div className="text-sm text-center">or sign in with Google or GitHub</div>
+
+        <div className="flex items-center justify-center gap-2">
+          <Button
+            variant="outline"
+            onClick={() => signIn.social({ provider: "google", callbackURL: '/notes' })}
+            disabled={isLoading}
+
+          >
+            <Image src='/google-icon.svg' alt="Google" width={20} height={20} />
+            Google
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => signIn.social({ provider: "github", callbackURL: '/notes' })}
+            disabled={isLoading}
+          >
+            <Image src='/git-icon.svg' alt="GitHub" width={20} height={20} />
+            GitHub
+          </Button>
+        </div>
+
         <Link href="/sign-up">Don&apos;t have an account? Sign up</Link>
       </form>
     </>
