@@ -38,7 +38,7 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
     } catch (error) {
       form.setError("root", {
         type: "manual",
-        message: "Failed to create note. Please try again.",
+        message: error instanceof Error ? error.message : "Failed to create note. Please try again.",
       });
     }
   };
@@ -47,7 +47,6 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
     router.back();
     form.reset();
   };
-  console
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">

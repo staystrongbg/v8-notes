@@ -24,15 +24,10 @@ export const EditNoteForm = ({ note }: { note: Note | null }) => {
 
   const form = useForm<z.infer<typeof newNoteFormSchema>>({
     resolver: zodResolver(newNoteFormSchema),
-    defaultValues: note
-      ? {
-          title: note.title,
-          text: note.text,
-        }
-      : {
-          title: "",
-          text: "",
-        },
+    defaultValues:{
+      title: note?.title || "",
+      text: note?.text || "",
+    } 
   });
 
   if (!note) {
@@ -50,7 +45,7 @@ export const EditNoteForm = ({ note }: { note: Note | null }) => {
     } catch (error) {
       form.setError("root", {
         type: "manual",
-        message: "Failed to update note. Please try again.",
+        message: error instanceof Error ? error.message : "Failed to update note. Please try again.",
       });
     }
   };
