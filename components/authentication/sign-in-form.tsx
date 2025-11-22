@@ -55,7 +55,7 @@ export const SignInForm = () => {
   return (
     <>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={(e) => { e.preventDefault(); form.handleSubmit(onSubmit)(e); }}
         id="signin-form"
         className="space-y-4 w-full"
       >

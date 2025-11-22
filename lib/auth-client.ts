@@ -9,5 +9,5 @@ export const {
   changePassword,
   updateUser,
 } = createAuthClient({
-  baseURL: "https://v8-notes.vercel.app",
+  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
 });
