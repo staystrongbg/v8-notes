@@ -1,7 +1,7 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma from "@/lib/prisma";
-import { githubClientId, githubClientSecret, googleClientId, googleClientSecret } from "@/constants";
+import { baseUrl, githubClientId, githubClientSecret, googleClientId, googleClientSecret } from "@/constants";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -25,6 +25,7 @@ export const auth = betterAuth({
       enabled: true,
     },
   },
+  baseURL: baseUrl
 });
 
 //TODO add confirmation email when signing up

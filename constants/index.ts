@@ -26,3 +26,6 @@ export const githubClientSecret = process.env.GITHUB_CLIENT_SECRET as string;
 
 export const googleClientId = process.env.GOOGLE_CLIENT_ID as string;
 export const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET as string;
+
+
+export const baseUrl = process.env.BASE_URL;
