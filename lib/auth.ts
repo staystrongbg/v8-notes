@@ -2,7 +2,6 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma from "@/lib/prisma";
 import {
-  baseUrl,
   betterAuthSecret,
   githubClientId,
   githubClientSecret,
@@ -17,9 +16,9 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
-  baseUrl,
+  baseUrl: "https://v8-notes.vercel.app",
   secret: betterAuthSecret,
-  trustedOrigins: [baseUrl, "http://localhost:3000"],
+  trustedOrigins: ["https://v8-notes.vercel.app", "http://localhost:3000"],
   socialProviders: {
     github: {
       clientId: githubClientId,
