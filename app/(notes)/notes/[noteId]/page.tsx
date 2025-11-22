@@ -2,11 +2,14 @@ import { Separator } from "@/components/ui/separator";
 import { getNote } from "@/api/get-note";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowLeftIcon, PencilIcon } from "lucide-react";
+import { ArrowLeftIcon, NotebookIcon, PencilIcon } from "lucide-react";
 import { DeleteNoteAction } from "@/components/notes/delete-note-action";
 import { unauthorized } from "next/navigation";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
+import { NoteContent } from "@/components/notes/note-content";
+import { Suspense } from "react";
+import { NoteContentLoading } from "@/components/notes/note-content-loading";
 
 type PageParams = Promise<{
   noteId: string;
@@ -23,17 +26,26 @@ export default async function Note({ params }: { params: PageParams }) {
 
   const { noteId } = await params;
   const note = await getNote(noteId);
+
+  if (!note) {
+    return (
+      <div className="w-full h-screen flex flex-col items-center justify-center gap-8">
+        <NotebookIcon className="h-16 w-16 text-gray-200" />
+        <h1>Failed to load note</h1>
+        <p className="text-gray-600">Please try again later.</p>
+        <Button variant={"tertiary"} asChild>
+          <Link href="/notes">Retry</Link>
+        </Button>
+      </div>
+    )
+  }
+
   return (
     <div className="w-full p-4">
       <NoteHeader noteId={noteId} />
-      <div className="p-4 max-w-2xl mx-auto flex flex-col gap-16">
-        <h2>{note?.title}</h2>
-        <p>{note?.text}</p>
-        <p>
-          {note?.updatedAt.toDateString()},{" "}
-          {note?.updatedAt.toTimeString().slice(0, 5)}
-        </p>
-      </div>
+      <Suspense fallback={<NoteContentLoading />}>
+        <NoteContent note={note} />
+      </Suspense>
     </div>
   );
 }

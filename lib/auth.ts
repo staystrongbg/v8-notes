@@ -26,3 +26,5 @@ export const auth = betterAuth({
     },
   },
 });
+
+//TODO add confirmation email when signing up

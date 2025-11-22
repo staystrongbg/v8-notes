@@ -7,12 +7,16 @@ import { Newspaper, NotebookIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { NoteCard } from "@/components/notes/note-card";
 import { unauthorized } from "next/navigation";
+import { Suspense } from "react";
+import { NoteCardLoading } from "@/components/notes/note-card-loading";
 
 //TODO starred notes
 //TODO search notes
 //TODO sort notes
 //TODO pagination
 //TODO infinite scroll
+//TODO suspense 
+//TODO metadata
 
 export default async function Notes() {
   const session = await auth.api.getSession({
@@ -27,6 +31,7 @@ export default async function Notes() {
   try {
     notes = await getNotes(session.user.id);
   } catch (error) {
+    console.error(error);
     return (
       <div className="h-screen flex flex-col items-center justify-center gap-8">
         <NotebookIcon className="h-16 w-16 text-red-200" />
@@ -66,9 +71,11 @@ export default async function Notes() {
       </div>
       <Separator className="my-8" />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {notes.map((note) => (
-          <NoteCard key={note.id} note={note} />
-        ))}
+        <Suspense fallback={<NoteCardLoading />}>
+          {notes.map((note) => (
+            <NoteCard key={note.id} note={note} />
+          ))}
+        </Suspense>
       </div>
     </div>
   );
