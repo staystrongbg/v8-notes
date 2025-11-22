@@ -26,6 +26,5 @@ export const githubClientSecret = process.env.GITHUB_CLIENT_SECRET as string;
 export const googleClientId = process.env.GOOGLE_CLIENT_ID as string;
 export const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET as string;
 
-export const baseUrl =
-  process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:3000";
+export const baseUrl = process.env.BETTER_AUTH_URL || "http://localhost:3000";
 export const betterAuthSecret = process.env.BETTER_AUTH_SECRET;
