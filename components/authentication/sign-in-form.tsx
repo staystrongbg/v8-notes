@@ -34,20 +34,23 @@ export const SignInForm = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-    const { error } = await signIn.email(data);
-    if (error) {
+    try {
+      const { error } = await signIn.email(data);
+      if (error) {
+        form.setError("root", {
+          type: "manual",
+          message: error.message,
+        });
+      } else {
+        toast.success("Signed in successfully");
+        router.push(redirect || "/notes");
+        form.reset();
+      }
+    } catch (err) {
       form.setError("root", {
         type: "manual",
-        message: error.message,
+        message: "An error occurred. Please try again.",
       });
-    } else {
-      toast.success("Signed in successfully");
-      if (redirect) {
-        router.push(redirect);
-      } else {
-        router.push("/notes");
-      }
-      form.reset();
     }
   };
   const isLoading = form.formState.isSubmitting;

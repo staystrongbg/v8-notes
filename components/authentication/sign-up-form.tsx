@@ -40,14 +40,21 @@ export const SignUpForm = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof signupSchema>) => {
-    const { error } = await signUp.email(data);
-    if (error) {
+    try {
+      const { error } = await signUp.email(data);
+      if (error) {
+        form.setError("root", {
+          type: "manual",
+          message: error.message,
+        });
+      } else {
+        router.push("/notes");
+      }
+    } catch (err) {
       form.setError("root", {
         type: "manual",
-        message: error.message,
+        message: "An error occurred. Please try again.",
       });
-    } else {
-      router.push("/notes");
     }
   };
 
