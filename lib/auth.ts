@@ -2,6 +2,7 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma from "@/lib/prisma";
 import {
+  betterAuthSecret,
   githubClientId,
   githubClientSecret,
   googleClientId,
@@ -15,6 +16,9 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  baseUrl: "https://v8-notes.vercel.app/",
+  secret: betterAuthSecret,
+  trustedOrigins: ["https://v8-notes.vercel.app/", "http://localhost:3000"],
   socialProviders: {
     github: {
       clientId: githubClientId,
@@ -30,7 +34,6 @@ export const auth = betterAuth({
       enabled: true,
     },
   },
-  trustedOrigins: ["https://v8-notes.vercel.app/", "http://localhost:3000"],
 });
 
 //TODO add confirmation email when signing up

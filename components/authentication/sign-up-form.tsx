@@ -143,10 +143,16 @@ export const SignUpForm = () => {
           />
           {error && <p className="text-red-500">{error}</p>}
           <Button disabled={isLoading} type="submit" variant="tertiary">
-            {isLoading ?
+            {isLoading ? (
               <>
-                <span><Loader2 />Signing up...</span>
-              </> : "Sign up"}
+                <span>
+                  <Loader2 />
+                  Signing up...
+                </span>
+              </>
+            ) : (
+              "Sign up"
+            )}
           </Button>
           <Link href="/sign-in">Already have an account? Sign in</Link>
         </FieldGroup>
