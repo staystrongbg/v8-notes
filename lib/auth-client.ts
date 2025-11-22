@@ -1,4 +1,5 @@
 import { createAuthClient } from "better-auth/react";
+import { baseUrl } from "@/constants";
 
 export const {
   signIn,
@@ -9,5 +10,5 @@ export const {
   changePassword,
   updateUser,
 } = createAuthClient({
-  baseURL: "https://v8-notes.vercel.app/",
+  baseURL: baseUrl,
 });
