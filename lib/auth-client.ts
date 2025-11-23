@@ -8,6 +8,4 @@ export const {
   changeEmail,
   changePassword,
   updateUser,
-} = createAuthClient({
-  baseURL: "https://v8-notes.vercel.app/api/auth",
-});
+} = createAuthClient();

@@ -7,6 +7,7 @@ import {
   googleClientId,
   googleClientSecret,
 } from "@/constants";
+import { nextCookies } from "better-auth/next-js";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -32,6 +33,7 @@ export const auth = betterAuth({
     },
   },
   trustedOrigins: ["https://v8-notes.vercel.app", "http://localhost:3000"],
+  plugins: [nextCookies()],
 });
 
 //TODO add confirmation email when signing up
