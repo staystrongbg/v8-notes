@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { getNotes } from "@/api/get-notes";
+import { getNotes } from "@/fetchers/get-notes";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Newspaper, NotebookIcon } from "lucide-react";
@@ -15,7 +15,7 @@ import { NoteCardLoading } from "@/components/notes/note-card-loading";
 //TODO sort notes
 //TODO pagination
 //TODO infinite scroll
-//TODO suspense 
+//TODO suspense
 //TODO metadata
 
 export default async function Notes() {

@@ -9,7 +9,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { FieldError } from "../ui/field";
-import { newNote } from "@/api/new-note";
+import { newNote } from "@/fetchers/new-note";
 import { Loader2 } from "lucide-react";
 
 const newNoteFormSchema = z.object({
@@ -38,7 +38,10 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
     } catch (error) {
       form.setError("root", {
         type: "manual",
-        message: error instanceof Error ? error.message : "Failed to create note. Please try again.",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Failed to create note. Please try again.",
       });
     }
   };
@@ -47,8 +50,8 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
     router.back();
     form.reset();
   };
-  const isLoading = form.formState.isSubmitting
-  const error = form.formState.errors.root?.message
+  const isLoading = form.formState.isSubmitting;
+  const error = form.formState.errors.root?.message;
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
       <FieldGroup>

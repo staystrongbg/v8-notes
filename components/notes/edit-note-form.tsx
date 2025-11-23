@@ -11,7 +11,7 @@ import { Note } from "@prisma/client";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { updateNote } from "@/api/update-note";
+import { updateNote } from "@/fetchers/update-note";
 import { useRouter } from "next/navigation";
 
 const newNoteFormSchema = z.object({
@@ -27,7 +27,7 @@ export const EditNoteForm = ({ note }: { note: Note | null }) => {
     defaultValues: {
       title: note?.title || "",
       text: note?.text || "",
-    }
+    },
   });
 
   if (!note) {
@@ -45,7 +45,10 @@ export const EditNoteForm = ({ note }: { note: Note | null }) => {
     } catch (error) {
       form.setError("root", {
         type: "manual",
-        message: error instanceof Error ? error.message : "Failed to update note. Please try again.",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Failed to update note. Please try again.",
       });
     }
   };
@@ -96,11 +99,7 @@ export const EditNoteForm = ({ note }: { note: Note | null }) => {
           >
             <p>Cancel</p>
           </Button>
-          <Button
-            type="submit"
-            disabled={isLoading}
-            variant={"tertiary"}
-          >
+          <Button type="submit" disabled={isLoading} variant={"tertiary"}>
             {isLoading ? (
               <>
                 <Loader2 className="animate-spin" />

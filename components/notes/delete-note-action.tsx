@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteNote } from "@/api/delete-note";
+import { deleteNote } from "@/fetchers/delete-note";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";

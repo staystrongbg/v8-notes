@@ -1,5 +1,5 @@
 import { EditNoteForm } from "@/components/notes/edit-note-form";
-import { getNote } from "@/api/get-note";
+import { getNote } from "@/fetchers/get-note";
 import { Separator } from "@/components/ui/separator";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
@@ -34,7 +34,7 @@ export default async function EditNotePage({
           <Link href="/notes">Retry</Link>
         </Button>
       </div>
-    )
+    );
   }
   return (
     <div className="w-full">

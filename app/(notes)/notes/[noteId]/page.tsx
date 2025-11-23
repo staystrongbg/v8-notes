@@ -1,5 +1,5 @@
 import { Separator } from "@/components/ui/separator";
-import { getNote } from "@/api/get-note";
+import { getNote } from "@/fetchers/get-note";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeftIcon, NotebookIcon, PencilIcon } from "lucide-react";
@@ -37,7 +37,7 @@ export default async function Note({ params }: { params: PageParams }) {
           <Link href="/notes">Retry</Link>
         </Button>
       </div>
-    )
+    );
   }
 
   return (

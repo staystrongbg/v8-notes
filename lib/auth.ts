@@ -13,7 +13,7 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
-  baseURL: "https://v8-notes.vercel.app/api/auth",
+  baseURL: "https://v8-notes.vercel.app",
   emailAndPassword: {
     enabled: true,
   },
