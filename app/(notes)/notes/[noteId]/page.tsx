@@ -7,9 +7,10 @@ import { DeleteNoteAction } from "@/components/notes/delete-note-action";
 import { unauthorized } from "next/navigation";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
-import { NoteContent } from "@/components/notes/note-content";
-import { Suspense } from "react";
+import { Suspense, lazy } from "react";
 import { NoteContentLoading } from "@/components/notes/note-content-loading";
+
+const LazyNoteContent = lazy(() => import("@/components/notes/note-content").then(mod => ({ default: mod.NoteContent })));
 
 type PageParams = Promise<{
   noteId: string;
@@ -44,7 +45,7 @@ export default async function Note({ params }: { params: PageParams }) {
     <div className="w-full p-4">
       <NoteHeader noteId={noteId} />
       <Suspense fallback={<NoteContentLoading />}>
-        <NoteContent note={note} />
+        <LazyNoteContent note={note} />
       </Suspense>
     </div>
   );

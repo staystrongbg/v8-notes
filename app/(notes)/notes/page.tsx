@@ -5,17 +5,18 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Newspaper, NotebookIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { NoteCard } from "@/components/notes/note-card";
 import { unauthorized } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, lazy } from "react";
 import { NoteCardLoading } from "@/components/notes/note-card-loading";
+
+const LazyNoteCard = lazy(() => import("@/components/notes/note-card"));
 
 //TODO starred notes
 //TODO search notes
 //TODO sort notes
 //TODO pagination
 //TODO infinite scroll
-//TODO suspense
+
 //TODO metadata
 
 export default async function Notes() {
@@ -72,9 +73,7 @@ export default async function Notes() {
       <Separator className="my-8" />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <Suspense fallback={<NoteCardLoading />}>
-          {notes.map((note) => (
-            <NoteCard key={note.id} note={note} />
-          ))}
+          <LazyNoteCard notes={notes} />
         </Suspense>
       </div>
     </div>

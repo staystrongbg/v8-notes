@@ -19,7 +19,7 @@ const newNoteFormSchema = z.object({
   text: z.string().min(1).max(1000).trim(),
 });
 
-export const EditNoteForm = ({ note }: { note: Note | null }) => {
+const EditNoteForm = ({ note }: { note: Note | null }) => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof newNoteFormSchema>>({
@@ -114,3 +114,5 @@ export const EditNoteForm = ({ note }: { note: Note | null }) => {
     </form>
   );
 };
+
+export default EditNoteForm;
