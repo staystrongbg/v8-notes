@@ -53,7 +53,7 @@ export const SignUpForm = () => {
     } catch (err) {
       form.setError("root", {
         type: "manual",
-        message: "An error occurred. Please try again.",
+        message: (err as string) || "An error occurred. Please try again.",
       });
     }
   };
@@ -63,7 +63,7 @@ export const SignUpForm = () => {
   return (
     <>
       <form
-        onSubmit={(e) => { e.preventDefault(); form.handleSubmit(onSubmit)(e); }}
+        onSubmit={form.handleSubmit(onSubmit)}
         id="signup-form"
         className="space-y-4 w-full"
       >

@@ -49,7 +49,7 @@ export const SignInForm = () => {
     } catch (err) {
       form.setError("root", {
         type: "manual",
-        message: "An error occurred. Please try again.",
+        message: (err as string) || "An error occurred. Please try again.",
       });
     }
   };
@@ -58,7 +58,7 @@ export const SignInForm = () => {
   return (
     <>
       <form
-        onSubmit={(e) => { e.preventDefault(); form.handleSubmit(onSubmit)(e); }}
+        onSubmit={form.handleSubmit(onSubmit)}
         id="signin-form"
         className="space-y-4 w-full"
       >
@@ -104,11 +104,7 @@ export const SignInForm = () => {
             )}
           />
           {error && <p className="text-red-500">{error}</p>}
-          <Button
-            type="submit"
-            variant="tertiary"
-            disabled={isLoading}
-          >
+          <Button type="submit" variant="tertiary" disabled={isLoading}>
             {isLoading ? (
               <>
                 <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
@@ -119,24 +115,31 @@ export const SignInForm = () => {
             )}
           </Button>
         </FieldGroup>
-        <div className="text-sm text-center">or sign in with Google or GitHub</div>
+        <div className="text-sm text-center">
+          or sign in with Google or GitHub
+        </div>
 
         <div className="flex items-center justify-center gap-2">
           <Button
             variant="outline"
-            onClick={() => signIn.social({ provider: "google", callbackURL: '/notes' })}
+            type="button"
+            onClick={() =>
+              signIn.social({ provider: "google", callbackURL: "/notes" })
+            }
             disabled={isLoading}
-
           >
-            <Image src='/google-icon.svg' alt="Google" width={20} height={20} />
+            <Image src="/google-icon.svg" alt="Google" width={20} height={20} />
             Google
           </Button>
           <Button
             variant="outline"
-            onClick={() => signIn.social({ provider: "github", callbackURL: '/notes' })}
+            type="button"
+            onClick={() =>
+              signIn.social({ provider: "github", callbackURL: "/notes" })
+            }
             disabled={isLoading}
           >
-            <Image src='/git-icon.svg' alt="GitHub" width={20} height={20} />
+            <Image src="/git-icon.svg" alt="GitHub" width={20} height={20} />
             GitHub
           </Button>
         </div>
