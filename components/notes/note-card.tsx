@@ -24,7 +24,9 @@ export default function NoteCard({ notes }: { notes: Note[] }) {
                 {note.title}
               </h3>
             </CardTitle>
-            <p className="text-xs text-gray-500">{note.updatedAt.toDateString()}</p>
+            <p className="text-xs text-gray-500">
+              {note.updatedAt.toDateString()}
+            </p>
           </CardHeader>
           <CardContent className="pt-0">
             <p className="text-gray-600 line-clamp-3 leading-relaxed">

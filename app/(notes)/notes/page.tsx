@@ -6,10 +6,10 @@ import Link from "next/link";
 import { Newspaper, NotebookIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { unauthorized } from "next/navigation";
-import { Suspense, lazy } from "react";
+import NoteCard from "@/components/notes/note-card";
+import { Suspense } from "react";
 import { NoteCardLoading } from "@/components/notes/note-card-loading";
-
-const LazyNoteCard = lazy(() => import("@/components/notes/note-card"));
+import { Note } from "@prisma/client";
 
 //TODO starred notes
 //TODO search notes
@@ -28,7 +28,7 @@ export default async function Notes() {
     return unauthorized();
   }
 
-  let notes;
+  let notes: Note[] = [];
   try {
     notes = await getNotes(session.user.id);
   } catch (error) {
@@ -72,9 +72,7 @@ export default async function Notes() {
       </div>
       <Separator className="my-8" />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <Suspense fallback={<NoteCardLoading />}>
-          <LazyNoteCard notes={notes} />
-        </Suspense>
+        <NoteCard notes={notes} />
       </div>
     </div>
   );

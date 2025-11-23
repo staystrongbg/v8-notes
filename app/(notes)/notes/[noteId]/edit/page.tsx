@@ -1,4 +1,3 @@
-import { lazy, Suspense } from "react";
 import { getNote } from "@/fetchers/get-note";
 import { Separator } from "@/components/ui/separator";
 import { auth } from "@/lib/auth";
@@ -7,8 +6,7 @@ import { unauthorized } from "next/navigation";
 import Link from "next/link";
 import { NotebookIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const LazyEditNoteForm = lazy(() => import("@/components/notes/edit-note-form"));
+import EditNoteForm from "@/components/notes/edit-note-form";
 
 export default async function EditNotePage({
   params,
@@ -43,9 +41,7 @@ export default async function EditNotePage({
       <Separator className="my-4" />
       <div className="max-w-xl p-4 mx-auto mt-4">
         <h1>{note?.title}</h1>
-        <Suspense fallback={<div>Loading form...</div>}>
-          <LazyEditNoteForm note={note} />
-        </Suspense>
+        <EditNoteForm note={note} />
       </div>
     </div>
   );
