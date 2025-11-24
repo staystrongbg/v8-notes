@@ -54,7 +54,7 @@ const NoteHeader = ({ noteId }: { noteId: string }) => {
           <ArrowLeftIcon className="h-4 w-4" />
           Back to notes
         </Link>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2">
           <DeleteNoteAction noteId={noteId} />
           <Button variant={"tertiary"} size={"lg"} asChild>
             <div className="flex items-center gap-2">
