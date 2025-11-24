@@ -1,25 +1,24 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { getNotes } from "@/fetchers/get-notes";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { Newspaper, NotebookIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { unauthorized } from "next/navigation";
 import NoteCard from "@/components/notes/note-card";
-import { Suspense } from "react";
-import { NoteCardLoading } from "@/components/notes/note-card-loading";
+
 import { Note } from "@prisma/client";
 
-//TODO starred notes
-//TODO search notes
-//TODO sort notes
-//TODO pagination
+import { FilterNotes } from "@/components/notes/filter-notes";
+import { NoNotes } from "@/components/notes/no-notes";
+import { NotesError } from "@/components/notes/NotesError";
+import { NotesHeader } from "@/components/notes/notes-header";
+
 //TODO infinite scroll
 
-//TODO metadata
+type PageProps = {
+  searchParams: Promise<{ filter?: string }>;
+};
 
-export default async function Notes() {
+export default async function Notes({ searchParams }: PageProps) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -28,50 +27,39 @@ export default async function Notes() {
     return unauthorized();
   }
 
+  const { filter } = await searchParams;
+  const isStarredFilter = filter === "starred" ? "starred" : undefined;
+
   let notes: Note[] = [];
+  let noteCount = 0;
   try {
-    notes = await getNotes(session.user.id);
+    notes = await getNotes(session.user.id, isStarredFilter);
+    noteCount = notes.length;
   } catch (error) {
     console.error(error);
-    return (
-      <div className="h-screen flex flex-col items-center justify-center gap-8">
-        <NotebookIcon className="h-16 w-16 text-red-200" />
-        <h1>Failed to load notes</h1>
-        <p className="text-gray-600">Please try again later.</p>
-        <Button variant={"tertiary"} asChild>
-          <Link href="/notes">Retry</Link>
-        </Button>
-      </div>
-    );
+    return <NotesError />;
+  }
+  //if no notes and not starred filter render no notes
+  if (!isStarredFilter && (!notes || notes.length === 0)) {
+    return <NoNotes />;
   }
 
-  if (!notes || notes.length === 0) {
-    return (
-      <div className="h-screen flex flex-col items-center justify-center gap-8">
-        <NotebookIcon className="h-16 w-16 text-gray-200" />
-        <h1>No notes yet...</h1>
-        <Button variant={"tertiary"} asChild>
-          <div className="flex items-center gap-2">
-            <Newspaper className="mr-2 h-4 w-4" />
-            <Link href="/notes/new">Add your first note</Link>
-          </div>
-        </Button>
-      </div>
-    );
+  //if no notes and starred filter render no starred notes
+  if (isStarredFilter && notes.length === 0) {
+    return <NoNotes />;
   }
 
   return (
     <div className="w-full p-4">
-      <div className="flex justify-center mb-4">
-        <Button size={"xl"} variant={"tertiary"} asChild title="Add new note">
-          <div className="flex items-center gap-2">
-            <Newspaper className="mr-2 h-4 w-4" />
-            <Link href="/notes/new">Add new note</Link>
-          </div>
-        </Button>
-      </div>
+      <NotesHeader />
       <Separator className="my-8" />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="flex justify-between mb-4">
+        <FilterNotes />
+        <p className="text-gray-600 text-center">
+          You have {noteCount} note(s)
+        </p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         <NoteCard notes={notes} />
       </div>
     </div>

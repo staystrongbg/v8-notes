@@ -40,6 +40,7 @@ const EditNoteForm = ({ note }: { note: Note | null }) => {
         ...data,
         id: note.id,
         userId: note.userId,
+        isStarred: note.isStarred,
       });
       router.push("/notes");
     } catch (error) {

@@ -8,6 +8,7 @@ import { unauthorized } from "next/navigation";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { NoteContent } from "@/components/notes/note-content";
+import { StarredNote } from "@/components/notes/starred-note";
 
 type PageParams = Promise<{
   noteId: string;
@@ -40,13 +41,13 @@ export default async function Note({ params }: { params: PageParams }) {
 
   return (
     <div className="w-full p-4">
-      <NoteHeader noteId={noteId} />
+      <NoteHeader noteId={noteId} isStarred={note.isStarred} />
       <NoteContent note={note} />
     </div>
   );
 }
 
-const NoteHeader = ({ noteId }: { noteId: string }) => {
+const NoteHeader = ({ noteId, isStarred }: { noteId: string; isStarred: boolean }) => {
   return (
     <>
       <div className="w-full flex justify-between items-center">
@@ -55,6 +56,7 @@ const NoteHeader = ({ noteId }: { noteId: string }) => {
           Back to notes
         </Link>
         <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+          <StarredNote noteId={noteId} isStarred={isStarred} />
           <DeleteNoteAction noteId={noteId} />
           <Button variant={"tertiary"} size={"lg"} asChild>
             <div className="flex items-center gap-2">

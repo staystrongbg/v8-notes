@@ -5,30 +5,22 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { unauthorized } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { Note } from "@prisma/client";
 
-export const updateNote = async (
-  note: Omit<Note, "createdAt" | "updatedAt" | "user">
-): Promise<Note> => {
+export const removeNoteFromStarred = async (noteId: string) => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-
   if (!session?.user) {
     return unauthorized();
   }
-
-  const updatedNote = await prisma.note.update({
+  await prisma.note.update({
     where: {
-      id: note.id,
+      id: noteId,
       userId: session.user.id,
     },
     data: {
-      title: note.title,
-      text: note.text,
-      isStarred: note.isStarred,
+      isStarred: false,
     },
   });
   revalidatePath("/notes");
-  return updatedNote;
 };
