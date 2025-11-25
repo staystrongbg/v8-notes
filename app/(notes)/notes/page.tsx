@@ -1,9 +1,6 @@
 import { requireUserSession } from "@/lib/require-user-session";
 import { getNotes } from "@/fetchers/get-notes";
-import NoteCard from "@/components/notes/note-card";
-
 import { Note } from "@prisma/client";
-
 import { FilterNotes } from "@/components/notes/filter-notes";
 import { NoNotes } from "@/components/notes/no-notes";
 import { NotesError } from "@/components/notes/NotesError";
@@ -12,9 +9,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Newspaper } from "lucide-react";
 import { Suspense } from "react";
-import { NoteCardLoading } from "@/components/notes/note-card-loading";
-//TODO infinite scroll
-//TODO implement RTE
+import { NotesGrid } from "@/components/notes/notes-grid";
+import { NotesGridLoading } from "@/components/notes/notes-grid-loading";
 
 type PageProps = {
   searchParams: Promise<{ filter?: string | string[] }>;
@@ -26,9 +22,11 @@ export default async function Notes({ searchParams }: PageProps) {
   const { filter } = await searchParams;
   const { isStarredFilter, activeFilter } = normalizeNotesFilter(filter);
 
+  let notesPromise: Promise<Note[]>;
   let notes: Note[] = [];
   try {
-    notes = await getNotes(session.user.id, isStarredFilter);
+    notesPromise = getNotes(session.user.id, isStarredFilter);
+    notes = await notesPromise; // Await for count and empty check
   } catch (error) {
     console.error(error);
     return <NotesError />;
@@ -51,14 +49,14 @@ export default async function Notes({ searchParams }: PageProps) {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
-        <NoteCard notes={notes} />
-      </div>
+      <Suspense fallback={<NotesGridLoading />}>
+        <NotesGrid promise={notesPromise} />
+      </Suspense>
     </div>
   );
 }
 
-export const NotesHeader = () => {
+const NotesHeader = () => {
   return (
     <header className="w-full flex justify-center flex-col items-center">
       <Button variant={"tertiary"} asChild title="Add new note">
