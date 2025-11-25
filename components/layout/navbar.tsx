@@ -4,7 +4,7 @@ import { UserSessionButton } from "../user/user-session-button";
 
 export default async function Navbar() {
   return (
-    <header className="w-full border-b sticky top-0 z-50 bg-accent">
+    <header className="w-full border-b sticky top-0 z-50">
       <nav
         className=" flex justify-around items-center gap-4 py-3"
         aria-label="Primary"

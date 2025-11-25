@@ -11,7 +11,8 @@ import { normalizeNotesFilter } from "@/lib/normalize-notes-filter";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Newspaper } from "lucide-react";
-
+import { Suspense } from "react";
+import { NoteCardLoading } from "@/components/notes/note-card-loading";
 //TODO infinite scroll
 //TODO implement RTE
 
@@ -49,6 +50,7 @@ export default async function Notes({ searchParams }: PageProps) {
           You have {noteCount} {noteLengthFormat} in this view.
         </p>
       </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
         <NoteCard notes={notes} />
       </div>
