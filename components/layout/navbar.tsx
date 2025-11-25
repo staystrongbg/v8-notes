@@ -15,7 +15,7 @@ export default async function Navbar() {
             <li key={item.name}>
               <ActiveLink
                 href={item.href}
-                className="flex items-center gap-2 text-sm font-medium"
+                className="flex items-center gap-2 text-xs md:text-base font-medium"
               >
                 <item.icon aria-hidden="true" className="size-4" />
                 <span>{item.name}</span>
