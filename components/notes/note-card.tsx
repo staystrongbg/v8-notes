@@ -14,7 +14,7 @@ export default function NoteCard({ notes }: { notes: Note[] }) {
       {notes.map((note) => (
         <Card
           key={note.id}
-          className="transition-shadow duration-200 hover:shadow-lg border h-screen w-full snap-start sm:h-auto"
+          className="transition-shadow duration-200 hover:shadow-lg border h-[calc(100vh-10rem)] w-full snap-start sm:h-auto"
         >
           <CardHeader className="pb-3">
             <CardTitle>

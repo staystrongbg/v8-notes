@@ -11,6 +11,7 @@ import { Newspaper } from "lucide-react";
 import { Suspense } from "react";
 import { NotesGrid } from "@/components/notes/notes-grid";
 import { NotesGridLoading } from "@/components/notes/notes-grid-loading";
+import MobileMenu from "@/components/layout/mobile-menu";
 
 type PageProps = {
   searchParams: Promise<{ filter?: string | string[] }>;
@@ -41,12 +42,13 @@ export default async function Notes({ searchParams }: PageProps) {
 
   return (
     <div className="w-full p-4">
-      <NotesHeader />
+      {/* <NotesHeader /> */}
+      <MobileMenu noteCount={noteCount} noteLengthFormat={noteLengthFormat} />
       <div className="flex justify-around px-8 py-4">
-        <FilterNotes />
-        <p className="text-muted-foreground text-center">
+        {/* <FilterNotes /> */}
+        {/* <p className="text-muted-foreground text-center">
           You have {noteCount} {noteLengthFormat} in this view.
-        </p>
+        </p> */}
       </div>
 
       <Suspense fallback={<NotesGridLoading />}>

@@ -1,13 +1,38 @@
+"use client";
+
 import { LINKS } from "@/constants";
 import { ActiveLink } from "./active-link";
 import { UserSessionButton } from "../user/user-session-button";
 import { ThemeToggle } from "./theme-toggle";
+import { useEffect, useState } from "react";
 
-export default async function Navbar() {
+export default function Navbar() {
+  const [isHidden, setIsHidden] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY) {
+        setIsHidden(true);
+      } else {
+        setIsHidden(false);
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
   return (
-    <header className="w-full border-b dark:border-b-gray-800 border-gray-200 sticky top-0 z-50 dark:bg-gray-800 bg-white">
+    <header
+      className={`w-full border-b transition-transform duration-300 ${
+        isHidden ? "-translate-y-full" : "translate-y-0"
+      }`}
+    >
       <nav
-        className=" flex justify-around items-center gap-4 py-3"
+        className="flex justify-around items-center gap-4 py-3"
         aria-label="Primary"
       >
         <ul className="flex flex-wrap items-center gap-2 sm:gap-4">
