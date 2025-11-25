@@ -1,10 +1,11 @@
 import { LINKS } from "@/constants";
 import { ActiveLink } from "./active-link";
 import { UserSessionButton } from "../user/user-session-button";
+import { ThemeToggle } from "./theme-toggle";
 
 export default async function Navbar() {
   return (
-    <header className="w-full border-b sticky top-0 z-50">
+    <header className="w-full border-b dark:border-b-gray-800 border-gray-200 sticky top-0 z-50 dark:bg-gray-800 bg-white">
       <nav
         className=" flex justify-around items-center gap-4 py-3"
         aria-label="Primary"
@@ -23,6 +24,7 @@ export default async function Navbar() {
           ))}
         </ul>
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <span className="sr-only">Account menu</span>
           <UserSessionButton />
         </div>

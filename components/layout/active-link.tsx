@@ -18,7 +18,10 @@ export const ActiveLink = ({
 
   if (isActive) {
     return (
-      <Link href={href} className={cn("text-blue-700", className)}>
+      <Link
+        href={href}
+        className={cn("dark:text-blue-300 text-blue-700", className)}
+      >
         {children}
       </Link>
     );
