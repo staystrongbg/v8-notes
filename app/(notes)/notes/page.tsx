@@ -43,8 +43,8 @@ export default async function Notes({ searchParams }: PageProps) {
     <div className="w-full p-4">
       <NotesHeader />
       <div className="flex justify-around px-8 py-4">
-        <FilterNotes activeFilter={activeFilter} />
-        <p className="text-gray-600 text-center">
+        <FilterNotes />
+        <p className="text-muted-foreground text-center">
           You have {noteCount} {noteLengthFormat} in this view.
         </p>
       </div>

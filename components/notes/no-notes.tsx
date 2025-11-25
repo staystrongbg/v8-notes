@@ -21,15 +21,15 @@ export const NoNotes = ({ variant = "all" }: NoNotesProps) => {
       <NotesHeader />
       <Separator className="my-8" />
       <div className="flex justify-between mb-4">
-        <FilterNotes activeFilter={variant} />
-        <p className="text-gray-600 text-center">
+        <FilterNotes />
+        <p className="text-muted-foreground text-center">
           You have 0 notes in this view.
         </p>
       </div>
       <div className="grid place-items-center gap-8">
-        <NotebookIcon className="h-16 w-16 text-red-200" />
-        <h1 className="text-gray-600 text-center">{headline}</h1>
-        <p className="text-gray-500 text-center text-sm max-w-sm">{subcopy}</p>
+        <NotebookIcon className="h-16 w-16 text-muted-foreground" />
+        <h1 className="text-foreground text-center">{headline}</h1>
+        <p className="text-muted-foreground text-center text-sm max-w-sm">{subcopy}</p>
         <Button variant={"tertiary"} asChild>
           <Link href="/notes/new">Create new note</Link>
         </Button>

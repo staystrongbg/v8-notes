@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${silkscreen.className} ${doto.className} ${robotoMono.className} antialiased grid grid-rows-[auto_1fr_auto] min-h-screen bg-accent`}
+        className={`${silkscreen.className} ${doto.className} ${robotoMono.className} antialiased grid grid-rows-[auto_1fr_auto] min-h-screen bg-background`}
       >
         <ThemeProvider
           attribute="class"

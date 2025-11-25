@@ -4,13 +4,13 @@ import { Note } from "@prisma/client";
 export const NoteContent = ({ note }: { note: Note }) => {
   return (
     <div className=" mx-auto">
-      <h2 className="text-3xl font-semibold mb-6 text-gray-900">
+      <h2 className="text-3xl font-semibold mb-6 text-foreground">
         {note?.title}
       </h2>
-      <p className="text-lg leading-relaxed text-gray-700 mb-6 whitespace-pre-wrap">
+      <p className="text-lg leading-relaxed text-muted-foreground mb-6 whitespace-pre-wrap">
         {note?.text}
       </p>
-      <p className="text-sm text-gray-500">
+      <p className="text-sm text-muted-foreground">
         Last updated: {note?.updatedAt.toLocaleDateString()} at{" "}
         {note?.updatedAt.toLocaleTimeString([], {
           hour: "2-digit",
