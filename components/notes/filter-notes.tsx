@@ -9,10 +9,14 @@ import {
 } from "@/components/ui/select";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export const FilterNotes = () => {
+type FilterNotesProps = {
+  activeFilter?: "all" | "starred";
+};
+
+export const FilterNotes = ({ activeFilter }: FilterNotesProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const currentFilter = searchParams.get("filter") || "all";
+  const currentFilter = activeFilter ?? searchParams.get("filter") ?? "all";
 
   const handleFilterChange = (value: string) => {
     const url = value === "all" ? "/notes" : `/notes?filter=${value}`;

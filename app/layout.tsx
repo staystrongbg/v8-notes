@@ -36,7 +36,7 @@ export default function RootLayout({
         className={`${silkscreen.className} ${doto.className} ${robotoMono.className} antialiased grid grid-rows-[auto_1fr_auto] min-h-screen`}
       >
         <Navbar />
-        <main className="py-16 px-4 w-full">{children}</main>
+        {children}
         <Footer />
         <Toaster />
       </body>

@@ -5,13 +5,15 @@ import { removeNoteFromStarred } from "@/fetchers/remove-note-from-starred";
 import { Star } from "lucide-react";
 import { useState, useTransition } from "react";
 
+interface StarredNoteProps {
+  noteId: string;
+  isStarred: boolean;
+}
+
 export const StarredNote = ({
   noteId,
   isStarred: initialStarred,
-}: {
-  noteId: string;
-  isStarred: boolean;
-}) => {
+}: StarredNoteProps) => {
   const [isStarred, setIsStarred] = useState(initialStarred);
   const [isPending, startTransition] = useTransition();
 

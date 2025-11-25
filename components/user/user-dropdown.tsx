@@ -14,11 +14,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { User } from "@prisma/client";
 import { signOut } from "@/lib/auth-client";
 
+type DropdownUser = {
+  name: string | null;
+  email: string | null;
+  image?: string | null;
+};
+
 interface UserDropdownProps {
-  user: User;
+  user: DropdownUser;
 }
 
 export function UserDropdown({ user }: UserDropdownProps) {
@@ -26,11 +31,11 @@ export function UserDropdown({ user }: UserDropdownProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="flex items-center gap-2">
-          <span className="ml-2">{user.name}</span>
+          <span className="ml-2">{user.name ?? "Account"}</span>
           {user.image ? (
             <Image
               src={user.image}
-              alt={user.name}
+              alt={user.name ?? "User avatar"}
               width={48}
               height={48}
               className="rounded-full object-cover"
@@ -55,15 +60,15 @@ export function UserDropdown({ user }: UserDropdownProps) {
   );
 }
 
-function AdminItem() {
-  return (
-    <DropdownMenuItem asChild>
-      <Link href="/admin">
-        <ShieldIcon className="size-4" /> <span>Admin</span>
-      </Link>
-    </DropdownMenuItem>
-  );
-}
+// function AdminItem() {
+//   return (
+//     <DropdownMenuItem asChild>
+//       <Link href="/admin">
+//         <ShieldIcon className="size-4" /> <span>Admin</span>
+//       </Link>
+//     </DropdownMenuItem>
+//   );
+// }
 
 function SignOutItem() {
   const router = useRouter();

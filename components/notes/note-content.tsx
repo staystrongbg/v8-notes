@@ -3,7 +3,7 @@ import { Note } from "@prisma/client";
 
 export const NoteContent = ({ note }: { note: Note }) => {
   return (
-    <div className="p-6 max-w-2xl mx-auto">
+    <div className=" mx-auto">
       <h2 className="text-3xl font-semibold mb-6 text-gray-900">
         {note?.title}
       </h2>

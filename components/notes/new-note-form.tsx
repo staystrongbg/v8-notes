@@ -53,7 +53,7 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
   const isLoading = form.formState.isSubmitting;
   const error = form.formState.errors.root?.message;
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+    <form onSubmit={form.handleSubmit(onSubmit)} className="">
       <FieldGroup>
         <Controller
           name="title"
