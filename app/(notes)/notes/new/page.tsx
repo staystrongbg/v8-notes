@@ -7,7 +7,7 @@ export default async function NewNotePage() {
   return (
     <div className="w-full">
       <div className="max-w-2xl p-4 mx-auto">
-        <h1>New Note</h1>
+        <h2>New Note</h2>
         <NewNoteForm userId={session.user.id} />
       </div>
     </div>

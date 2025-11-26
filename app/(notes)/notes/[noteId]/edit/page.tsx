@@ -19,7 +19,7 @@ export default async function EditNotePage({
   return (
     <div className="w-full">
       <div className="max-w-2xl p-4 mx-auto">
-        <h1>{note?.title}</h1>
+        <h2>{note?.title}</h2>
         <EditNoteForm note={note} />
       </div>
     </div>

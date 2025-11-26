@@ -45,15 +45,15 @@ const NoteHeader = ({
         <ArrowLeftIcon className="h-4 w-4" />
         Back to notes
       </Link>
-      <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+      <div className="flex items-center gap-2">
         <StarredNote noteId={noteId} isStarred={isStarred} />
         <DeleteNoteAction noteId={noteId} />
-        <Button variant={"tertiary"} size={"lg"} asChild>
-          <div className="flex items-center gap-2">
-            <PencilIcon className="mr-2 h-4 w-4" />
-            <Link href={`/notes/${noteId}/edit`}>Edit note</Link>
-          </div>
-        </Button>
+        <Link href={`/notes/${noteId}/edit`}>
+          <Button variant={"tertiary"} size={"default"} className="">
+            <PencilIcon />
+            <span className="sm:flex hidden justify-center">Edit note</span>
+          </Button>
+        </Link>
       </div>
     </header>
   );

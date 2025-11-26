@@ -14,13 +14,13 @@ export const DeleteNoteAction = ({ noteId }: { noteId: string }) => {
     <>
       <Button
         variant={"destructive"}
-        size={"lg"}
+        size={"default"}
         onClick={() => setIsDeleting(true)}
         disabled={isDeleting}
-        className="flex items-center gap-2"
+        className="flex w-fit items-center gap-2"
       >
-        <Trash2Icon className="mr-2 h-4 w-4" />
-        Delete note
+        <Trash2Icon />
+        <span className="sm:flex hidden">Delete note</span>
       </Button>
       {isDeleting && (
         <DeleteNoteConfirmationDialog
@@ -43,7 +43,6 @@ const DeleteNoteConfirmationDialog = ({
     await deleteNote(noteId);
     toast.success("Note deleted successfully");
     router.push("/notes");
-    onOpen();
   };
   return (
     <>
