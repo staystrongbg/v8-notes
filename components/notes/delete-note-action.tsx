@@ -46,10 +46,10 @@ const DeleteNoteConfirmationDialog = ({
   };
   return (
     <>
-      <div className="rounded-md w-fit p-4 whitespace-nowrap fixed top-2 left-1/2 right-1/2 transform -translate-x-1/2 bg-black text-red-400">
+      <div className="rounded-md w-fit p-4 whitespace-nowrap fixed top-2 left-1/2 right-1/2 transform -translate-x-1/2 bg-gray-800 text-destructive">
         <div className="flex items-center gap-2">
           <TriangleAlertIcon className="mr-2 h-6 w-6" />
-          <span>Are you sure you want to delete this note?</span>{" "}
+          <span>Are you sure?</span>{" "}
           <span onClick={onDelete} className="cursor-pointer">
             y
           </span>
