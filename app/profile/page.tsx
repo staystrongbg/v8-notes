@@ -1,23 +1,13 @@
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-import { unauthorized } from "next/navigation";
-import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import { UserDetails } from "@/components/user/user-details";
+import { requireUserSession } from "@/lib/require-user-session";
 
 export default async function ProfilePage() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  if (!session?.user) {
-    return unauthorized();
-  }
+  const session = await requireUserSession();
 
   return (
-    <div className="max-w-xl mx-auto h-full text-center">
-      <h1>Profile</h1>
-      <Separator className="my-4 w-full" />
+    <div className="max-w-xl mx-auto h-full text-center p-4">
+      <h2>Profile</h2>
       <section>
         <div className="flex flex-col gap-2 mt-4 items-center">
           <Image
