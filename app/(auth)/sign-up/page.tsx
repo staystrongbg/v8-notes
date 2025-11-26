@@ -13,8 +13,8 @@ export default async function SignUpPage() {
   }
 
   return (
-    <main className="max-w-md h-screen flex items-center justify-center flex-col mx-auto p-6 space-y-4">
-      <h1 className="text-2xl font-roboto-mono">Sign Up</h1>
+    <main className="sm:w-lg w-full mx-auto p-6 space-y-4">
+      <h2>Sign Up</h2>
       <SignUpForm />
     </main>
   );
