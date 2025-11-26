@@ -42,13 +42,13 @@ export default async function Notes({ searchParams }: PageProps) {
 
   return (
     <div className="w-full p-4">
-      {/* <NotesHeader /> */}
+      <NotesHeader />
       <MobileMenu noteCount={noteCount} noteLengthFormat={noteLengthFormat} />
-      <div className="flex justify-around px-8 py-4">
-        {/* <FilterNotes /> */}
-        {/* <p className="text-muted-foreground text-center">
+      <div className="sm:flex hidden justify-around px-8 py-4">
+        <FilterNotes />
+        <p className="text-muted-foreground text-center">
           You have {noteCount} {noteLengthFormat} in this view.
-        </p> */}
+        </p>
       </div>
 
       <Suspense fallback={<NotesGridLoading />}>
@@ -60,7 +60,7 @@ export default async function Notes({ searchParams }: PageProps) {
 
 const NotesHeader = () => {
   return (
-    <header className="w-full flex justify-center flex-col items-center">
+    <header className="w-full justify-center flex-col items-center flex">
       <Button variant={"tertiary"} asChild title="Add new note">
         <div className="flex items-center gap-2">
           <Newspaper className="mr-2 h-4 w-4" />

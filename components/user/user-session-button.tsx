@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { UserDropdown } from "./user-dropdown";
 import { useSession } from "@/lib/auth-client";
+import { Skeleton } from "../ui/skeleton";
 
 export const UserSessionButton = () => {
   const { data: session, isPending } = useSession();
@@ -11,7 +12,7 @@ export const UserSessionButton = () => {
   if (isPending) {
     return (
       <Button variant="ghost" disabled>
-        Checking session…
+        <Skeleton className="size-4" />
       </Button>
     );
   }

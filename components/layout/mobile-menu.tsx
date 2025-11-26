@@ -9,7 +9,7 @@ import {
   DrawerClose,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { Filter, Menu, Search } from "lucide-react";
+import { Filter } from "lucide-react";
 import { FilterNotes } from "../notes/filter-notes";
 
 interface MobileMenuProps {
@@ -21,7 +21,7 @@ export default function MobileMenu({ ...props }: MobileMenuProps) {
   return (
     <Drawer direction="top">
       <DrawerTrigger asChild>
-        <Button variant="ghost" size="icon">
+        <Button variant="ghost" size="icon" className="sm:hidden">
           <Filter className="h-5 w-5" />
         </Button>
       </DrawerTrigger>

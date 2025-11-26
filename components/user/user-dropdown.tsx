@@ -31,7 +31,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="flex items-center gap-2">
-          <span className="ml-2">{user.name ?? "Account"}</span>
+          <span className="ml-2 hidden sm:flex">{user.name ?? "Account"}</span>
           {user.image ? (
             <Image
               src={user.image}
