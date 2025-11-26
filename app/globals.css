@@ -44,22 +44,22 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 h1 {
-  @apply text-4xl font-bold text-foreground;
+  @apply text-4xl font-bold;
 }
 h2 {
-  @apply text-2xl font-bold text-foreground;
+  @apply text-2xl font-bold;
 }
 h3 {
-  @apply text-xl font-bold text-foreground;
+  @apply text-xl font-bold;
 }
 h4 {
-  @apply text-lg font-bold text-foreground;
+  @apply text-lg font-bold;
 }
 h5 {
-  @apply text-base font-bold text-foreground;
+  @apply text-base font-bold;
 }
 h6 {
-  @apply text-sm font-bold text-foreground;
+  @apply text-sm font-bold;
 }
 h1.cyber {
   @apply text-[3rem] leading-[2.5rem] sm:text-[4rem] sm:leading-[3rem] md:text-[6rem] md:leading-[5rem] lg:text-[8rem] lg:leading-[6rem] xl:text-[10rem] xl:leading-[8rem] 2xl:text-[14rem] 2xl:leading-44 font-cyber text-blue-600;

@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Note } from "@prisma/client";
+import { StarIcon } from "lucide-react";
 
 export default function NoteCard({ notes }: { notes: Note[] }) {
   return (
@@ -14,22 +15,23 @@ export default function NoteCard({ notes }: { notes: Note[] }) {
       {notes.map((note) => (
         <Card
           key={note.id}
-          className="transition-shadow duration-200 hover:shadow-lg border h-[calc(100vh-11rem)] w-full snap-start sm:h-auto"
+          className="hover:border-purple-400 border h-[calc(100vh-11rem)] w-full snap-start sm:h-auto"
         >
           <CardHeader className="pb-3">
-            <CardTitle>
-              <h3 className="text-lg font-medium text-foreground line-clamp-1">
-                {note.title}
-              </h3>
-            </CardTitle>
-            <p className="text-xs text-muted-foreground">
-              {note.updatedAt.toDateString()}
-            </p>
+            <div className="flex justify-between">
+              <div>
+                <CardTitle>
+                  <h3 className="line-clamp-1">{note.title}</h3>
+                </CardTitle>
+                <p className="text-xs text-muted-foreground">
+                  {note.updatedAt.toDateString()}
+                </p>
+              </div>
+              <span>{note.isStarred && <StarIcon />}</span>
+            </div>
           </CardHeader>
           <CardContent className="pt-0">
-            <p className="text-muted-foreground line-clamp-3 leading-relaxed">
-              {note.text}
-            </p>
+            <p className="line-clamp-3 leading-relaxed">{note.text}</p>
           </CardContent>
           <CardFooter className="pt-3">
             <Link
