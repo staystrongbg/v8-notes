@@ -15,7 +15,7 @@ export const UserDetails = () => {
         Change
       </Button>
       {!onClose && (
-        <section className="max-w-2xl w-lg mt-8 flex flex-col gap-8">
+        <section className="max-w-2xl sm:w-lg w-full mt-8 flex flex-col gap-8">
           {/* pass reset */}
           <div>
             <h3>Change Password</h3>
