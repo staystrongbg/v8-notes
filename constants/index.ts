@@ -30,3 +30,6 @@ export const betterAuthSecret = process.env.BETTER_AUTH_SECRET as string;
 export const betterAuthUrl = process.env.BETTER_AUTH_URL as string;
 
 export const resendApiKey = process.env.RESEND_API_KEY as string;
+
+export const nodemailerEmail = process.env.NODEMAILER_EMAIL as string;
+export const nodemailerPassword = process.env.NODEMAILER_PASSWORD as string;
