@@ -27,3 +27,6 @@ export const googleClientId = process.env.GOOGLE_CLIENT_ID as string;
 export const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET as string;
 
 export const betterAuthSecret = process.env.BETTER_AUTH_SECRET as string;
+export const betterAuthUrl = process.env.BETTER_AUTH_URL as string;
+
+export const resendApiKey = process.env.RESEND_API_KEY as string;

@@ -41,7 +41,12 @@ export const SignUpForm = () => {
 
   const onSubmit = async (data: z.infer<typeof signupSchema>) => {
     try {
-      const { error } = await signUp.email(data);
+      const { error } = await signUp.email({
+        email: data.email,
+        name: data.name,
+        password: data.password,
+        callbackURL: "/profile",
+      });
       if (error) {
         form.setError("root", {
           type: "manual",
@@ -151,12 +156,10 @@ export const SignUpForm = () => {
           {error && <p className="text-red-500">{error}</p>}
           <Button disabled={isLoading} type="submit" variant="tertiary">
             {isLoading ? (
-              <>
-                <span>
-                  <Loader2 />
-                  Signing up...
-                </span>
-              </>
+              <span className="flex items-center gap-2">
+                <Loader2 className="animate-spin" />
+                Signing up...
+              </span>
             ) : (
               "Sign up"
             )}
