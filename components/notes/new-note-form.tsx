@@ -82,6 +82,7 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
                 id={field.name}
                 placeholder="Note content"
                 aria-invalid={fieldState.invalid}
+                className="min-h-[160px]"
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -102,13 +103,13 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
             variant={"tertiary"}
             type="submit"
             disabled={isLoading}
-            className="flex-2"
+            className="flex items-center gap-2 flex-2"
           >
             {isLoading ? (
-              <>
+              <div className="flex items-center gap-2">
                 <Loader2 className="animate-spin" />
                 <p>Creating...</p>
-              </>
+              </div>
             ) : (
               <p>Create</p>
             )}

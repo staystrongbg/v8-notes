@@ -85,6 +85,7 @@ const EditNoteForm = ({ note }: { note: Note | null }) => {
                 id={field.name}
                 placeholder="Note title"
                 aria-invalid={fieldState.invalid}
+                className="min-h-[160px]"
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -100,12 +101,17 @@ const EditNoteForm = ({ note }: { note: Note | null }) => {
           >
             <p>Cancel</p>
           </Button>
-          <Button type="submit" disabled={isLoading} variant={"tertiary"}>
+          <Button
+            type="submit"
+            disabled={isLoading}
+            variant={"tertiary"}
+            className="flex items-center gap-2"
+          >
             {isLoading ? (
-              <>
+              <div className="flex items-center gap-2">
                 <Loader2 className="animate-spin" />
                 <p>Updating...</p>
-              </>
+              </div>
             ) : (
               <p>Update</p>
             )}
