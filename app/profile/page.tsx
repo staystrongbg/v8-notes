@@ -15,9 +15,9 @@ export default async function ProfilePage() {
           <Image
             src={session.user.image || "/placeholder-image-person.png"}
             alt={session.user.name}
-            width={48}
-            height={48}
-            className="rounded-full object-cover"
+            width={36}
+            height={36}
+            className="rounded-full object-cover aspect-square"
           />
           <p>name: {session.user.name}</p>
           <p>

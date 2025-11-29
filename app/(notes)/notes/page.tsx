@@ -69,10 +69,10 @@ const NotesHeader = ({
       </div>
       <Link href="/notes/new">
         <div className="flex flex-col items-center gap-2">
-          <div className=" h-fit w-fit p-4 rounded-full bg-accent text-accent-foreground hover:bg-accent/80 hover:border-accent/80 hover:text-accent-foreground/80 flex items-center justify-center">
-            <Plus className="h-8 w-8" />
+          <div className=" h-fit w-fit sm:p-4 p-2 rounded-full bg-accent text-accent-foreground hover:bg-accent/80 hover:border-accent/80 hover:text-accent-foreground/80 flex items-center justify-center">
+            <Plus className="sm:size-6 size-4" />
           </div>
-          <p className="text-sm">New Note</p>
+          <p className="text-xs sm:text-sm">New Note</p>
         </div>
       </Link>
     </header>

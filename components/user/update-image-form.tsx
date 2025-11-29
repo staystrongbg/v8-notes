@@ -89,9 +89,9 @@ export default function UpdateImageForm() {
                       session?.user?.image || "/placeholder-image-person.png"
                     }
                     alt=""
-                    width={80}
-                    height={80}
-                    className="rounded-full object-cover"
+                    width={60}
+                    height={60}
+                    className="aspect-square rounded-full object-cover"
                   />
                   Change Image
                 </FieldLabel>
@@ -114,11 +114,7 @@ export default function UpdateImageForm() {
           }}
         />
         {error && <p className="text-red-500">{error}</p>}
-        <Button
-          disabled={isLoading}
-          variant={"tertiary"}
-          type="submit"
-        >
+        <Button disabled={isLoading} variant={"tertiary"} type="submit">
           {isLoading ? (
             <>
               <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
