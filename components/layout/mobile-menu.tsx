@@ -21,9 +21,10 @@ export default function MobileMenu({ ...props }: MobileMenuProps) {
   return (
     <Drawer direction="top">
       <DrawerTrigger asChild>
-        <Button variant="ghost" size="icon" className="sm:hidden">
-          <Filter className="h-5 w-5" />
-        </Button>
+        <div className="flex items-center gap-2 mb-4 cursor-pointer">
+          <Filter className="h-6 w-6 sm:hidden" />
+          <p className="text-muted-foreground text-sm">Filters</p>
+        </div>
       </DrawerTrigger>
       <DrawerContent className="h-[30vh]">
         <DrawerHeader>

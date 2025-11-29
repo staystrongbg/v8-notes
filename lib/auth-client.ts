@@ -10,5 +10,8 @@ export const {
   updateUser,
   sendVerificationEmail,
 } = createAuthClient({
-  baseURL: "https://v8-notes.vercel.app",
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? "https://v8-notes.vercel.app"
+      : "http://localhost:3000",
 });

@@ -15,7 +15,7 @@ export default function NoteCard({ notes }: { notes: Note[] }) {
       {notes.map((note) => (
         <Card
           key={note.id}
-          className="hover:border-accent border h-[calc(100vh-11rem)] w-full snap-start sm:h-auto"
+          className="hover:border-accent border h-[calc(100vh-16rem)] w-full snap-start sm:h-auto"
         >
           <CardHeader className="pb-3">
             <div className="flex justify-between">
