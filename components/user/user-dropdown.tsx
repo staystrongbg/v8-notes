@@ -38,7 +38,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
               alt={user.name ?? "User avatar"}
               width={36}
               height={36}
-              className="rounded-full object-cover"
+              className="rounded-full object-cover aspect-square"
             />
           ) : (
             <UserIcon />
