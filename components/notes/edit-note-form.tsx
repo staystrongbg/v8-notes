@@ -10,9 +10,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Note } from "@prisma/client";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
 import { updateNote } from "@/fetchers/update-note";
 import { useRouter } from "next/navigation";
+import { SubmitButton } from "../shared/submit-button";
+import { CharacterCounter } from "../shared/character-counter";
 
 const newNoteFormSchema = z.object({
   title: z.string().min(1).trim(),
@@ -87,10 +88,8 @@ const EditNoteForm = ({ note }: { note: Note | null }) => {
                 aria-invalid={fieldState.invalid}
                 className="min-h-[160px]"
               />
+              <CharacterCounter value={field.value} />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-              <p className="text-xs text-muted-foreground">
-                {field.value.length}/1000 characters
-              </p>
             </Field>
           )}
         />
@@ -101,24 +100,16 @@ const EditNoteForm = ({ note }: { note: Note | null }) => {
             disabled={isLoading}
             variant={"destructive"}
             onClick={() => router.back()}
+            className="flex-1"
           >
             <p>Cancel</p>
           </Button>
-          <Button
-            type="submit"
-            disabled={isLoading}
-            variant={"tertiary"}
-            className="flex items-center gap-2"
-          >
-            {isLoading ? (
-              <div className="flex items-center gap-2">
-                <Loader2 className="animate-spin" />
-                <p>Updating...</p>
-              </div>
-            ) : (
-              <p>Update</p>
-            )}
-          </Button>
+          <SubmitButton
+            className="flex-2"
+            isLoading={isLoading}
+            label="Update"
+            loadingLabel="Updating..."
+          />
         </div>
       </FieldGroup>
     </form>

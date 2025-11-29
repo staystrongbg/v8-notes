@@ -8,9 +8,8 @@ import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { FieldLabel } from "@/components/ui/field";
 import { FieldError } from "@/components/ui/field";
-import { Button } from "../ui/button";
-import { Loader2Icon } from "lucide-react";
 import { changePassword } from "@/lib/auth-client";
+import { SubmitButton } from "../shared/submit-button";
 
 const updatePasswordSchema = z.object({
   currentPassword: z.string().min(8, "Current password is required."),
@@ -84,20 +83,11 @@ export default function UpdatePasswordForm() {
           )}
         />
         {error && <p className="text-red-500">{error}</p>}
-        <Button
-          disabled={isLoading}
-          variant={"tertiary"}
-          type="submit"
-        >
-          {isLoading ? (
-            <>
-              <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
-              <span>Updating password...</span>
-            </>
-          ) : (
-            <span>Update Password</span>
-          )}
-        </Button>
+        <SubmitButton
+          isLoading={isLoading}
+          label="Update Password"
+          loadingLabel="Updating Password..."
+        />
       </FieldGroup>
       {form.formState.isSubmitSuccessful ? (
         <p className="text-green-500">Password updated successfully.</p>

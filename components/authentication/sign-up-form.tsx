@@ -8,9 +8,8 @@ import { z } from "zod";
 import { FieldGroup } from "../ui/field";
 import { Input } from "../ui/input";
 import { Field, FieldError, FieldLabel } from "../ui/field";
-import { Button } from "../ui/button";
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
+import { SubmitButton } from "../shared/submit-button";
 
 const signupSchema = z
   .object({
@@ -154,21 +153,11 @@ export const SignUpForm = () => {
             )}
           />
           {error && <p className="text-red-500">{error}</p>}
-          <Button
-            disabled={isLoading}
-            type="submit"
-            variant="tertiary"
-            className="flex gap-4"
-          >
-            {isLoading ? (
-              <span className="flex items-center gap-2">
-                <Loader2 className="animate-spin" />
-                Signing up...
-              </span>
-            ) : (
-              <span>Sign up</span>
-            )}
-          </Button>
+          <SubmitButton
+            isLoading={isLoading}
+            label="Sign up"
+            loadingLabel="Signing up..."
+          />
           <Link href="/sign-in">Already have an account? Sign in</Link>
         </FieldGroup>
       </form>

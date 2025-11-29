@@ -8,10 +8,9 @@ import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { FieldLabel } from "@/components/ui/field";
 import { FieldError } from "@/components/ui/field";
-import { Button } from "../ui/button";
-import { Loader2Icon } from "lucide-react";
 import { updateUser, useSession } from "@/lib/auth-client";
 import Image from "next/image";
+import { SubmitButton } from "../shared/submit-button";
 
 const updateImageSchema = z.object({
   image: z.instanceof(File).optional().nullable(),
@@ -114,16 +113,11 @@ export default function UpdateImageForm() {
           }}
         />
         {error && <p className="text-red-500">{error}</p>}
-        <Button disabled={isLoading} variant={"tertiary"} type="submit">
-          {isLoading ? (
-            <>
-              <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
-              <span>Updating image...</span>
-            </>
-          ) : (
-            <span>Update Image</span>
-          )}
-        </Button>
+        <SubmitButton
+          isLoading={isLoading}
+          label="Update Image"
+          loadingLabel="Updating image..."
+        />
       </FieldGroup>
       {form.formState.isSubmitSuccessful ? (
         <p className="text-green-500">Image updated successfully.</p>

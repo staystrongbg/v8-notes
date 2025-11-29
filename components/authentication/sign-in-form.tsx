@@ -10,10 +10,10 @@ import { Input } from "../ui/input";
 import { Field, FieldError, FieldLabel } from "../ui/field";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { Loader2Icon } from "lucide-react";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
+import { SubmitButton } from "../shared/submit-button";
 
 const signInSchema = z.object({
   email: z.email("Invalid email"),
@@ -104,16 +104,11 @@ export const SignInForm = () => {
             )}
           />
           {error && <p className="text-red-500">{error}</p>}
-          <Button type="submit" variant="tertiary" disabled={isLoading}>
-            {isLoading ? (
-              <>
-                <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
-                <span>Signing in...</span>
-              </>
-            ) : (
-              <span>Sign In</span>
-            )}
-          </Button>
+          <SubmitButton
+            isLoading={isLoading}
+            label="Sign In"
+            loadingLabel="Signing in..."
+          />
         </FieldGroup>
         <div className="text-sm text-center">
           or sign in with Google or GitHub

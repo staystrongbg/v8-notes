@@ -1,11 +1,10 @@
 "use client";
 
-import { LogOutIcon, ShieldIcon, UserIcon } from "lucide-react";
+import { LogOutIcon, UserIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,7 +29,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 cursor-pointer">
           <span className="ml-2 hidden sm:flex">{user.name ?? "Account"}</span>
           {user.image ? (
             <Image

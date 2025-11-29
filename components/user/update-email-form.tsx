@@ -8,10 +8,9 @@ import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { FieldLabel } from "@/components/ui/field";
 import { FieldError } from "@/components/ui/field";
-import { Button } from "../ui/button";
-import { Loader2Icon } from "lucide-react";
 import { changeEmail } from "@/lib/auth-client";
 import { useSession } from "@/lib/auth-client";
+import { SubmitButton } from "../shared/submit-button";
 
 const updateEmailSchema = z.object({
   newEmail: z.email("Invalid email"),
@@ -63,20 +62,11 @@ export default function UpdateEmailForm() {
           )}
         />
         {error && <p className="text-red-500">{error}</p>}
-        <Button
-          disabled={isLoading}
-          variant={"tertiary"}
-          type="submit"
-        >
-          {isLoading ? (
-            <>
-              <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
-              <span>Updating email...</span>
-            </>
-          ) : (
-            <span>Update Email</span>
-          )}
-        </Button>
+        <SubmitButton
+          isLoading={isLoading}
+          label="Update Email"
+          loadingLabel="Updating email..."
+        />
       </FieldGroup>
       {form.formState.isSubmitSuccessful ? (
         <p className="text-green-500">Email updated successfully.</p>

@@ -10,7 +10,8 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { FieldError } from "../ui/field";
 import { newNote } from "@/fetchers/new-note";
-import { Loader2 } from "lucide-react";
+import { SubmitButton } from "../shared/submit-button";
+import { CharacterCounter } from "../shared/character-counter";
 
 const newNoteFormSchema = z.object({
   title: z.string().min(1).max(100).trim(),
@@ -86,9 +87,7 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
                 maxLength={1000}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-              <p className="text-xs text-muted-foreground">
-                {field.value.length}/1000 characters
-              </p>
+              <CharacterCounter value={field.value} />
             </Field>
           )}
         />
@@ -103,21 +102,12 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
           >
             Cancel
           </Button>
-          <Button
-            variant={"tertiary"}
-            type="submit"
-            disabled={isLoading}
-            className="flex items-center gap-2 flex-2"
-          >
-            {isLoading ? (
-              <div className="flex items-center gap-2">
-                <Loader2 className="animate-spin" />
-                <p>Creating...</p>
-              </div>
-            ) : (
-              <p>Create</p>
-            )}
-          </Button>
+          <SubmitButton
+            className="flex-2"
+            isLoading={isLoading}
+            label="Create"
+            loadingLabel="Creating..."
+          />
         </div>
       </FieldGroup>
     </form>
