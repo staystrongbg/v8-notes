@@ -88,6 +88,9 @@ const EditNoteForm = ({ note }: { note: Note | null }) => {
                 className="min-h-[160px]"
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+              <p className="text-xs text-muted-foreground">
+                {field.value.length}/1000 characters
+              </p>
             </Field>
           )}
         />

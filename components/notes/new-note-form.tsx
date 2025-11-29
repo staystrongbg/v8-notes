@@ -80,11 +80,15 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
               <Textarea
                 {...field}
                 id={field.name}
-                placeholder="Note content"
+                placeholder="Note text"
                 aria-invalid={fieldState.invalid}
                 className="min-h-[160px]"
+                maxLength={1000}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+              <p className="text-xs text-muted-foreground">
+                {field.value.length}/1000 characters
+              </p>
             </Field>
           )}
         />
