@@ -10,5 +10,5 @@ export const {
   updateUser,
   sendVerificationEmail,
 } = createAuthClient({
-  baseURL: "https://v8-notes.vercel.app",
+  // baseURL: "https://v8-notes.vercel.app",
 });
