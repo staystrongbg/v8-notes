@@ -8,7 +8,6 @@ import {
   DrawerTrigger,
   DrawerClose,
 } from "@/components/ui/drawer";
-import { Button } from "@/components/ui/button";
 import { Filter } from "lucide-react";
 import { FilterNotes } from "../notes/filter-notes";
 
@@ -21,8 +20,8 @@ export default function MobileMenu({ ...props }: MobileMenuProps) {
   return (
     <Drawer direction="top">
       <DrawerTrigger asChild>
-        <div className="flex items-center gap-2 mb-4 cursor-pointer">
-          <Filter className="h-6 w-6 sm:hidden" />
+        <div className="flex items-center gap-2 mb-4 sm:hidden cursor-pointer">
+          <Filter className="h-6 w-6" />
           <p className="text-muted-foreground text-sm">Filters</p>
         </div>
       </DrawerTrigger>
