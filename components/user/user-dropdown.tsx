@@ -36,8 +36,8 @@ export function UserDropdown({ user }: UserDropdownProps) {
             <Image
               src={user.image}
               alt={user.name ?? "User avatar"}
-              width={48}
-              height={48}
+              width={36}
+              height={36}
               className="rounded-full object-cover"
             />
           ) : (
