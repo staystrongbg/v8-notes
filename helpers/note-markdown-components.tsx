@@ -2,10 +2,17 @@ import { Components } from "react-markdown";
 
 export const noteMarkdownComponents: Components = {
   p(props) {
-    return <p {...props} className="text-muted-foreground font-normal" />;
+    return (
+      <p
+        {...props}
+        className="text-muted-foreground font-normal sm:text-sm text-xs"
+      />
+    );
   },
   a(props) {
-    return <a {...props} className="text-primary underline" />;
+    return (
+      <a {...props} className="text-primary underline sm:text-sm text-xs" />
+    );
   },
   code(props) {
     return (

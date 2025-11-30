@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import { FieldLabel } from "@/components/ui/field";
 import { FieldError } from "@/components/ui/field";
 import { updateUser, useSession } from "@/lib/auth-client";
-import Image from "next/image";
 import { SubmitButton } from "../shared/submit-button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
