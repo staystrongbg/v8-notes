@@ -1,10 +1,10 @@
-"use client";
 import { Note } from "@prisma/client";
-
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkEmoji from "remark-emoji";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/atom-one-dark.css";
+import { noteMarkdownComponents } from "../../helpers/note-markdown-components";
 
 export const NoteContent = ({ note }: { note: Note }) => {
   return (
@@ -12,39 +12,8 @@ export const NoteContent = ({ note }: { note: Note }) => {
       <h2 className="mb-6 text-muted-foreground">{note?.title}</h2>
       <div className="mb-4">
         <ReactMarkdown
-          components={{
-            p(props) {
-              return (
-                <p {...props} className="text-muted-foreground font-normal" />
-              );
-            },
-            a(props) {
-              return <a {...props} className="text-primary underline" />;
-            },
-            code(props) {
-              return (
-                <code
-                  {...props}
-                  className="text-primary font-normal sm:text-sm text-xs"
-                />
-              );
-            },
-            pre(props) {
-              return (
-                <pre {...props} className="text-primary sm:text-sm text-xs" />
-              );
-            },
-            h1(props) {
-              return <h1 {...props} className="my-2 text-muted-foreground" />;
-            },
-            h2(props) {
-              return <h2 {...props} className="my-2 text-muted-foreground" />;
-            },
-            h3(props) {
-              return <h3 {...props} className="my-2 text-muted-foreground" />;
-            },
-          }}
-          remarkPlugins={[remarkGfm]}
+          components={noteMarkdownComponents}
+          remarkPlugins={[remarkGfm, remarkEmoji]}
           rehypePlugins={[rehypeHighlight]}
         >
           {note?.text}
