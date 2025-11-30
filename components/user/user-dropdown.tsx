@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { signOut } from "@/lib/auth-client";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 type DropdownUser = {
   name: string | null;
@@ -26,22 +27,15 @@ interface UserDropdownProps {
 }
 
 export function UserDropdown({ user }: UserDropdownProps) {
+  const userInitials = user.name?.slice(0, 1).toUpperCase() || "U";
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div className="flex items-center gap-2 cursor-pointer">
-          <span className="ml-2 hidden sm:flex">{user.name ?? "Account"}</span>
-          {user.image ? (
-            <Image
-              src={user.image}
-              alt={user.name ?? "User avatar"}
-              width={36}
-              height={36}
-              className="rounded-full object-cover aspect-square"
-            />
-          ) : (
-            <UserIcon />
-          )}
+          <Avatar>
+            <AvatarImage src={user.image || undefined} />
+            <AvatarFallback>{userInitials}</AvatarFallback>
+          </Avatar>
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">

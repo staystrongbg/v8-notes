@@ -11,6 +11,7 @@ import { FieldError } from "@/components/ui/field";
 import { updateUser, useSession } from "@/lib/auth-client";
 import Image from "next/image";
 import { SubmitButton } from "../shared/submit-button";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const updateImageSchema = z.object({
   image: z.instanceof(File).optional().nullable(),
@@ -54,6 +55,7 @@ export default function UpdateImageForm() {
 
   const isLoading = form.formState.isSubmitting;
   const error = form.formState.errors.root?.message;
+  const userInitials = session?.user?.name?.slice(0, 1).toUpperCase() || "U";
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <FieldGroup>
@@ -83,16 +85,11 @@ export default function UpdateImageForm() {
             return (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor={field.name}>
-                  <Image
-                    src={
-                      session?.user?.image || "/placeholder-image-person.png"
-                    }
-                    alt=""
-                    width={60}
-                    height={60}
-                    className="aspect-square rounded-full object-cover"
-                  />
                   Change Image
+                  <Avatar>
+                    <AvatarImage src={session?.user?.image || undefined} />
+                    <AvatarFallback>{userInitials}</AvatarFallback>
+                  </Avatar>
                 </FieldLabel>
                 <Input
                   {...fieldProps}
