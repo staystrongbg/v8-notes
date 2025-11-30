@@ -22,10 +22,17 @@ export const NoteContent = ({ note }: { note: Note }) => {
               return <a {...props} className="text-primary underline" />;
             },
             code(props) {
-              return <code {...props} className="text-primary font-normal" />;
+              return (
+                <code
+                  {...props}
+                  className="text-primary font-normal sm:text-sm text-xs"
+                />
+              );
             },
             pre(props) {
-              return <pre {...props} className="text-primary" />;
+              return (
+                <pre {...props} className="text-primary sm:text-sm text-xs" />
+              );
             },
             h1(props) {
               return <h1 {...props} className="my-2 text-muted-foreground" />;
