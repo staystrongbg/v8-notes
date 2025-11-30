@@ -25,7 +25,7 @@ export default async function Note({ params }: { params: PageParams }) {
   return (
     <div className="w-full p-4">
       <NoteHeader noteId={noteId} isStarred={note.isStarred} />
-      <div className="max-w-2xl p-4 mx-auto">
+      <div className="max-w-3xl p-4 mx-auto">
         <NoteContent note={note} />
       </div>
     </div>

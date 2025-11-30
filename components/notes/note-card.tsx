@@ -15,7 +15,7 @@ export default function NoteCard({ notes }: { notes: Note[] }) {
       {notes.map((note) => (
         <Card
           key={note.id}
-          className="hover:border-accent border h-[calc(100vh-16rem)] w-full snap-start sm:h-auto"
+          className="dark:hover:border-accent hover:border-orange-400 h-[calc(100vh-16rem)] w-full snap-start sm:h-auto"
         >
           <CardHeader className="pb-3">
             <div className="flex justify-between">
@@ -23,7 +23,7 @@ export default function NoteCard({ notes }: { notes: Note[] }) {
                 <CardTitle>
                   <h3 className="line-clamp-1">{note.title}</h3>
                 </CardTitle>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground font-normal">
                   {note.updatedAt.toDateString()}
                 </p>
               </div>
@@ -31,7 +31,9 @@ export default function NoteCard({ notes }: { notes: Note[] }) {
             </div>
           </CardHeader>
           <CardContent className="pt-0">
-            <p className="line-clamp-3 leading-relaxed">{note.text}</p>
+            <p className="line-clamp-3 font-roboto-mono font-normal text-muted-foreground text-sm leading-relaxed">
+              {note.text}
+            </p>
           </CardContent>
           <CardFooter className="pt-3">
             <Link
