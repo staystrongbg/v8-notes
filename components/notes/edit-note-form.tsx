@@ -88,7 +88,7 @@ const EditNoteForm = ({ note }: { note: Note | null }) => {
                 aria-invalid={fieldState.invalid}
                 className="min-h-[160px]"
               />
-              <CharacterCounter value={field.value} />
+              <CharacterCounter value={field.value || ""} />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
