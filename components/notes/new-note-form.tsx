@@ -87,7 +87,7 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
                 maxLength={1000}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-              <CharacterCounter value={field.value} />
+              <CharacterCounter value={field.value || ""} />
             </Field>
           )}
         />
