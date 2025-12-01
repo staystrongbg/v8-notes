@@ -22,6 +22,11 @@ export const noteMarkdownComponents: Components = {
       />
     );
   },
+  li(props) {
+    return (
+      <li {...props} className="text-muted-foreground sm:text-sm text-xs" />
+    );
+  },
   pre(props) {
     return <pre {...props} className="text-primary sm:text-sm text-xs" />;
   },
@@ -38,7 +43,7 @@ export const noteMarkdownComponents: Components = {
     return (
       <table
         {...props}
-        className="border-collapse border border-muted-foreground my-4"
+        className="border-collapse border border-muted-foreground my-4 sm:text-sm text-xs"
       />
     );
   },
