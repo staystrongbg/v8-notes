@@ -11,7 +11,7 @@ export const UserSessionButton = () => {
 
   if (isPending) {
     return (
-      <Button variant="ghost" disabled>
+      <Button variant="ghost" disabled aria-label="Loading user session">
         <Skeleton className="size-4" />
       </Button>
     );

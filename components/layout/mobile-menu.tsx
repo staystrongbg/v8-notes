@@ -20,10 +20,10 @@ export default function MobileMenu({ ...props }: MobileMenuProps) {
   return (
     <Drawer direction="top">
       <DrawerTrigger asChild>
-        <div className="flex items-center gap-2 mb-4 sm:hidden cursor-pointer">
+        <button className="flex items-center gap-2 mb-4 sm:hidden cursor-pointer bg-transparent border-none" aria-label="Open filters menu">
           <Filter className="h-6 w-6" />
           <p className="text-muted-foreground text-sm">Filters</p>
-        </div>
+        </button>
       </DrawerTrigger>
       <DrawerContent className="h-[30vh]">
         <DrawerHeader>

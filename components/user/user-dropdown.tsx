@@ -1,6 +1,7 @@
 "use client";
 
 import { LogOutIcon, UserIcon } from "lucide-react";
+import { Button } from "../ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -31,9 +32,9 @@ export function UserDropdown({ user }: UserDropdownProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="flex items-center gap-2 cursor-pointer">
+        <div className="flex items-center gap-2 cursor-pointer" role="button" aria-label="User menu">
           <Avatar>
-            <AvatarImage src={user.image || undefined} alt="user" />
+            <AvatarImage src={user.image || undefined} alt={`${user.name || 'User'}'s avatar`} />
             <AvatarFallback>{userInitials}</AvatarFallback>
           </Avatar>
         </div>

@@ -27,7 +27,7 @@ export default function NoteCard({ notes }: { notes: Note[] }) {
                   {note.updatedAt.toDateString()}
                 </p>
               </div>
-              <span>{note.isStarred && <StarIcon />}</span>
+               <span>{note.isStarred && <StarIcon aria-label="Starred note" />}</span>
             </div>
           </CardHeader>
           <CardContent className="pt-0">
