@@ -18,7 +18,7 @@ export default async function ProfilePage() {
       <section>
         <div className="flex flex-col gap-2 mt-4 items-center">
           <Avatar>
-            <AvatarImage src={session.user.image || undefined} alt="user" />
+            <AvatarImage src={session.user.image || undefined} alt={`${session.user.name}'s avatar`} />
             <AvatarFallback>{userInitials || "U"}</AvatarFallback>
           </Avatar>
           <p>name: {session.user.name}</p>
