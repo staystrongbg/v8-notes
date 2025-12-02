@@ -12,7 +12,7 @@ export const NotesError = ({
       <NotebookIcon className="h-16 w-16 text-red-200" />
       <h1>{message}</h1>
       <p className="text-gray-600">Please try again later.</p>
-      <Button variant={"tertiary"} asChild>
+      <Button variant={"tertiary"} asChild type="button">
         <Link href="/notes">Retry</Link>
       </Button>
     </div>

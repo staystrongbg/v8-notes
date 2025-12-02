@@ -86,7 +86,10 @@ export default function UpdateImageForm() {
                 <FieldLabel htmlFor={field.name}>
                   Change Image
                   <Avatar>
-                    <AvatarImage src={session?.user?.image || undefined} />
+                    <AvatarImage
+                      src={session?.user?.image || undefined}
+                      alt="user"
+                    />
                     <AvatarFallback>{userInitials}</AvatarFallback>
                   </Avatar>
                 </FieldLabel>

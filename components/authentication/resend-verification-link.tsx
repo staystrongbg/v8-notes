@@ -22,7 +22,12 @@ export const ResendVerificationEmail = ({ email }: { email: string }) => {
   };
   return (
     <>
-      <Button disabled={isLoading} variant="tertiary" onClick={resendEmail}>
+      <Button
+        disabled={isLoading}
+        variant="tertiary"
+        type="button"
+        onClick={resendEmail}
+      >
         {isLoading ? (
           <span className="flex items-center gap-2">
             <Loader2 className="animate-spin" />

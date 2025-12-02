@@ -33,7 +33,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
       <DropdownMenuTrigger asChild>
         <div className="flex items-center gap-2 cursor-pointer">
           <Avatar>
-            <AvatarImage src={user.image || undefined} />
+            <AvatarImage src={user.image || undefined} alt="user" />
             <AvatarFallback>{userInitials}</AvatarFallback>
           </Avatar>
         </div>

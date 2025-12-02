@@ -49,7 +49,12 @@ const NoteHeader = ({
         <StarredNote noteId={noteId} isStarred={isStarred} />
         <DeleteNoteAction noteId={noteId} />
         <Link href={`/notes/${noteId}/edit`}>
-          <Button variant={"tertiary"} size={"default"} className="">
+          <Button
+            variant={"tertiary"}
+            size={"default"}
+            type="button"
+            className=""
+          >
             <PencilIcon />
             <span className="sm:flex hidden justify-center">Edit note</span>
           </Button>

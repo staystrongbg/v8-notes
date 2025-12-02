@@ -27,7 +27,7 @@ export const NoNotes = ({ variant = "all" }: NoNotesProps) => {
         <p className="text-muted-foreground text-center text-sm max-w-sm">
           {subcopy}
         </p>
-        <Button variant={"tertiary"} asChild>
+        <Button variant={"tertiary"} type="button" asChild>
           <Link href="/notes/new">Create new note</Link>
         </Button>
       </div>

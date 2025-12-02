@@ -31,6 +31,7 @@ export const StarredNote = ({
 
   return (
     <button
+      type="button"
       onClick={toggleStarred}
       disabled={isPending}
       className="p-2 rounded-md hover:bg-gray-100 disabled:opacity-50 cursor-pointer"
