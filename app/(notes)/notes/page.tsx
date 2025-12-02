@@ -12,6 +12,7 @@ import { NotesGridLoading } from "@/components/notes/notes-grid-loading";
 import MobileMenu from "@/components/layout/mobile-menu";
 import { Plus } from "lucide-react";
 import Link from "next/link";
+import { unauthorized } from "next/navigation";
 
 type PageProps = {
   searchParams: Promise<{ filter?: string | string[] }>;
@@ -19,6 +20,8 @@ type PageProps = {
 
 export default async function Notes({ searchParams }: PageProps) {
   const session = await requireUserSession();
+
+  if (!session?.user) unauthorized();
 
   const { filter } = await searchParams;
   const { isStarredFilter, activeFilter } = normalizeNotesFilter(filter);

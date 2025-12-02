@@ -7,13 +7,16 @@ import { NoteContent } from "@/components/notes/note-content";
 import { StarredNote } from "@/components/notes/starred-note";
 import { requireUserSession } from "@/lib/require-user-session";
 import { NotesError } from "@/components/notes/NotesError";
+import { unauthorized } from "next/navigation";
 
 type PageParams = Promise<{
   noteId: string;
 }>;
 
 export default async function Note({ params }: { params: PageParams }) {
-  await requireUserSession();
+  const session = await requireUserSession();
+
+  if (!session?.user) unauthorized();
 
   const { noteId } = await params;
   const note = await getNote(noteId);

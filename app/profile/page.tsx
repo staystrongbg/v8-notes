@@ -3,10 +3,14 @@ import { requireUserSession } from "@/lib/require-user-session";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { unauthorized } from "next/navigation";
 
 export default async function ProfilePage() {
   const session = await requireUserSession();
-  const userInitials = session.user.name?.slice(0, 1).toUpperCase() || "U";
+
+  if (!session?.user) unauthorized();
+
+  const userInitials = session.user.name.slice(0, 1).toUpperCase() || "U";
 
   return (
     <div className="max-w-xl mx-auto h-full text-center p-4">
