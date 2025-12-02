@@ -15,7 +15,7 @@ import { CharacterCounter } from "../shared/character-counter";
 
 const newNoteFormSchema = z.object({
   title: z.string().min(1).max(100).trim(),
-  text: z.string().min(1).max(1000).trim(),
+  text: z.string().min(1).max(2000).trim(),
 });
 
 export const NewNoteForm = ({ userId }: { userId: string }) => {
@@ -84,7 +84,7 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
                 placeholder="Note text"
                 aria-invalid={fieldState.invalid}
                 className="min-h-[160px]"
-                maxLength={1000}
+                maxLength={2000}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               <CharacterCounter value={field.value || ""} />
