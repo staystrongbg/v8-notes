@@ -16,8 +16,8 @@ import { SubmitButton } from "../shared/submit-button";
 import { CharacterCounter } from "../shared/character-counter";
 
 const newNoteFormSchema = z.object({
-  title: z.string().min(1).trim(),
-  text: z.string().min(1).max(1000).trim(),
+  title: z.string().min(1).max(100).trim(),
+  text: z.string().min(1).max(2000).trim(),
 });
 
 const EditNoteForm = ({ note }: { note: Note | null }) => {

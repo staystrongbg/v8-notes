@@ -1,4 +1,4 @@
-import { Book, HomeIcon, InfoIcon } from "lucide-react";
+import { Book, HomeIcon, Star } from "lucide-react";
 export const LINKS = [
   {
     name: "home",
@@ -13,9 +13,9 @@ export const LINKS = [
     position: "start",
   },
   {
-    name: "about",
-    href: "/about",
-    icon: InfoIcon,
+    name: "starred",
+    href: "/starred-notes",
+    icon: Star,
     position: "start",
   },
 ];

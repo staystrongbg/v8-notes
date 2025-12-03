@@ -16,18 +16,8 @@ export const ActiveLink = ({
   const pathname = usePathname();
   const isActive = pathname === href;
 
-  if (isActive) {
-    return (
-      <Link
-        href={href}
-        className={cn("dark:text-blue-300 text-blue-700", className)}
-      >
-        {children}
-      </Link>
-    );
-  }
   return (
-    <Link href={href} className={cn("", className)}>
+    <Link href={href} className={cn(isActive && "text-blue-500", className)}>
       {children}
     </Link>
   );

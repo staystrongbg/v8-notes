@@ -9,7 +9,7 @@ import { NotesHeader } from "@/components/notes/notes-header";
 
 type SearchParams = Promise<{ view: string }>;
 
-export default async function Notes({
+export default async function StarredNotes({
   searchParams,
 }: {
   searchParams: SearchParams;
@@ -21,7 +21,7 @@ export default async function Notes({
 
   let notes: Note[] = [];
   try {
-    notes = await getNotes(session.user.id);
+    notes = await getNotes(session.user.id, "starred");
   } catch (error) {
     console.error(error);
     return <NotesError />;
