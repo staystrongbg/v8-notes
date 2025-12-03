@@ -9,13 +9,13 @@ type Props = {
 
 export const ViewNotes = async ({ notes, view = "grid" }: Props) => {
   return (
-    <section className="w-full">
+    <section className="mx-auto max-w-6xl">
       {view === "grid" ? (
-        <div className="mx-auto max-w-6xl">
+        <div className="">
           <NotesGrid notes={notes} />
         </div>
       ) : (
-        <div className="mx-auto max-w-5xl">
+        <div className="">
           <NotesTable notes={notes} />
         </div>
       )}
