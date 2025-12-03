@@ -8,8 +8,10 @@ import { Note } from "@prisma/client";
 
 export const getNotes = async (
   userId: string,
-  filter?: "starred"
-): Promise<Note[]> => {
+  filter?: "starred",
+  page?: number,
+  limit?: number
+): Promise<{ notes: Note[]; total: number }> => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -18,13 +20,26 @@ export const getNotes = async (
     return unauthorized();
   }
 
-  return await prisma.note.findMany({
-    where: {
-      userId,
-      ...(filter === "starred" && { isStarred: true }),
-    },
+  const where = {
+    userId,
+    ...(filter === "starred" && { isStarred: true }),
+  };
+
+  const skip = page && limit ? (page - 1) * limit : 0;
+  const take = limit;
+
+  const notes = await prisma.note.findMany({
+    where,
     orderBy: {
       updatedAt: "desc",
     },
+    skip,
+    take,
   });
+
+  const total = await prisma.note.count({
+    where,
+  });
+
+  return { notes, total };
 };

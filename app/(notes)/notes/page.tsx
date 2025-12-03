@@ -6,22 +6,29 @@ import { getNotes } from "@/fetchers/get-notes";
 import { NotesError } from "@/components/notes/NotesError";
 import { NoNotes } from "@/components/notes/no-notes";
 import { NotesHeader } from "@/components/notes/notes-header";
+import { NotesPagination } from "@/components/notes/notes-pagination";
 
-type SearchParams = Promise<{ view: string }>;
+type SearchParams = Promise<{ view?: string; page?: string }>;
 
 export default async function Notes({
   searchParams,
 }: {
   searchParams: SearchParams;
 }) {
-  const { view } = await searchParams;
+  const { view, page } = await searchParams;
   const session = await requireUserSession();
 
   if (!session?.user) unauthorized();
 
+  const pageNum = parseInt(page || "1") || 1;
+  const limit = 6;
+
   let notes: Note[] = [];
+  let total = 0;
   try {
-    notes = await getNotes(session.user.id);
+    const result = await getNotes(session.user.id, undefined, pageNum, limit);
+    notes = result.notes;
+    total = result.total;
   } catch (error) {
     console.error(error);
     return <NotesError />;
@@ -35,6 +42,7 @@ export default async function Notes({
     <div className="w-full p-4">
       <NotesHeader />
       <ViewNotes view={view} notes={notes} />
+      <NotesPagination total={total} limit={limit} currentPage={pageNum} />
     </div>
   );
 }
