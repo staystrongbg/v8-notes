@@ -21,7 +21,7 @@ export default async function StarredNotes({
   if (!session?.user) unauthorized();
 
   const pageNum = parseInt(page || "1") || 1;
-  const limit = 10;
+  const limit = 6;
 
   let notes: Note[] = [];
   let total = 0;

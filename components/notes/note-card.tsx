@@ -11,40 +11,40 @@ import { StarIcon } from "lucide-react";
 
 export default function NoteCard({ note }: { note: Note }) {
   return (
-    <div className="p-[1px] hover:bg-gradient-to-r hover:from-orange-400 hover:to-accent rounded-lg">
+    <div className="p-px hover:bg-linear-to-r hover:from-orange-400 hover:to-accent rounded-lg">
       <Card
         key={note.id}
         className="bg-card h-[calc(100vh-16rem)] w-full snap-start sm:h-auto rounded-lg"
       >
-      <CardHeader className="pb-3">
-        <div className="flex justify-between">
-          <div>
-            <CardTitle>
-              <h3 className="line-clamp-1">{note.title}</h3>
-            </CardTitle>
-            <p className="text-xs text-muted-foreground font-normal">
-              {note.updatedAt.toDateString()}
-            </p>
+        <CardHeader className="pb-3">
+          <div className="flex justify-between">
+            <div>
+              <CardTitle>
+                <h3 className="line-clamp-1">{note.title}</h3>
+              </CardTitle>
+              <p className="text-xs text-muted-foreground font-normal">
+                {note.updatedAt.toDateString()}
+              </p>
+            </div>
+            <span>
+              {note.isStarred && <StarIcon aria-label="Starred note" />}
+            </span>
           </div>
-          <span>
-            {note.isStarred && <StarIcon aria-label="Starred note" />}
-          </span>
-        </div>
-      </CardHeader>
-      <CardContent className="pt-0">
-        <p className="line-clamp-3 font-roboto-mono font-normal text-muted-foreground text-sm leading-relaxed">
-          {note.text}
-        </p>
-      </CardContent>
-      <CardFooter className="pt-3">
-        <Link
-          href={`/notes/${note.id}`}
-          className="text-primary hover:text-primary/80 underline text-sm font-medium"
-        >
-          Read more →
-        </Link>
-       </CardFooter>
-     </Card>
+        </CardHeader>
+        <CardContent className="pt-0">
+          <p className="line-clamp-3 font-roboto-mono font-normal text-muted-foreground text-sm leading-relaxed">
+            {note.text}
+          </p>
+        </CardContent>
+        <CardFooter className="pt-3">
+          <Link
+            href={`/notes/${note.id}`}
+            className="text-primary hover:text-primary/80 underline text-sm font-medium"
+          >
+            Read more →
+          </Link>
+        </CardFooter>
+      </Card>
     </div>
   );
 }

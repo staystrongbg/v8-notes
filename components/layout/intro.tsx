@@ -1,3 +1,5 @@
+import { SignUpButton } from "./signup-button";
+
 export const Intro = () => {
   return (
     <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-[#f5f7fb] via-white to-[#eef2ff] text-slate-900 dark:from-[#05060a] dark:via-[#0b1120] dark:to-[#05060a] dark:text-white">
@@ -21,6 +23,8 @@ export const Intro = () => {
           Capture signals from the void, sync across constellations, and keep
           your brightest ideas orbiting in one encrypted nebula.
         </p>
+
+        <SignUpButton />
 
         <div className="mt-10 flex items-center gap-6 sm:text-sm text-xs text-slate-700 flex-row dark:text-cyan-100/80">
           <span className="inline-flex items-center gap-2 text-sky-500 dark:text-cyan-300">
