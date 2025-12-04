@@ -11,10 +11,11 @@ import { StarIcon } from "lucide-react";
 
 export default function NoteCard({ note }: { note: Note }) {
   return (
-    <Card
-      key={note.id}
-      className="dark:hover:border-accent hover:border-orange-400 h-[calc(100vh-16rem)] w-full snap-start sm:h-auto"
-    >
+    <div className="p-[1px] hover:bg-gradient-to-r hover:from-orange-400 hover:to-accent rounded-lg">
+      <Card
+        key={note.id}
+        className="bg-card h-[calc(100vh-16rem)] w-full snap-start sm:h-auto rounded-lg"
+      >
       <CardHeader className="pb-3">
         <div className="flex justify-between">
           <div>
@@ -42,7 +43,8 @@ export default function NoteCard({ note }: { note: Note }) {
         >
           Read more →
         </Link>
-      </CardFooter>
-    </Card>
+       </CardFooter>
+     </Card>
+    </div>
   );
 }
