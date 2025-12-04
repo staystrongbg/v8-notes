@@ -8,17 +8,7 @@ type Props = {
 };
 
 export const ViewNotes = async ({ notes, view = "grid" }: Props) => {
-  return (
-    <section className="mx-auto max-w-6xl">
-      {view === "grid" ? (
-        <div className="">
-          <NotesGrid notes={notes} />
-        </div>
-      ) : (
-        <div className="">
-          <NotesTable notes={notes} />
-        </div>
-      )}
-    </section>
-  );
+  if (view === "grid") return <NotesGrid notes={notes} />;
+
+  return <NotesTable notes={notes} />;
 };

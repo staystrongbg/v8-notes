@@ -20,11 +20,9 @@ export default async function EditNotePage({
     return <NotesError message="Note not found" />;
   }
   return (
-    <div className="w-full">
-      <div className="max-w-2xl p-4 mx-auto">
-        <h2>{note?.title}</h2>
-        <EditNoteForm note={note} />
-      </div>
+    <div className="max-w-3xl p-4 mx-auto">
+      <h2>{note?.title}</h2>
+      <EditNoteForm note={note} />
     </div>
   );
 }

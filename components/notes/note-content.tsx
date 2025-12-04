@@ -8,7 +8,7 @@ import { noteMarkdownComponents } from "../../helpers/note-markdown-components";
 
 export const NoteContent = ({ note }: { note: Note }) => {
   return (
-    <div className="w-full mx-auto overflow-auto">
+    <div className="max-w-3xl mx-auto overflow-auto">
       <h2 className="mb-6 text-muted-foreground">{note?.title}</h2>
       <div className="mb-4">
         <ReactMarkdown

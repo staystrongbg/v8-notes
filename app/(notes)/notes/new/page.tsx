@@ -8,11 +8,9 @@ export default async function NewNotePage() {
   if (!session?.user) unauthorized();
 
   return (
-    <div className="w-full">
-      <div className="max-w-2xl p-4 mx-auto">
-        <h2>New Note</h2>
-        <NewNoteForm userId={session.user.id} />
-      </div>
+    <div className="max-w-3xl p-4 mx-auto">
+      <h2>New Note</h2>
+      <NewNoteForm userId={session.user.id} />
     </div>
   );
 }

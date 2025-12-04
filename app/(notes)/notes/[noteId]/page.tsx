@@ -26,11 +26,9 @@ export default async function Note({ params }: { params: PageParams }) {
   }
 
   return (
-    <div className="w-full p-4">
+    <div className="max-w-6xl p-4 mx-auto">
       <NoteHeader noteId={noteId} isStarred={note.isStarred} />
-      <div className="max-w-3xl p-4 mx-auto">
-        <NoteContent note={note} />
-      </div>
+      <NoteContent note={note} />
     </div>
   );
 }
@@ -43,7 +41,7 @@ const NoteHeader = ({
   isStarred: boolean;
 }) => {
   return (
-    <header className="w-full flex justify-between items-center">
+    <header className="w-full mb-8 flex justify-between items-center">
       <Link href="/notes" className="text-gray-500 flex items-center gap-2">
         <ArrowLeftIcon className="h-4 w-4" />
         Back to notes
