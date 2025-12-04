@@ -39,7 +39,7 @@ export default async function StarredNotes({
   }
 
   return (
-    <div className="w-full p-4">
+    <div className="max-w-6xl p-4 mx-auto">
       <NotesHeader />
       <ViewNotes view={view} notes={notes} />
       <NotesPagination total={total} limit={limit} currentPage={pageNum} />
