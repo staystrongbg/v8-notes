@@ -28,7 +28,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
-          <main id="main-content">{children}</main>
+          <main className="overflow-hidden" id="main-content">
+            {children}
+          </main>
           <Footer />
           <Toaster />
         </ThemeProvider>
