@@ -41,5 +41,3 @@ export async function sendMail({
   console.log("Mail sent to", sendTo);
   return info;
 }
-
-//TODO aplication password required!

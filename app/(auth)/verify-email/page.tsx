@@ -8,7 +8,7 @@ export default async function VerifyEmailPage() {
   if (!session?.user) unauthorized();
 
   if (session?.user.emailVerified) {
-    redirect("/verify-email");
+    redirect("/profile");
   }
   return (
     <div className="flex items-center justify-center h-screen">

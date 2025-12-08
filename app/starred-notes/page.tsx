@@ -3,7 +3,7 @@ import { unauthorized } from "next/navigation";
 import { ViewNotes } from "@/components/notes/view-notes";
 import { Note } from "@prisma/client";
 import { getNotes } from "@/fetchers/get-notes";
-import { NotesError } from "@/components/notes/NotesError";
+import { NotesError } from "@/components/notes/notes-error";
 import { NoNotes } from "@/components/notes/no-notes";
 import { NotesHeader } from "@/components/notes/notes-header";
 import { NotesPagination } from "@/components/notes/notes-pagination";
