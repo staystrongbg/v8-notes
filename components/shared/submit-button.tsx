@@ -1,32 +1,28 @@
-"use client";
-
 import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "../ui/button";
+import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
-import { VariantProps } from "class-variance-authority";
+import * as React from "react";
 
-interface SubmitButtonProps extends VariantProps<typeof buttonVariants> {
+interface SubmitButtonProps
+  extends Omit<React.ComponentProps<typeof Button>, "children"> {
   label: string;
+  loadingLabel: string;
   isLoading: boolean;
-  loadingLabel?: string;
-  className?: string;
 }
 
 export const SubmitButton = ({
   isLoading,
   label,
   loadingLabel,
-  className,
+  variant = "tertiary",
   ...props
-}: SubmitButtonProps & {
-  asChild?: boolean;
-}) => {
+}: SubmitButtonProps) => {
   return (
     <Button
       type="submit"
       disabled={isLoading}
-      variant={"tertiary"}
-      className={cn("flex items-center gap-2", className)}
+      variant={variant}
+      className={cn("flex items-center gap-2", props.className)}
       {...props}
     >
       {isLoading ? (
