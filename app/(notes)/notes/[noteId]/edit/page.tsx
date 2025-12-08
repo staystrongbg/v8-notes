@@ -1,6 +1,6 @@
 import { getNote } from "@/fetchers/get-note";
 import { requireUserSession } from "@/lib/require-user-session";
-import { NotesError } from "@/components/notes/NotesError";
+import { NotesError } from "@/components/notes/notes-error";
 import EditNoteForm from "@/components/notes/edit-note-form";
 import { unauthorized } from "next/navigation";
 

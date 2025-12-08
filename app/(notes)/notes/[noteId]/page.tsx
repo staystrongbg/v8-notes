@@ -6,7 +6,7 @@ import { DeleteNoteAction } from "@/components/notes/delete-note-action";
 import { NoteContent } from "@/components/notes/note-content";
 import { StarredNote } from "@/components/notes/starred-note";
 import { requireUserSession } from "@/lib/require-user-session";
-import { NotesError } from "@/components/notes/NotesError";
+import { NotesError } from "@/components/notes/notes-error";
 import { unauthorized } from "next/navigation";
 
 type PageParams = Promise<{
