@@ -2,13 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Grid, Newspaper, Table2Icon } from "lucide-react";
+import { Grid, Table2Icon } from "lucide-react";
 import { useCreatePageUrl } from "@/hooks/use-create-page-url";
 
 export const NotesHeader = () => {
   const createPageUrl = useCreatePageUrl();
   return (
-    <header className="flex sm:justify-between justify-center mb-4 items-center">
+    <header className="flex sm:justify-end justify-center mb-4 items-center">
       {/* change view buttons */}
       <div className="sm:flex hidden items-baseline gap-2 ">
         <div className="text-sm text-muted-foreground flex items-center gap-1">
@@ -29,13 +29,6 @@ export const NotesHeader = () => {
           </Button>
         </div>
       </div>
-      {/* add new note button */}
-      <Button variant={"tertiary"} asChild title="Add new note">
-        <Link href="/notes/new">
-          <Newspaper className="h-4 w-4" />
-          add new
-        </Link>
-      </Button>
     </header>
   );
 };

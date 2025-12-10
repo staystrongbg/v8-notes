@@ -1,4 +1,10 @@
 import { Book, HomeIcon, Star } from "lucide-react";
+//
+// Number of notes to display per page
+export const LIMIT = 6;
+
+//
+// Navigation links
 export const LINKS = [
   {
     name: "home",
@@ -10,12 +16,6 @@ export const LINKS = [
     name: "notes",
     href: "/notes",
     icon: Book,
-    position: "start",
-  },
-  {
-    name: "starred",
-    href: "/starred-notes",
-    icon: Star,
     position: "start",
   },
 ];
