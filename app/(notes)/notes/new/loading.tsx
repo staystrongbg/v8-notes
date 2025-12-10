@@ -1,5 +1,0 @@
-import { EditNoteLoading } from "@/components/notes/edit-note-loading";
-
-export default function NewNoteLoading() {
-  return <EditNoteLoading />;
-}
