@@ -10,6 +10,12 @@ import { Button } from "../ui/button";
 import { Sun, Moon, Monitor, Check } from "lucide-react";
 import { useTheme } from "next-themes";
 
+const THEME_OPTIONS = [
+  { value: "light", label: "Light", icon: Sun },
+  { value: "dark", label: "Dark", icon: Moon },
+  { value: "system", label: "System", icon: Monitor },
+] as const;
+
 export const ThemeToggle = () => {
   const { setTheme, theme } = useTheme();
 
@@ -22,21 +28,16 @@ export const ThemeToggle = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          <Sun className="mr-2 h-4 w-4" />
-          Light
-          {theme === "light" && <Check className="ml-auto h-4 w-4" />}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          <Moon className="mr-2 h-4 w-4" />
-          Dark
-          {theme === "dark" && <Check className="ml-auto h-4 w-4" />}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          <Monitor className="mr-2 h-4 w-4" />
-          System
-          {theme === "system" && <Check className="ml-auto h-4 w-4" />}
-        </DropdownMenuItem>
+        {THEME_OPTIONS.map((option) => {
+          const Icon = option.icon;
+          return (
+            <DropdownMenuItem key={option.value} onClick={() => setTheme(option.value)}>
+              <Icon className="mr-2 h-4 w-4" />
+              {option.label}
+              {theme === option.value && <Check className="ml-auto h-4 w-4" />}
+            </DropdownMenuItem>
+          );
+        })}
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -14,5 +14,5 @@ export async function proxy(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/notes/:path*", "/profile"],
+  matcher: "/profile",
 };
