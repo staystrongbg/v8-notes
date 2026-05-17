@@ -75,6 +75,16 @@ h1.cyber {
   }
 }
 
+@keyframes spin-border {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-border {
+  animation: spin-border 3s linear infinite;
+}
+
 .flicker {
   animation: flicker 3.5s infinite;
 }
@@ -90,7 +100,7 @@ h1.cyber {
   --secondary: oklch(0.967 0.001 286.375);
   --secondary-foreground: oklch(0.21 0.006 285.885);
   --muted: oklch(0.967 0.001 286.375);
-   --muted-foreground: oklch(0.35 0.016 285.938);
+   --muted-foreground: oklch(0.55 0.016 285.938);
   --accent: oklch(0.967 0.001 286.375);
   --accent-foreground: oklch(0.21 0.006 285.885);
   --destructive: oklch(0.577 0.245 27.325);
@@ -110,12 +120,12 @@ h1.cyber {
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.015 286.067);
-  --background: oklch(1 0 0);
+  --background: #f0f2f5;
   --foreground: oklch(0.141 0.005 285.823);
 }
 
 .dark {
-  --background: #1a1b26;
+  --background: #05060a;
   --foreground: #c0caf5;
   --card: #1a1b26;
   --card-foreground: #c0caf5;
@@ -154,5 +164,13 @@ h1.cyber {
   }
   body {
     @apply bg-background text-foreground;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(120, 119, 198, 0.12), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 60%, rgba(59, 130, 246, 0.06), transparent);
+  }
+  .dark body {
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(120, 119, 198, 0.15), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 60%, rgba(59, 130, 246, 0.08), transparent);
   }
 }

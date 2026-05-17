@@ -9,7 +9,7 @@ import { NotesGridLoading } from "./notes-grid-loading";
 
 import { NoNotes } from "./no-notes";
 import { LIMIT } from "@/constants";
-import { NotesQuickLinks } from "./notes-quick-links";
+import { NotesToolbar } from "./notes-toolbar";
 
 type Props = {
   userId: string;
@@ -32,16 +32,14 @@ export const ViewNotes = ({ userId, searchParams }: Props) => {
   const total = data.total || 0;
 
   return (
-    <div className="flex sm:flex-row flex-col gap-4">
-      <NotesQuickLinks />
-      <div className="flex-1">
-        {view === "table" ? (
-          <NotesTable notes={data.notes} />
-        ) : (
-          <NotesGrid notes={data.notes} />
-        )}
-        <NotesPagination total={total} limit={LIMIT} currentPage={pageNum} />
-      </div>
+    <div className="space-y-4">
+      <NotesToolbar />
+      {view === "table" ? (
+        <NotesTable notes={data.notes} />
+      ) : (
+        <NotesGrid notes={data.notes} />
+      )}
+      <NotesPagination total={total} limit={LIMIT} currentPage={pageNum} />
     </div>
   );
 };
