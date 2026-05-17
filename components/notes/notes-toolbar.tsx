@@ -18,7 +18,7 @@ export const NotesToolbar = () => {
     <div className="relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-md p-2">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent pointer-events-none" />
 
-      <div className="relative flex sm:flex-row flex-col items-start sm:items-center justify-between gap-3">
+      <div className="relative flex flex-wrap items-center gap-3">
         <nav className="flex items-center gap-1 p-1 rounded-xl bg-background/60 border border-border/30">
           <button
             onClick={() => router.push("/notes")}
@@ -44,7 +44,7 @@ export const NotesToolbar = () => {
           </button>
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 ml-auto">
           <Link
             href="/notes/new"
             className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold font-cyber tracking-wide rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:from-orange-600 hover:to-pink-600 shadow-md shadow-orange-500/20 hover:shadow-orange-500/30 transition-all"

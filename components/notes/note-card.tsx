@@ -18,7 +18,7 @@ export default function NoteCard({ note }: { note: Note }) {
       </div>
       <Card
         key={note.id}
-        className="relative h-[calc(100vh-16rem)] w-full snap-start sm:h-auto rounded-[calc(0.625rem-2px)] bg-background/95 backdrop-blur-sm border-0 overflow-hidden"
+        className="relative w-full snap-start sm:h-auto rounded-[calc(0.625rem-2px)] bg-background/95 backdrop-blur-sm border-0 overflow-hidden"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-purple-500/5 dark:from-orange-500/10 dark:to-purple-500/10 pointer-events-none" />
 
