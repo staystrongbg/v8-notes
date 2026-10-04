@@ -1,5 +1,6 @@
 'use client';
 
+import { TerminalWindow } from '@/components/shared/terminal';
 import { getNote } from '@/fetchers/get-note';
 import { useQuery } from '@tanstack/react-query';
 import 'highlight.js/styles/atom-one-dark.css';
@@ -18,25 +19,24 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import rehypeHighlight from 'rehype-highlight';
 import remarkEmoji from 'remark-emoji';
 import remarkGfm from 'remark-gfm';
 
-import { TerminalWindow } from '@/components/shared/terminal';
+import { highlightPlugin } from '../../helpers/code-highlight';
 import { noteMarkdownComponents } from '../../helpers/note-markdown-components';
 import { DeleteNoteAction } from './delete-note-action';
 import { NoteContentLoading } from './loaders-ui/note-content-loading';
 import { StarredNote } from './starred-note';
 
 export const NoteContent = ({ noteId }: { noteId: string }) => {
-  const { data: note, isLoading } = useQuery({
+  const { data: note, isPending } = useQuery({
     queryKey: ['notes', noteId],
     queryFn: () => getNote(noteId),
   });
 
-  if (isLoading) {
+  if (isPending) {
     return <NoteContentLoading />;
   }
   if (!note) {
@@ -47,21 +47,22 @@ export const NoteContent = ({ noteId }: { noteId: string }) => {
   const chars = note.text.length;
   const lines = note.text ? note.text.split('\n').length : 0;
   const readMins = Math.max(1, Math.ceil(words / 200));
-  const shortId = noteId.slice(0, 8);
 
   return (
     <div className="mx-auto w-full max-w-4xl">
-      <NoteToolbar noteId={noteId} isStarred={note.isStarred} shortId={shortId} />
+      <NoteToolbar noteId={noteId} isStarred={note.isStarred} title={note.title} text={note.text} />
 
       <TerminalWindow
-        title={`~/notes/${shortId}.md`}
+        title={`~/notes/${noteId}`}
         right={
           <>
             <span className="hidden items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 font-mono text-[11px] text-emerald-600 sm:inline-flex dark:text-emerald-400">
               <span className="size-1.5 animate-pulse rounded-full bg-emerald-500" />
               main
             </span>
-            <span className="hidden font-mono text-[11px] text-muted-foreground md:inline">UTF-8</span>
+            <span className="text-muted-foreground hidden font-mono text-[11px] md:inline">
+              UTF-8
+            </span>
           </>
         }
         footer={
@@ -73,16 +74,19 @@ export const NoteContent = ({ noteId }: { noteId: string }) => {
             <span>Ln {lines}</span>
             <span>Wc {words}</span>
             <span className="ml-auto flex items-center gap-1.5">
-              <span className="size-1.5 rounded-full bg-emerald-500" />
-              ✓ saved
+              <span className="size-1.5 rounded-full bg-emerald-500" />✓ saved
             </span>
           </>
         }
         bodyClassName="p-0"
       >
-        <div className="grid grid-cols-2 gap-px border-b border-border/50 bg-border/40 sm:grid-cols-4">
+        <div className="border-border/50 bg-border/40 grid grid-cols-2 gap-px border-b sm:grid-cols-4">
           <HudStat icon={<CalendarClockIcon className="size-3.5" />} label="--updated">
-            {note.updatedAt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            {note.updatedAt.toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+            })}
           </HudStat>
           <HudStat icon={<TypeIcon className="size-3.5" />} label="--wc words/chars">
             {words} / {chars.toLocaleString()}
@@ -91,47 +95,47 @@ export const NoteContent = ({ noteId }: { noteId: string }) => {
             ~{readMins} min · {lines} ln
           </HudStat>
           <HudStat icon={<FingerprintIcon className="size-3.5" />} label="--id" mono>
-            {shortId}
+            {noteId}
             {note.isStarred ? ' ★' : ''}
           </HudStat>
         </div>
 
         <div className="p-6 sm:p-8">
           <div className="mb-6">
-            <p className="mb-2 flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
-              <ChevronRightIcon className="size-3.5 text-primary" />
+            <p className="text-muted-foreground mb-2 flex items-center gap-1.5 font-mono text-xs">
+              <ChevronRightIcon className="text-primary size-3.5" />
               cat ./title.md
             </p>
-            <h1 className="font-mono text-2xl leading-tight font-bold tracking-tight text-foreground sm:text-3xl">
-              <span className="mr-2 text-primary">#</span>
+            <h1 className="text-foreground font-mono text-2xl leading-tight font-bold tracking-tight sm:text-3xl">
+              <span className="text-primary mr-2">#</span>
               {note.title}
             </h1>
-            <p className="mt-2 font-mono text-xs text-muted-foreground">
+            <p className="text-muted-foreground mt-2 font-mono text-xs">
               <span className="text-primary">$</span> stat --modified{' '}
               {note.updatedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </p>
           </div>
 
           <div className="max-h-[50dvh] min-h-[200px] overflow-y-auto overscroll-contain pr-1">
-            <div className="mb-6 flex items-center gap-3 font-mono text-[11px] text-muted-foreground/70">
-              <span className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
+            <div className="text-muted-foreground/70 mb-6 flex items-center gap-3 font-mono text-[11px]">
+              <span className="via-border h-px flex-1 bg-gradient-to-r from-transparent to-transparent" />
               <span className="flex items-center gap-1.5">
                 <FileTextIcon className="size-3" />
                 {'// ---- stdout: render(markdown) ----'}
               </span>
-              <span className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
+              <span className="via-border h-px flex-1 bg-gradient-to-r from-transparent to-transparent" />
             </div>
 
             <div className="prose prose-sm sm:prose-base dark:prose-invert max-w-none">
               <ReactMarkdown
                 components={noteMarkdownComponents}
                 remarkPlugins={[remarkGfm, remarkEmoji]}
-                rehypePlugins={[rehypeHighlight]}
+                rehypePlugins={[highlightPlugin]}
               >
                 {note.text}
               </ReactMarkdown>
             </div>
-            <p className="mt-6 font-mono text-[11px] text-muted-foreground/60">
+            <p className="text-muted-foreground/60 mt-6 font-mono text-[11px]">
               <span className="text-emerald-500">✓</span> exit 0 — EOF
             </p>
           </div>
@@ -152,26 +156,38 @@ const HudStat = ({
   children: React.ReactNode;
   mono?: boolean;
 }) => (
-  <div className="flex items-center gap-2.5 bg-card px-4 py-3">
-    <span className="flex size-7 shrink-0 items-center justify-center rounded-md border border-border/50 bg-muted/60 text-muted-foreground">
+  <div className="bg-card flex items-center gap-2.5 px-4 py-3">
+    <span className="border-border/50 bg-muted/60 text-muted-foreground flex size-7 shrink-0 items-center justify-center rounded-md border">
       {icon}
     </span>
     <div className="min-w-0">
-      <p className="font-mono text-[10px] tracking-wider text-muted-foreground/70 uppercase">{label}</p>
-      <p className={`truncate text-xs font-semibold text-foreground ${mono ? 'font-mono' : ''}`}>{children}</p>
+      <p className="text-muted-foreground/70 font-mono text-[10px] tracking-wider uppercase">
+        {label}
+      </p>
+      <p className={`text-foreground truncate text-xs font-semibold ${mono ? 'font-mono' : ''}`}>
+        {children}
+      </p>
     </div>
   </div>
 );
 
-const NoteToolbar = ({ noteId, isStarred, shortId }: { noteId: string; isStarred: boolean; shortId: string }) => {
+const NoteToolbar = ({
+  noteId,
+  isStarred,
+  title,
+  text,
+}: {
+  noteId: string;
+  isStarred: boolean;
+  title: string;
+  text: string;
+}) => {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
 
-  const filePath = useMemo(() => `~/notes/${shortId}.md`, [shortId]);
-
-  const copyPath = async () => {
+  const copyNote = async () => {
     try {
-      await navigator.clipboard.writeText(filePath);
+      await navigator.clipboard.writeText(`# ${title}\n\n${text}`);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
@@ -180,11 +196,11 @@ const NoteToolbar = ({ noteId, isStarred, shortId }: { noteId: string; isStarred
   };
 
   return (
-    <div className="mb-4 overflow-hidden rounded-xl border border-border/60 bg-card">
+    <div className="border-border/60 bg-card mb-4 overflow-hidden rounded-xl border">
       <div className="flex flex-wrap items-center gap-2 p-2">
         <button
           onClick={() => router.back()}
-          className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-border/40 bg-muted/40 px-3 py-2 font-mono text-xs font-medium text-muted-foreground transition-all hover:bg-muted hover:text-foreground"
+          className="border-border/40 bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground inline-flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 font-mono text-xs font-medium transition-all"
         >
           <ArrowLeftIcon className="h-3.5 w-3.5" />
           <span className="hidden sm:inline">$ cd ..</span>
@@ -192,12 +208,12 @@ const NoteToolbar = ({ noteId, isStarred, shortId }: { noteId: string; isStarred
         </button>
 
         <button
-          onClick={copyPath}
-          title="Copy path"
-          className="hidden min-w-0 flex-1 cursor-pointer items-center gap-2 overflow-hidden rounded-lg border border-transparent px-3 py-2 font-mono text-xs text-muted-foreground transition-all hover:border-border/40 hover:text-foreground md:inline-flex"
+          onClick={copyNote}
+          title="Copy whole note"
+          className="text-muted-foreground hover:border-border/40 hover:text-foreground hidden min-w-0 flex-1 cursor-pointer items-center gap-2 overflow-hidden rounded-lg border border-transparent px-3 py-2 font-mono text-xs transition-all md:inline-flex"
         >
           <span className="truncate">
-            <span className="text-primary">❯</span> {filePath}
+            <span className="text-primary">❯</span> {noteId}
           </span>
           {copied ? (
             <CheckIcon className="ml-auto size-3.5 shrink-0 text-emerald-500" />
@@ -209,7 +225,7 @@ const NoteToolbar = ({ noteId, isStarred, shortId }: { noteId: string; isStarred
         <div className="ml-auto flex items-center gap-2">
           <Link
             href={`/notes/${noteId}/edit`}
-            className="inline-flex items-center gap-2 rounded-lg border border-border/40 bg-muted/40 px-3 py-2 font-mono text-xs font-medium text-muted-foreground transition-all hover:bg-muted hover:text-foreground"
+            className="border-border/40 bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground inline-flex items-center gap-2 rounded-lg border px-3 py-2 font-mono text-xs font-medium transition-all"
           >
             <PencilIcon className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">vim</span>

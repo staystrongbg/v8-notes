@@ -9,7 +9,7 @@ export default async function NewNotePage() {
   if (!session?.user) unauthorized();
 
   return (
-    <div className="relative mx-auto w-full max-w-3xl px-4 py-6">
+    <div className="relative mx-auto w-full max-w-6xl px-4 py-6">
       <GeekyBackdrop />
       <div className="relative">
         <GeekyPrompt>

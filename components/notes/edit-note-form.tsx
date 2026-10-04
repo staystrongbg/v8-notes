@@ -1,7 +1,7 @@
 "use client";
 
 import { Field, FieldGroup } from "@/components/ui/field";
-import { Controller } from "react-hook-form";
+import { Controller, useWatch } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { FieldLabel, FieldError } from "@/components/ui/field";
 import { useForm } from "react-hook-form";
@@ -14,6 +14,7 @@ import { updateNote } from "@/fetchers/update-note";
 import { useRouter } from "next/navigation";
 import { SubmitButton } from "../shared/submit-button";
 import { CharacterCounter } from "../shared/character-counter";
+import { NotePreview } from "./note-preview";
 
 const newNoteFormSchema = z.object({
   title: z.string().min(1).max(100).trim(),
@@ -30,6 +31,7 @@ const EditNoteForm = ({ note }: { note: Note | null }) => {
       text: note?.text || "",
     },
   });
+  const textValue = useWatch({ control: form.control, name: "text" });
 
   if (!note) {
     return <div>Note not found.</div>;
@@ -58,6 +60,7 @@ const EditNoteForm = ({ note }: { note: Note | null }) => {
   const error = form.formState.errors.root?.message;
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="font-mono">
+      <div className="grid gap-4 lg:grid-cols-2">
       <FieldGroup>
         <Controller
           name="title"
@@ -117,6 +120,8 @@ const EditNoteForm = ({ note }: { note: Note | null }) => {
           />
         </div>
       </FieldGroup>
+      <NotePreview text={textValue || ""} />
+      </div>
     </form>
   );
 };

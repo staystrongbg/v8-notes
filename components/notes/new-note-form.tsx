@@ -1,7 +1,7 @@
 "use client";
 
 import { z } from "zod";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { Field, FieldGroup, FieldLabel } from "../ui/field";
@@ -12,6 +12,7 @@ import { FieldError } from "../ui/field";
 import { newNote } from "@/fetchers/new-note";
 import { SubmitButton } from "../shared/submit-button";
 import { CharacterCounter } from "../shared/character-counter";
+import { NotePreview } from "./note-preview";
 
 const newNoteFormSchema = z.object({
   title: z.string().min(1).max(100).trim(),
@@ -53,8 +54,10 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
   };
   const isLoading = form.formState.isSubmitting;
   const error = form.formState.errors.root?.message;
+  const textValue = useWatch({ control: form.control, name: "text" });
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="font-mono">
+      <div className="grid gap-4 lg:grid-cols-2">
       <FieldGroup>
         <Controller
           name="title"
@@ -115,6 +118,8 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
           />
         </div>
       </FieldGroup>
+      <NotePreview text={textValue || ""} />
+      </div>
     </form>
   );
 };

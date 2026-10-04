@@ -30,7 +30,7 @@ export default async function ProfilePage() {
           }
           footer={
             <>
-              <span>uid {session.user.id.slice(0, 8)}</span>
+              <span className="max-w-48 truncate">uid {session.user.id}</span>
               <span className="ml-auto">groups: notes, sudo</span>
             </>
           }

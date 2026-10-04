@@ -25,6 +25,13 @@ const signupSchema = z
     path: ["confirmPassword"],
   });
 
+const FIELDS = [
+  { name: "name", label: "./user", placeholder: "$ useradd --name 'jdoe'", autoComplete: "on", type: "text" },
+  { name: "email", label: "./email", placeholder: "$ useradd --email user@example.com", autoComplete: "on", type: "email" },
+  { name: "password", label: "./password", placeholder: "••••••••", autoComplete: "off", type: "password" },
+  { name: "confirmPassword", label: "./password --confirm", placeholder: "••••••••", autoComplete: "off", type: "password" },
+] as const;
+
 export const SignUpForm = () => {
   const router = useRouter();
 
@@ -69,96 +76,48 @@ export const SignUpForm = () => {
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         id="signup-form"
-        className="space-y-4 w-full"
+        className="space-y-4 w-full font-mono"
       >
         <FieldGroup>
-          <Controller
-            name="name"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name}>{field.name}</FieldLabel>
-                <Input
-                  {...field}
-                  id={field.name}
-                  aria-invalid={fieldState.invalid}
-                  placeholder={field.name}
-                  autoComplete="on"
-                  type="text"
-                />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
-          <Controller
-            name="email"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name}>{field.name}</FieldLabel>
-                <Input
-                  {...field}
-                  id={field.name}
-                  aria-invalid={fieldState.invalid}
-                  placeholder={field.name}
-                  autoComplete="on"
-                  type="email"
-                />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
-          <Controller
-            name="password"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name}>{field.name}</FieldLabel>
-                <Input
-                  {...field}
-                  id={field.name}
-                  aria-invalid={fieldState.invalid}
-                  placeholder={field.name}
-                  autoComplete="off"
-                  type="password"
-                />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
-          <Controller
-            name="confirmPassword"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name}>{field.name}</FieldLabel>
-                <Input
-                  {...field}
-                  id={field.name}
-                  aria-invalid={fieldState.invalid}
-                  placeholder={field.name}
-                  autoComplete="off"
-                  type="password"
-                />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
-          {error && <p className="text-red-500">{error}</p>}
+          {FIELDS.map((item) => (
+            <Controller
+              key={item.name}
+              name={item.name}
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name} className="font-mono text-xs tracking-wider uppercase">
+                    <span className="text-primary">❯</span> {item.label}
+                  </FieldLabel>
+                  <Input
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    placeholder={item.placeholder}
+                    autoComplete={item.autoComplete}
+                    type={item.type}
+                    className="font-mono"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          ))}
+          {error && <p className="font-mono text-xs text-destructive">[stderr] {error}</p>}
           <SubmitButton
             isLoading={isLoading}
-            label="Sign up"
-            loadingLabel="Signing up..."
+            label="$ useradd --create"
+            loadingLabel="$ creating..."
+            className="font-mono"
           />
-          <Link href="/sign-in">Already have an account? Sign in</Link>
+          <Link
+            href="/sign-in"
+            className="block text-center font-mono text-xs text-primary underline decoration-dotted decoration-primary/50 underline-offset-4 hover:decoration-solid"
+          >
+            $ have-account? --login
+          </Link>
         </FieldGroup>
       </form>
     </>

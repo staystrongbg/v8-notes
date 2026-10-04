@@ -34,8 +34,8 @@ export const NotesTable = React.memo(({ notes }: { notes: Note[] }) => {
           {notes.map((note) => (
             <TableRow key={note.id}>
               <TableCell className="font-medium">
-                <Link href={`${pathname}/${note.id}`} className="text-primary hover:underline">
-                  <span className="text-muted-foreground">❯ </span>./{note.id.slice(0, 8)}.md
+                <Link href={`${pathname}/${note.id}`} className="text-primary hover:underline max-w-56 truncate">
+                  <span className="text-muted-foreground">❯ </span>./{note.id}
                   <span className="ml-2 hidden text-xs text-muted-foreground lg:inline">{note.title}</span>
                 </Link>
               </TableCell>

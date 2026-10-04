@@ -60,7 +60,7 @@ export const SignInForm = () => {
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         id="signin-form"
-        className="space-y-4 w-full"
+        className="space-y-4 w-full font-mono"
       >
         <FieldGroup>
           <Controller
@@ -68,14 +68,17 @@ export const SignInForm = () => {
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name}>{field.name}</FieldLabel>
+                <FieldLabel htmlFor={field.name} className="font-mono text-xs tracking-wider uppercase">
+                  <span className="text-primary">❯</span> ./email
+                </FieldLabel>
                 <Input
                   {...field}
                   id={field.name}
                   aria-invalid={fieldState.invalid}
-                  placeholder={field.name}
+                  placeholder="$ auth --email user@example.com"
                   autoComplete="on"
                   type="text"
+                  className="font-mono"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -88,14 +91,17 @@ export const SignInForm = () => {
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name}>{field.name}</FieldLabel>
+                <FieldLabel htmlFor={field.name} className="font-mono text-xs tracking-wider uppercase">
+                  <span className="text-primary">❯</span> ./password
+                </FieldLabel>
                 <Input
                   {...field}
                   id={field.name}
                   aria-invalid={fieldState.invalid}
-                  placeholder={field.name}
+                  placeholder="••••••••"
                   autoComplete="off"
                   type="password"
+                  className="font-mono"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -103,15 +109,18 @@ export const SignInForm = () => {
               </Field>
             )}
           />
-          {error && <p className="text-red-500">{error}</p>}
+          {error && <p className="font-mono text-xs text-destructive">[stderr] {error}</p>}
           <SubmitButton
             isLoading={isLoading}
-            label="Sign In"
-            loadingLabel="Signing in..."
+            label="$ ssh --login"
+            loadingLabel="$ connecting..."
+            className="font-mono"
           />
         </FieldGroup>
-        <div className="text-sm text-center">
-          or sign in with Google or GitHub
+        <div className="flex items-center gap-3 font-mono text-[11px] text-muted-foreground/70">
+          <span className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
+          <span>{'// ---- oauth ----'}</span>
+          <span className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
         </div>
 
         <div className="flex items-center justify-center gap-2">
@@ -122,9 +131,10 @@ export const SignInForm = () => {
               signIn.social({ provider: "google", callbackURL: "/notes" })
             }
             disabled={isLoading}
+            className="font-mono"
           >
             <Image src="/google-icon.svg" alt="Google" width={20} height={20} />
-            Google
+            google
           </Button>
           <Button
             variant="outline"
@@ -133,13 +143,19 @@ export const SignInForm = () => {
               signIn.social({ provider: "github", callbackURL: "/notes" })
             }
             disabled={isLoading}
+            className="font-mono"
           >
             <Image src="/git-icon.svg" alt="GitHub" width={20} height={20} />
-            GitHub
+            github
           </Button>
         </div>
 
-        <Link href="/sign-up">Don&apos;t have an account? Sign up</Link>
+        <Link
+          href="/sign-up"
+          className="block text-center font-mono text-xs text-primary underline decoration-dotted decoration-primary/50 underline-offset-4 hover:decoration-solid"
+        >
+          $ no-account? --register
+        </Link>
       </form>
     </>
   );

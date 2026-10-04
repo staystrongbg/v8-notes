@@ -17,7 +17,7 @@ export default async function Note({ params }: { params: PageParams }) {
       <GeekyBackdrop />
       <div className="relative">
         <GeekyPrompt>
-          v8-notes open <span className="text-foreground">./notes/{noteId.slice(0, 8)}…</span>
+          v8-notes open <span className="text-foreground">./notes/{noteId}</span>
         </GeekyPrompt>
         <NoteContent noteId={noteId} />
       </div>
