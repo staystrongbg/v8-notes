@@ -32,12 +32,12 @@ export const ViewNotes = ({ userId }: Props) => {
   const notesFilter = starred === 'true' ? 'starred' : 'all';
   const notesSort = parseSort(sort || undefined);
 
-  const { data, isLoading } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['notes', userId, pageNum, LIMIT, notesFilter, notesSort],
     queryFn: () => getNotes(userId, notesFilter, pageNum, LIMIT, notesSort),
   });
 
-  if (isLoading) return <NotesGridLoading />;
+  if (isPending) return <NotesGridLoading />;
   if (!data || !data.notes || data.notes.length === 0) return <NoNotes />;
   const total = data.total || 0;
 
