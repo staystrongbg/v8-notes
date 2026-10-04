@@ -57,19 +57,22 @@ const EditNoteForm = ({ note }: { note: Note | null }) => {
   const isLoading = form.formState.isSubmitting;
   const error = form.formState.errors.root?.message;
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)}>
+    <form onSubmit={form.handleSubmit(onSubmit)} className="font-mono">
       <FieldGroup>
         <Controller
           name="title"
           control={form.control}
           render={({ field, fieldState }) => (
             <Field>
-              <FieldLabel htmlFor={field.name}>{field.name}</FieldLabel>
+              <FieldLabel htmlFor={field.name} className="font-mono text-xs tracking-wider uppercase">
+                <span className="text-primary">❯</span> ./title
+              </FieldLabel>
               <Input
                 {...field}
                 id={field.name}
-                placeholder="Note title"
+                placeholder="$ note --title 'hello world'"
                 aria-invalid={fieldState.invalid}
+                className="font-mono"
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -80,35 +83,37 @@ const EditNoteForm = ({ note }: { note: Note | null }) => {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field>
-              <FieldLabel htmlFor={field.name}>{field.name}</FieldLabel>
+              <FieldLabel htmlFor={field.name} className="font-mono text-xs tracking-wider uppercase">
+                <span className="text-primary">❯</span> ./body.md
+              </FieldLabel>
               <Textarea
                 {...field}
                 id={field.name}
-                placeholder="Note title"
+                placeholder="# markdown supported · ```code``` · :emoji:"
                 aria-invalid={fieldState.invalid}
-                className="min-h-[160px]"
+                className="min-h-[220px] font-mono leading-relaxed"
               />
               <CharacterCounter value={field.value || ""} />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
-        {error && <p className="text-red-500">{error}</p>}
-        <div className="flex gap-2 items-center">
+        {error && <p className="font-mono text-xs text-destructive">[stderr] {error}</p>}
+        <div className="flex items-center gap-2">
           <Button
             type="button"
             disabled={isLoading}
-            variant={"destructive"}
+            variant="outline"
             onClick={() => router.back()}
-            className="flex-1"
+            className="flex-1 font-mono"
           >
-            <p>Cancel</p>
+            --cancel
           </Button>
           <SubmitButton
-            className="flex-2"
+            className="flex-2 font-mono"
             isLoading={isLoading}
-            label="Update"
-            loadingLabel="Updating..."
+            label="$ commit --update"
+            loadingLabel="$ committing..."
           />
         </div>
       </FieldGroup>

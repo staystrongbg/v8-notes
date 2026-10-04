@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export const ActiveLink = ({
   href,
@@ -17,7 +17,10 @@ export const ActiveLink = ({
   const isActive = pathname === href;
 
   return (
-    <Link href={href} className={cn(isActive && "text-blue-500", className)}>
+    <Link
+      href={href}
+      className={cn(isActive && 'text-primary underline underline-offset-4', className)}
+    >
       {children}
     </Link>
   );

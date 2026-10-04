@@ -1,15 +1,15 @@
-import type { Metadata } from "next";
-import Navbar from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
-import { Toaster } from "sonner";
-import { silkscreen, doto, robotoMono } from "@/lib/fonts";
-import "./globals.css";
-import { Providers } from "@/lib/providers";
-import { NotesQuickLinks } from "@/components/notes/notes-quick-links";
+import { Footer } from '@/components/layout/footer';
+import Navbar from '@/components/layout/navbar';
+import { doto, robotoMono, silkscreen } from '@/lib/fonts';
+import { Providers } from '@/lib/providers';
+import type { Metadata } from 'next';
+import { Toaster } from 'sonner';
+
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: "V8 Notes",
-  description: "Yet another notes app",
+  title: 'V8 Notes',
+  description: 'Yet another notes app',
 };
 
 export default function RootLayout({
@@ -20,14 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${silkscreen.className} ${doto.className} ${robotoMono.className} antialiased grid grid-rows-[auto_1fr_auto] min-h-screen bg-background`}
+        className={`${silkscreen.className} ${doto.className} ${robotoMono.className} bg-background grid min-h-screen grid-rows-[auto_1fr_auto] antialiased`}
       >
         <Providers>
-          <Navbar />
-          <main className="overflow-hidden" id="main-content">
+          <main className="min-h-screen overflow-hidden" id="main-content">
+            <Navbar />
             {children}
+            <Footer />
           </main>
-          <Footer />
           <Toaster />
         </Providers>
       </body>

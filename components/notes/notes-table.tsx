@@ -4,7 +4,6 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -16,35 +15,39 @@ import { usePathname } from "next/navigation";
 export const NotesTable = React.memo(({ notes }: { notes: Note[] }) => {
   const pathname = usePathname();
   return (
-    <Table>
-      <TableCaption>A list of your recent notes.</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">Title</TableHead>
-          <TableHead>Starred</TableHead>
-          <TableHead className="text-right">Created At</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {notes.map((note) => (
-          <TableRow key={note.id}>
-            <TableCell className="font-medium">
-              {<Link href={`${pathname}/${note.id}`}>{note.title}</Link>}
-            </TableCell>
-            <TableCell>{note.isStarred && "true"}</TableCell>
-            <TableCell className="text-right">
-              {note.createdAt.toDateString()}
-            </TableCell>
+    <div className="overflow-hidden rounded-xl border border-border/60 bg-card">
+      <div className="flex items-center gap-2 border-b border-border/50 bg-muted/40 px-4 py-2.5">
+        <span className="font-mono text-xs font-bold text-primary">❯</span>
+        <span className="font-mono text-xs text-muted-foreground">~/notes --table</span>
+        <span className="ml-auto font-mono text-[11px] text-muted-foreground">{notes.length} rows</span>
+      </div>
+      <Table>
+        <TableCaption className="font-mono text-xs">-- eof · {notes.length} notes --</TableCaption>
+        <TableHeader>
+          <TableRow className="font-mono text-xs uppercase">
+            <TableHead className="w-[100px]">file</TableHead>
+            <TableHead>star</TableHead>
+            <TableHead className="text-right">mtime</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-      <TableFooter>
-        {/* <TableRow>
-          <TableCell colSpan={4}>Total</TableCell>
-          <TableCell className="text-right">{notes.length}</TableCell>
-        </TableRow> */}
-      </TableFooter>
-    </Table>
+        </TableHeader>
+        <TableBody className="font-mono text-sm">
+          {notes.map((note) => (
+            <TableRow key={note.id}>
+              <TableCell className="font-medium">
+                <Link href={`${pathname}/${note.id}`} className="text-primary hover:underline">
+                  <span className="text-muted-foreground">❯ </span>./{note.id.slice(0, 8)}.md
+                  <span className="ml-2 hidden text-xs text-muted-foreground lg:inline">{note.title}</span>
+                </Link>
+              </TableCell>
+              <TableCell>{note.isStarred ? <span className="text-amber-500">★</span> : <span className="text-muted-foreground/40">·</span>}</TableCell>
+              <TableCell className="text-right text-xs text-muted-foreground">
+                {note.createdAt.toDateString()}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 });
 

@@ -1,6 +1,8 @@
 import { ResendVerificationEmail } from "@/components/authentication/resend-verification-link";
 import { requireUserSession } from "@/lib/require-user-session";
 import { redirect, unauthorized } from "next/navigation";
+import { GeekyBackdrop, TerminalWindow } from "@/components/shared/terminal";
+import { MailWarningIcon } from "lucide-react";
 
 export default async function VerifyEmailPage() {
   const session = await requireUserSession();
@@ -11,13 +13,22 @@ export default async function VerifyEmailPage() {
     redirect("/profile");
   }
   return (
-    <div className="flex items-center justify-center h-screen">
-      <div className="flex flex-col items-center gap-4">
-        <h1 className="text-2xl font-bold">Verify your email</h1>
-        <p className="text-sm text-muted-foreground">
-          Please check your email for a verification link.
+    <div className="relative mx-auto flex min-h-[70vh] w-full max-w-md flex-col justify-center px-4 py-10">
+      <GeekyBackdrop />
+      <div className="relative">
+        <p className="mb-4 font-mono text-xs text-muted-foreground">
+          <span className="text-primary">$</span> v8-notes verify --email
         </p>
-        <ResendVerificationEmail email={session?.user?.email} />
+        <TerminalWindow title="~/auth --verify" bodyClassName="p-6 text-center">
+          <MailWarningIcon className="mx-auto h-10 w-10 text-amber-500" />
+          <h1 className="mt-3 font-mono text-lg font-bold text-foreground">[pending] verify your email</h1>
+          <p className="mt-2 font-mono text-xs text-muted-foreground">
+            Check <span className="text-foreground">{session?.user?.email}</span> for a verification link.
+          </p>
+          <div className="mt-5">
+            <ResendVerificationEmail email={session?.user?.email} />
+          </div>
+        </TerminalWindow>
       </div>
     </div>
   );

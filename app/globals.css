@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is(.dark *, .matrix *, .ocean *, .crimson *, .midnight *));
 
 @theme inline {
   --color-background: var(--background);
@@ -50,7 +50,7 @@ h2 {
   @apply text-2xl font-bold;
 }
 h3 {
-  @apply text-xl font-bold;
+  @apply text-2xl font-bold;
 }
 h4 {
   @apply text-lg font-bold;
@@ -158,6 +158,146 @@ h1.cyber {
   --sidebar-ring: #7aa2f7;
 }
 
+.matrix {
+  color-scheme: dark;
+  --background: #020c06;
+  --foreground: #b6f5c8;
+  --card: #07160d;
+  --card-foreground: #b6f5c8;
+  --popover: #07160d;
+  --popover-foreground: #b6f5c8;
+  --primary: #34ff88;
+  --primary-foreground: #03130a;
+  --secondary: #0e3a1f;
+  --secondary-foreground: #b6f5c8;
+  --muted: #0e3a1f;
+  --muted-foreground: #6fbf8b;
+  --accent: #34ff88;
+  --accent-foreground: #03130a;
+  --destructive: #ff5f57;
+  --border: #14532d;
+  --input: #14532d;
+  --ring: #34ff88;
+  --chart-1: #ff5f57;
+  --chart-2: #ffd60a;
+  --chart-3: #34ff88;
+  --chart-4: #00c7be;
+  --chart-5: #7dd3a8;
+  --sidebar: #050f09;
+  --sidebar-foreground: #b6f5c8;
+  --sidebar-primary: #34ff88;
+  --sidebar-primary-foreground: #03130a;
+  --sidebar-accent: #0e3a1f;
+  --sidebar-accent-foreground: #b6f5c8;
+  --sidebar-border: #14532d;
+  --sidebar-ring: #34ff88;
+}
+
+.ocean {
+  color-scheme: dark;
+  --background: #030b16;
+  --foreground: #c3d9f7;
+  --card: #081426;
+  --card-foreground: #c3d9f7;
+  --popover: #081426;
+  --popover-foreground: #c3d9f7;
+  --primary: #5eb1ff;
+  --primary-foreground: #04101f;
+  --secondary: #12315c;
+  --secondary-foreground: #c3d9f7;
+  --muted: #12315c;
+  --muted-foreground: #7fa6d4;
+  --accent: #38e1ff;
+  --accent-foreground: #04101f;
+  --destructive: #ff6b6b;
+  --border: #1d3a5f;
+  --input: #1d3a5f;
+  --ring: #5eb1ff;
+  --chart-1: #ff6b6b;
+  --chart-2: #ffb86b;
+  --chart-3: #5eb1ff;
+  --chart-4: #38e1ff;
+  --chart-5: #7aa2f7;
+  --sidebar: #060f1e;
+  --sidebar-foreground: #c3d9f7;
+  --sidebar-primary: #5eb1ff;
+  --sidebar-primary-foreground: #04101f;
+  --sidebar-accent: #12315c;
+  --sidebar-accent-foreground: #c3d9f7;
+  --sidebar-border: #1d3a5f;
+  --sidebar-ring: #5eb1ff;
+}
+
+.crimson {
+  color-scheme: dark;
+  --background: #100505;
+  --foreground: #f3c1c1;
+  --card: #1c0a0b;
+  --card-foreground: #f3c1c1;
+  --popover: #1c0a0b;
+  --popover-foreground: #f3c1c1;
+  --primary: #ff6b5e;
+  --primary-foreground: #1c0605;
+  --secondary: #4a1214;
+  --secondary-foreground: #f3c1c1;
+  --muted: #4a1214;
+  --muted-foreground: #c98a8a;
+  --accent: #ff9e64;
+  --accent-foreground: #1c0605;
+  --destructive: #ff2d2d;
+  --border: #6e1b1e;
+  --input: #6e1b1e;
+  --ring: #ff6b5e;
+  --chart-1: #ff2d2d;
+  --chart-2: #ff9e64;
+  --chart-3: #ff6b5e;
+  --chart-4: #e0af68;
+  --chart-5: #c98a8a;
+  --sidebar: #150607;
+  --sidebar-foreground: #f3c1c1;
+  --sidebar-primary: #ff6b5e;
+  --sidebar-primary-foreground: #1c0605;
+  --sidebar-accent: #4a1214;
+  --sidebar-accent-foreground: #f3c1c1;
+  --sidebar-border: #6e1b1e;
+  --sidebar-ring: #ff6b5e;
+}
+
+.midnight {
+  color-scheme: dark;
+  --background: #000000;
+  --foreground: #ededed;
+  --card: #0a0a0a;
+  --card-foreground: #ededed;
+  --popover: #0a0a0a;
+  --popover-foreground: #ededed;
+  --primary: #fafafa;
+  --primary-foreground: #000000;
+  --secondary: #1a1a1a;
+  --secondary-foreground: #ededed;
+  --muted: #1a1a1a;
+  --muted-foreground: #a1a1a1;
+  --accent: #d4d4d4;
+  --accent-foreground: #000000;
+  --destructive: #ff453a;
+  --border: #262626;
+  --input: #262626;
+  --ring: #e5e5e5;
+  --chart-1: #ff453a;
+  --chart-2: #d4d4d4;
+  --chart-3: #a1a1a1;
+  --chart-4: #737373;
+  --chart-5: #525252;
+  --sidebar: #050505;
+  --sidebar-foreground: #ededed;
+  --sidebar-primary: #fafafa;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: #1a1a1a;
+  --sidebar-accent-foreground: #ededed;
+  --sidebar-border: #262626;
+  --sidebar-ring: #e5e5e5;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -172,5 +312,23 @@ h1.cyber {
     background-image:
       radial-gradient(ellipse 80% 50% at 50% -20%, rgba(120, 119, 198, 0.15), transparent),
       radial-gradient(ellipse 60% 40% at 80% 60%, rgba(59, 130, 246, 0.08), transparent);
+  }
+  .matrix body {
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(52, 255, 136, 0.1), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 60%, rgba(34, 197, 94, 0.06), transparent);
+  }
+  .ocean body {
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(94, 177, 255, 0.12), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 60%, rgba(56, 225, 255, 0.06), transparent);
+  }
+  .crimson body {
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255, 107, 94, 0.1), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 60%, rgba(255, 45, 45, 0.05), transparent);
+  }
+  .midnight body {
+    background-image: none;
   }
 }

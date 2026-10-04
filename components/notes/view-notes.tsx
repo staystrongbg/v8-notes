@@ -1,30 +1,40 @@
-"use client";
+'use client';
 
-import { getNotes } from "@/fetchers/get-notes";
-import { NotesGrid } from "./notes-grid";
-import { NotesTable } from "./notes-table";
-import { useQuery } from "@tanstack/react-query";
-import { NotesPagination } from "./notes-pagination";
-import { NotesGridLoading } from "./notes-grid-loading";
+import { LIMIT } from '@/constants';
+import { type NotesSort, getNotes } from '@/fetchers/get-notes';
+import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'next/navigation';
 
-import { NoNotes } from "./no-notes";
-import { LIMIT } from "@/constants";
-import { NotesToolbar } from "./notes-toolbar";
+import { NotesGridLoading } from './loaders-ui/notes-grid-loading';
+import { NoNotes } from './no-notes';
+import { NotesGrid } from './notes-grid';
+import { NotesPagination } from './notes-pagination';
+import { NotesTable } from './notes-table';
+import { NotesToolbar } from './notes-toolbar';
 
 type Props = {
   userId: string;
-  searchParams: { view?: string; page?: string; starred?: string };
 };
 
-export const ViewNotes = ({ userId, searchParams }: Props) => {
-  const { page, view, starred } = searchParams;
-  const pageNum = parseInt(page || "1") || 1;
+const parseSort = (value?: string): NotesSort =>
+  value === 'newest' || value === 'oldest' ? value : 'updated';
 
-  const notesFilter = starred === "true" ? "starred" : undefined;
+export const ViewNotes = ({ userId }: Props) => {
+  const searchParams = useSearchParams();
 
-  const { isLoading, data } = useQuery({
-    queryKey: ["notes", userId, pageNum, LIMIT, notesFilter],
-    queryFn: () => getNotes(userId, notesFilter, pageNum, LIMIT),
+  const page = searchParams.get('page');
+  const view = searchParams.get('view');
+  const starred = searchParams.get('starred');
+  const sort = searchParams.get('sort');
+
+  const pageNum = parseInt(page || '1') || 1;
+
+  const notesFilter = starred === 'true' ? 'starred' : 'all';
+  const notesSort = parseSort(sort || undefined);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['notes', userId, pageNum, LIMIT, notesFilter, notesSort],
+    queryFn: () => getNotes(userId, notesFilter, pageNum, LIMIT, notesSort),
   });
 
   if (isLoading) return <NotesGridLoading />;
@@ -34,11 +44,7 @@ export const ViewNotes = ({ userId, searchParams }: Props) => {
   return (
     <div className="space-y-4">
       <NotesToolbar />
-      {view === "table" ? (
-        <NotesTable notes={data.notes} />
-      ) : (
-        <NotesGrid notes={data.notes} />
-      )}
+      {view === 'table' ? <NotesTable notes={data.notes} /> : <NotesGrid notes={data.notes} />}
       <NotesPagination total={total} limit={LIMIT} currentPage={pageNum} />
     </div>
   );

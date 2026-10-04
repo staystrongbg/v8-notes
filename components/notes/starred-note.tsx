@@ -34,15 +34,15 @@ export const StarredNote = ({
       type="button"
       onClick={toggleStarred}
       disabled={isPending}
-      className={`inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-xl border transition-all cursor-pointer disabled:opacity-50 ${
+      className={`inline-flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 font-mono text-xs font-medium tracking-wide uppercase transition-all disabled:opacity-50 ${
         isStarred
-          ? "bg-amber-500/10 border-amber-500/30 text-amber-500 hover:bg-amber-500/20"
-          : "bg-background/60 border-border/30 text-muted-foreground hover:text-foreground hover:bg-accent/50"
+          ? "border-amber-500/40 bg-amber-500/10 text-amber-500 hover:bg-amber-500/20"
+          : "border-border/30 bg-background/60 text-muted-foreground hover:text-foreground hover:bg-accent/50"
       }`}
       title={isStarred ? "Remove from starred" : "Add to starred"}
     >
-      <Star className={`w-4 h-4 ${isStarred ? "fill-amber-500" : ""}`} />
-      <span className="hidden sm:inline">{isStarred ? "Starred" : "Star"}</span>
+      <Star className={`h-3.5 w-3.5 ${isStarred ? "fill-amber-500" : ""}`} />
+      <span className="hidden sm:inline">{isStarred ? "starred" : "star"}</span>
     </button>
   );
 };

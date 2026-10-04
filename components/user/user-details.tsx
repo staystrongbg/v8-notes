@@ -10,30 +10,32 @@ import { Separator } from "../ui/separator";
 export const UserDetails = () => {
   const [onClose, setOnClose] = useState(true);
   return (
-    <div className="mt-8">
-      <Button variant="outline" onClick={() => setOnClose(!onClose)}>
-        Change
+    <div className="mt-6 border-t border-dashed border-border pt-5 font-mono">
+      <Button variant="outline" size="sm" onClick={() => setOnClose(!onClose)} className="font-mono text-xs">
+        {onClose ? "$ settings --open" : "$ settings --close"}
       </Button>
       {!onClose && (
-        <section className="max-w-2xl sm:w-lg w-full mt-8 flex flex-col gap-8">
-          {/* pass reset */}
+        <section className="mt-5 flex w-full flex-col gap-6">
           <div>
-            <h3>Change Password</h3>
+            <h3 className="mb-2 text-xs font-bold tracking-wider text-foreground uppercase">
+              <span className="mr-1.5 text-primary">❯</span>passwd
+            </h3>
             <UpdatePasswordForm />
           </div>
           <Separator />
-          {/* email update */}
           <div>
-            <h3>Change Email</h3>
+            <h3 className="mb-2 text-xs font-bold tracking-wider text-foreground uppercase">
+              <span className="mr-1.5 text-primary">❯</span>email --update
+            </h3>
             <UpdateEmailForm />
           </div>
           <Separator />
-          {/* update name and image form */}
           <div>
-            <h3>Change Image & Name</h3>
+            <h3 className="mb-2 text-xs font-bold tracking-wider text-foreground uppercase">
+              <span className="mr-1.5 text-primary">❯</span>profile --update
+            </h3>
             <UpdateImageForm />
           </div>
-          <Separator />
         </section>
       )}
     </div>

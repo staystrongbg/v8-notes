@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { unauthorized } from "next/navigation";
+import { GeekyBackdrop, GeekyPrompt, TerminalWindow } from "@/components/shared/terminal";
 
 export default async function ProfilePage() {
   const session = await requireUserSession();
@@ -13,33 +14,64 @@ export default async function ProfilePage() {
   const userInitials = session.user.name.slice(0, 1).toUpperCase() || "U";
 
   return (
-    <div className="max-w-xl mx-auto h-full text-center p-4">
-      <h2>Profile</h2>
-      <section>
-        <div className="flex flex-col gap-2 mt-4 items-center">
-          <Avatar>
-            <AvatarImage src={session.user.image || undefined} alt={`${session.user.name}'s avatar`} />
-            <AvatarFallback>{userInitials || "U"}</AvatarFallback>
-          </Avatar>
-          <p>name: {session.user.name}</p>
-          <p>
-            email: {session.user.email}{" "}
-            <span className="text-xs">
-              {session.user.emailVerified ? (
-                <span className="text-green-500">Verified</span>
-              ) : (
-                <Link href="/verify-email">
-                  <Button variant="link" size={"sm"} type="button">
-                    Verify email
-                  </Button>
-                </Link>
-              )}
+    <div className="relative mx-auto w-full max-w-2xl px-4 py-6">
+      <GeekyBackdrop />
+      <div className="relative">
+        <GeekyPrompt>
+          v8-notes whoami <span className="text-muted-foreground/60">--profile</span>
+        </GeekyPrompt>
+        <TerminalWindow
+          title="~/profile --whoami"
+          right={
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 font-mono text-[11px] text-emerald-600 dark:text-emerald-400">
+              <span className="size-1.5 animate-pulse rounded-full bg-emerald-500" />
+              online
             </span>
-          </p>
-          <p>date joined: {session.user.createdAt.toDateString()}</p>
-        </div>
-      </section>
-      <UserDetails />
+          }
+          footer={
+            <>
+              <span>uid {session.user.id.slice(0, 8)}</span>
+              <span className="ml-auto">groups: notes, sudo</span>
+            </>
+          }
+        >
+          <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+            <Avatar className="size-14 border border-border">
+              <AvatarImage src={session.user.image || undefined} alt={`${session.user.name}'s avatar`} />
+              <AvatarFallback className="font-mono">{userInitials || "U"}</AvatarFallback>
+            </Avatar>
+            <div className="min-w-0 font-mono text-sm">
+              <p className="truncate text-base font-bold text-foreground">
+                <span className="mr-2 text-primary">$</span>
+                {session.user.name}
+              </p>
+              <p className="mt-1 truncate text-xs text-muted-foreground">
+                {session.user.email}{" "}
+                {session.user.emailVerified ? (
+                  <span className="ml-1 rounded border border-emerald-500/30 bg-emerald-500/10 px-1.5 py-0.5 text-[10px] text-emerald-600 dark:text-emerald-400">
+                    verified
+                  </span>
+                ) : (
+                  <Link href="/verify-email" className="ml-1 text-primary underline decoration-dotted underline-offset-4">
+                    verify?
+                  </Link>
+                )}
+              </p>
+              <p className="mt-1 text-[11px] text-muted-foreground/70">
+                since {session.user.createdAt.toDateString()}
+              </p>
+            </div>
+          </div>
+          <UserDetails />
+        </TerminalWindow>
+        {!session.user.emailVerified && (
+          <div className="mt-4 text-center">
+            <Button variant="link" size="sm" type="button" asChild className="font-mono text-xs">
+              <Link href="/verify-email">$ verify-email --resend</Link>
+            </Button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

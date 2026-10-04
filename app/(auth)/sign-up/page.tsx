@@ -2,6 +2,7 @@ import { SignUpForm } from "@/components/authentication/sign-up-form";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { GeekyBackdrop, TerminalWindow } from "@/components/shared/terminal";
 
 export default async function SignUpPage() {
   const session = await auth.api.getSession({
@@ -13,9 +14,19 @@ export default async function SignUpPage() {
   }
 
   return (
-    <main className="sm:w-lg w-full mx-auto p-6 space-y-4">
-      <h2>Sign Up</h2>
-      <SignUpForm />
+    <main className="relative mx-auto w-full max-w-md px-4 py-10">
+      <GeekyBackdrop />
+      <div className="relative">
+        <p className="mb-4 font-mono text-xs text-muted-foreground">
+          <span className="text-primary">$</span> ssh v8-notes --register
+        </p>
+        <TerminalWindow title="~/auth --sign-up" bodyClassName="p-6">
+          <h2 className="mb-4 font-mono text-xl font-bold text-foreground">
+            <span className="mr-2 text-primary">#</span>sign-up
+          </h2>
+          <SignUpForm />
+        </TerminalWindow>
+      </div>
     </main>
   );
 }

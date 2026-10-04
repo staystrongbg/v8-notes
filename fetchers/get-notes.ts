@@ -1,16 +1,25 @@
-"use server";
+'use server';
 
-import prisma from "@/lib/prisma";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-import { unauthorized } from "next/navigation";
-import { Note } from "@prisma/client";
+import { auth } from '@/lib/auth';
+import prisma from '@/lib/prisma';
+import { Note } from '@prisma/client';
+import { headers } from 'next/headers';
+import { unauthorized } from 'next/navigation';
+
+export type NotesSort = 'updated' | 'newest' | 'oldest';
+
+const sortOrder: Record<NotesSort, { updatedAt?: 'desc'; createdAt?: 'desc' | 'asc' }> = {
+  updated: { updatedAt: 'desc' },
+  newest: { createdAt: 'desc' },
+  oldest: { createdAt: 'asc' },
+};
 
 export const getNotes = async (
   userId: string,
-  filter?: "starred",
+  filter?: 'all' | 'starred',
   page?: number,
-  limit?: number
+  limit?: number,
+  sort: NotesSort = 'updated',
 ): Promise<{ notes: Note[]; total: number }> => {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -22,7 +31,7 @@ export const getNotes = async (
 
   const where = {
     userId,
-    ...(filter === "starred" && { isStarred: true }),
+    ...(filter === 'starred' && { isStarred: true }),
   };
 
   const skip = page && limit ? (page - 1) * limit : 0;
@@ -30,9 +39,7 @@ export const getNotes = async (
 
   const notes = await prisma.note.findMany({
     where,
-    orderBy: {
-      updatedAt: "desc",
-    },
+    orderBy: sortOrder[sort] ?? sortOrder.updated,
     skip,
     take,
   });
