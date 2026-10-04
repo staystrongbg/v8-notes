@@ -1,10 +1,11 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { Button } from "../ui/button";
-import { UserDropdown } from "./user-dropdown";
-import { useSession } from "@/lib/auth-client";
-import { Skeleton } from "../ui/skeleton";
+import { useSession } from '@/lib/auth-client';
+import Link from 'next/link';
+
+import { Button } from '../ui/button';
+import { Skeleton } from '../ui/skeleton';
+import { UserDropdown } from './user-dropdown';
 
 export const UserSessionButton = () => {
   const { data: session, isPending } = useSession();
@@ -12,7 +13,7 @@ export const UserSessionButton = () => {
   if (isPending) {
     return (
       <Button variant="ghost" disabled aria-label="Loading user session">
-        <Skeleton className="size-4" />
+        <Skeleton className="bg-muted size-8 rounded-full" />
       </Button>
     );
   }
