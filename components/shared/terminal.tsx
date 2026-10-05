@@ -20,6 +20,7 @@ export const TerminalWindow = ({
   title,
   right,
   footer,
+  statusline,
   children,
   className,
   bodyClassName,
@@ -27,6 +28,7 @@ export const TerminalWindow = ({
   title: string;
   right?: React.ReactNode;
   footer?: React.ReactNode;
+  statusline?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
   bodyClassName?: string;
@@ -44,7 +46,9 @@ export const TerminalWindow = ({
       {right ? <div className="ml-auto flex shrink-0 items-center gap-2">{right}</div> : null}
     </div>
     <div className={cn('p-6 sm:p-8', bodyClassName)}>{children}</div>
-    {footer ? (
+    {statusline ? (
+      <div className="border-t border-border/50 bg-muted/40">{statusline}</div>
+    ) : footer ? (
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-border/50 bg-muted/40 px-4 py-2 font-mono text-[11px] text-muted-foreground">
         {footer}
       </div>

@@ -1,4 +1,5 @@
 import { NewNoteForm } from "@/components/notes/new-note-form";
+import { VimStatusline } from "@/components/notes/vim-statusline";
 import { requireUserSession } from "@/lib/require-user-session";
 import { unauthorized } from "next/navigation";
 import { GeekyBackdrop, GeekyPrompt, TerminalWindow } from "@/components/shared/terminal";
@@ -23,12 +24,13 @@ export default async function NewNotePage() {
               insert
             </span>
           }
-          footer={
-            <>
-              <span>--insert</span>
-              <span>UTF-8</span>
-              <span className="ml-auto">:wq to save</span>
-            </>
+          statusline={
+            <VimStatusline
+              mode="insert"
+              file="~/notes/new.md"
+              modified
+              meta={['utf-8', 'markdown', ':wq to save']}
+            />
           }
         >
           <NewNoteForm userId={session.user.id} />

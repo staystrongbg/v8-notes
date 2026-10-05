@@ -16,8 +16,12 @@ type Props = {
   userId: string;
 };
 
-const parseSort = (value?: string): NotesSort =>
-  value === 'newest' || value === 'oldest' ? value : 'updated';
+const parseSort = (value?: string): NotesSort => {
+  if (value === 'newest' || value === 'oldest') {
+    return value;
+  }
+  return 'updated';
+};
 
 export const ViewNotes = ({ userId }: Props) => {
   const searchParams = useSearchParams();

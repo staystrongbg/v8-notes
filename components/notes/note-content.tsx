@@ -10,7 +10,6 @@ import {
   CheckIcon,
   ChevronRightIcon,
   CopyIcon,
-  CpuIcon,
   FileTextIcon,
   FingerprintIcon,
   PencilIcon,
@@ -29,6 +28,7 @@ import { noteMarkdownComponents } from '../../helpers/note-markdown-components';
 import { DeleteNoteAction } from './delete-note-action';
 import { NoteContentLoading } from './loaders-ui/note-content-loading';
 import { StarredNote } from './starred-note';
+import { VimStatusline } from './vim-statusline';
 
 export const NoteContent = ({ noteId }: { noteId: string }) => {
   const { data: note, isPending } = useQuery({
@@ -54,29 +54,12 @@ export const NoteContent = ({ noteId }: { noteId: string }) => {
 
       <TerminalWindow
         title={`~/notes/${noteId}`}
-        right={
-          <>
-            <span className="hidden items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 font-mono text-[11px] text-emerald-600 sm:inline-flex dark:text-emerald-400">
-              <span className="size-1.5 animate-pulse rounded-full bg-emerald-500" />
-              main
-            </span>
-            <span className="text-muted-foreground hidden font-mono text-[11px] md:inline">
-              UTF-8
-            </span>
-          </>
-        }
-        footer={
-          <>
-            <span className="flex items-center gap-1.5">
-              <CpuIcon className="size-3" />
-              markdown
-            </span>
-            <span>Ln {lines}</span>
-            <span>Wc {words}</span>
-            <span className="ml-auto flex items-center gap-1.5">
-              <span className="size-1.5 rounded-full bg-emerald-500" />✓ saved
-            </span>
-          </>
+        statusline={
+          <VimStatusline
+            mode="normal"
+            file={`~/notes/${noteId}`}
+            meta={['utf-8', `Ln ${lines}`, `Wc ${words}`, `~${readMins} min`]}
+          />
         }
         bodyClassName="p-0"
       >
