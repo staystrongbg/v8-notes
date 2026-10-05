@@ -1,10 +1,9 @@
-import EditNoteForm from '@/components/notes/edit-note-form';
 import { NotesError } from '@/components/notes/notes-error';
-import { VimStatusline } from '@/components/notes/vim-statusline';
-import { GeekyBackdrop, GeekyPrompt, TerminalWindow } from '@/components/shared/terminal';
+import { GeekyBackdrop, GeekyPrompt } from '@/components/shared/terminal';
 import { getNote } from '@/fetchers/get-note';
 import { requireUserSession } from '@/lib/require-user-session';
 import { unauthorized } from 'next/navigation';
+import { EditNoteView } from '@/components/notes/edit-note-view';
 
 export default async function EditNotePage({ params }: { params: Promise<{ noteId: string }> }) {
   const session = await requireUserSession();
@@ -24,19 +23,7 @@ export default async function EditNotePage({ params }: { params: Promise<{ noteI
         <GeekyPrompt>
           v8-notes vim <span className="text-foreground">./notes/{noteId}</span>
         </GeekyPrompt>
-        <TerminalWindow
-          title={`vim ./${noteId} --edit`}
-          statusline={
-            <VimStatusline
-              mode="insert"
-              file={`~/notes/${noteId}`}
-              modified
-              meta={['utf-8', ':wq to save']}
-            />
-          }
-        >
-          <EditNoteForm note={note} />
-        </TerminalWindow>
+        <EditNoteView note={note} />
       </div>
     </div>
   );

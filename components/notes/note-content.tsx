@@ -58,7 +58,7 @@ export const NoteContent = ({ noteId }: { noteId: string }) => {
           <VimStatusline
             mode="normal"
             file={`~/notes/${noteId}`}
-            meta={['utf-8', `Ln ${lines}`, `Wc ${words}`, `~${readMins} min`]}
+            meta={[`Ln ${lines}`, `Wc ${words}`, `~${readMins} min`]}
           />
         }
         bodyClassName="p-0"

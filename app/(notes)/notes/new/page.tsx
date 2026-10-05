@@ -29,7 +29,7 @@ export default async function NewNotePage() {
               mode="insert"
               file="~/notes/new.md"
               modified
-              meta={['utf-8', 'markdown', ':wq to save']}
+              meta={['markdown', ':wq to save']}
             />
           }
         >
