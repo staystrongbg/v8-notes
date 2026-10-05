@@ -1,9 +1,10 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
-import { useTheme } from 'next-themes';
 import { THEME_VALUES } from '@/lib/themes';
+import { useTheme } from 'next-themes';
+import { usePathname, useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+
 import { VimCommandBar, type VimCommandResult } from './vim-command-bar';
 
 const isTypingTarget = (target: EventTarget | null) =>
@@ -17,6 +18,24 @@ const submitNoteForm = () => {
   const form = document.getElementById('note-form');
   if (form instanceof HTMLFormElement) {
     form.requestSubmit();
+    return true;
+  }
+  return false;
+};
+
+const clickDeleteButton = () => {
+  const button = document.getElementById('delete-note-button');
+  if (button instanceof HTMLButtonElement && !button.disabled) {
+    button.click();
+    return true;
+  }
+  return false;
+};
+
+const clickCopyButton = () => {
+  const button = document.getElementById('copy-note-button');
+  if (button instanceof HTMLButtonElement && !button.disabled) {
+    button.click();
     return true;
   }
   return false;
@@ -64,6 +83,12 @@ export const VimProvider = ({ children }: { children: React.ReactNode }) => {
         case 'new':
           router.push('/notes/new');
           return done();
+        case 'd':
+        case 'delete':
+          return clickDeleteButton() ? done() : error('E: nothing to delete here');
+        case 'y':
+        case 'yank':
+          return clickCopyButton() ? done() : error('E: nothing to yank here');
         case 'notes':
           router.push('/notes');
           return done();
@@ -83,12 +108,14 @@ export const VimProvider = ({ children }: { children: React.ReactNode }) => {
         }
         case 'h':
         case 'help':
-          return info(':w save · :q back · :wq save+back · :e edit · :n new · :notes :profile :home · :theme <name>');
+          return info(
+            ':w save · :q back · :wq save+back · :e edit · :n new · :d delete · :y yank · :notes :profile :home · :theme <name>',
+          );
         default:
           return error(`E492: Not an editor command: ${cmd}`);
       }
     },
-    [pathname, router, setTheme]
+    [pathname, router, setTheme],
   );
 
   useEffect(() => {

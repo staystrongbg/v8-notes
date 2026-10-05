@@ -12,6 +12,7 @@ export const DeleteNoteAction = ({ noteId }: { noteId: string }) => {
   return (
     <>
       <button
+        id="delete-note-button"
         onClick={() => setIsDeleting(true)}
         disabled={isDeleting}
         className="border-destructive/30 bg-background/60 text-destructive/80 hover:border-destructive/60 hover:bg-destructive/10 hover:text-destructive inline-flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 font-mono text-xs font-medium tracking-wide uppercase transition-all disabled:opacity-50"
@@ -19,7 +20,7 @@ export const DeleteNoteAction = ({ noteId }: { noteId: string }) => {
         <Trash2Icon className="h-3.5 w-3.5" />
         <span className="hidden sm:inline">rm</span>
         <kbd className="border-destructive/20 hidden rounded border px-1 text-[10px] lg:inline">
-          del
+          :d
         </kbd>
       </button>
       {isDeleting && (

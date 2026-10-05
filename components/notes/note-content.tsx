@@ -191,8 +191,9 @@ const NoteToolbar = ({
         </button>
 
         <button
+          id="copy-note-button"
           onClick={copyNote}
-          title="Copy whole note"
+          title="Copy whole note (:y)"
           className="text-muted-foreground hover:border-border/40 hover:text-foreground hidden min-w-0 flex-1 cursor-pointer items-center gap-2 overflow-hidden rounded-lg border border-transparent px-3 py-2 font-mono text-xs transition-all md:inline-flex"
         >
           <span className="truncate">

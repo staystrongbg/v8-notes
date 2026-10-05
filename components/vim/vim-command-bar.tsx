@@ -42,7 +42,7 @@ export const VimCommandBar = ({
             setValue(e.target.value);
             setResult(null);
           }}
-          placeholder="w q wq e n theme help"
+          placeholder="w q wq e n d y theme help"
           aria-label="Vim command"
           autoComplete="off"
           spellCheck={false}

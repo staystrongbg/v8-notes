@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { MenuIcon, XIcon } from 'lucide-react';
 import { LINKS } from '@/constants';
+import { MenuIcon, XIcon } from 'lucide-react';
+import { useState } from 'react';
 
 import { UserSessionButton } from '../user/user-session-button';
 import { ActiveLink } from './active-link';
@@ -32,7 +32,7 @@ export default function Navbar() {
           onClick={() => setMenuOpen(open => !open)}
           aria-expanded={menuOpen}
           aria-label="Toggle navigation menu"
-          className="text-muted-foreground hover:text-primary inline-flex cursor-pointer items-center gap-2 rounded-lg border border-border/40 bg-muted/40 px-3 py-2 font-mono text-xs font-medium transition-all sm:hidden"
+          className="text-muted-foreground hover:text-primary border-border/40 bg-muted/40 inline-flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 font-mono text-xs font-medium transition-all sm:hidden"
         >
           {menuOpen ? <XIcon className="size-4" /> : <MenuIcon className="size-4" />}
           menu
@@ -44,7 +44,7 @@ export default function Navbar() {
         </div>
       </nav>
       {menuOpen && (
-        <ul className="flex flex-col gap-1 border-t border-border/40 px-4 py-2 sm:hidden">
+        <ul className="border-border/40 flex flex-col gap-1 border-t px-4 py-2 sm:hidden">
           {LINKS.map(item => (
             <li key={item.name}>
               <ActiveLink
