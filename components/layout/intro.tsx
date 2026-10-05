@@ -18,6 +18,10 @@ const SHORTCUTS = [
   { keys: ':wq', desc: 'save + back' },
   { keys: ':e', desc: 'edit this note' },
   { keys: ':n', desc: 'new note' },
+  { keys: ':notes', desc: 'go to notes' },
+  { keys: ':profile', desc: 'go to profile' },
+  { keys: ':theme …', desc: 'switch theme' },
+  { keys: ':help', desc: 'all commands' },
   { keys: 'Esc', desc: 'close bar' },
 ] as const;
 

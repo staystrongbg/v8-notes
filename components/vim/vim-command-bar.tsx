@@ -2,27 +2,29 @@
 
 import { useState } from 'react';
 
+export type VimCommandResult = { status: 'done' } | { status: 'error' | 'info'; message: string };
+
 export const VimCommandBar = ({
   open,
   onRun,
   onClose,
 }: {
   open: boolean;
-  onRun: (cmd: string) => string | null;
+  onRun: (cmd: string) => VimCommandResult;
   onClose: () => void;
 }) => {
   const [value, setValue] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<Extract<VimCommandResult, { status: 'error' | 'info' }> | null>(null);
 
   if (!open) return null;
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    const err = onRun(value);
-    if (err) {
-      setError(err);
-    } else {
+    const outcome = onRun(value);
+    if (outcome.status === 'done') {
       onClose();
+    } else {
+      setResult(outcome);
     }
   };
 
@@ -38,16 +40,25 @@ export const VimCommandBar = ({
           value={value}
           onChange={(e) => {
             setValue(e.target.value);
-            setError(null);
+            setResult(null);
           }}
-          placeholder="w q wq e n"
+          placeholder="w q wq e n theme help"
           aria-label="Vim command"
           autoComplete="off"
           spellCheck={false}
           className="min-w-0 flex-1 bg-transparent font-mono text-sm text-foreground outline-none placeholder:text-muted-foreground/50"
         />
-        {error ? (
-          <span className="shrink-0 font-mono text-xs text-destructive">{error}</span>
+        {result ? (
+          <span
+            title={result.message}
+            className={
+              result.status === 'error'
+                ? 'max-w-[60vw] shrink-0 truncate font-mono text-xs text-destructive'
+                : 'max-w-[60vw] shrink-0 truncate font-mono text-xs text-muted-foreground'
+            }
+          >
+            {result.message}
+          </span>
         ) : (
           <span className="hidden shrink-0 font-mono text-[11px] text-muted-foreground sm:inline">
             Enter ↵ · Esc closes

@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { VimCommandBar } from './vim-command-bar';
+import { useTheme } from 'next-themes';
+import { THEME_VALUES } from '@/lib/themes';
+import { VimCommandBar, type VimCommandResult } from './vim-command-bar';
 
 const isTypingTarget = (target: EventTarget | null) =>
   target instanceof HTMLElement &&
@@ -29,40 +31,64 @@ const viewedNoteId = (pathname: string) => {
 export const VimProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
+  const { setTheme } = useTheme();
   const [cmdOpen, setCmdOpen] = useState(false);
 
   const runCommand = useCallback(
-    (raw: string): string | null => {
-      const [cmd] = raw.trim().split(/\s+/);
+    (raw: string): VimCommandResult => {
+      const [cmd, ...args] = raw.trim().split(/\s+/);
+      const done = (): VimCommandResult => ({ status: 'done' });
+      const error = (message: string): VimCommandResult => ({ status: 'error', message });
+      const info = (message: string): VimCommandResult => ({ status: 'info', message });
       switch (cmd) {
         case '':
-          return null;
+          return done();
         case 'w':
-          return submitNoteForm() ? null : 'E: nothing to write';
+          return submitNoteForm() ? done() : error('E: nothing to write');
         case 'q':
         case 'q!':
           router.back();
-          return null;
+          return done();
         case 'wq':
         case 'x':
-          return submitNoteForm() ? null : 'E: nothing to write';
+          return submitNoteForm() ? done() : error('E: nothing to write');
         case 'e': {
           const noteId = viewedNoteId(pathname);
           if (noteId) {
             router.push(`/notes/${noteId}/edit`);
-            return null;
+            return done();
           }
-          return 'E: nothing to edit here';
+          return error('E: nothing to edit here');
         }
         case 'n':
         case 'new':
           router.push('/notes/new');
-          return null;
+          return done();
+        case 'notes':
+          router.push('/notes');
+          return done();
+        case 'profile':
+          router.push('/profile');
+          return done();
+        case 'home':
+          router.push('/');
+          return done();
+        case 'theme': {
+          const [name] = args;
+          if (name && (THEME_VALUES as readonly string[]).includes(name)) {
+            setTheme(name);
+            return done();
+          }
+          return info(`usage: :theme <${THEME_VALUES.join('|')}>`);
+        }
+        case 'h':
+        case 'help':
+          return info(':w save · :q back · :wq save+back · :e edit · :n new · :notes :profile :home · :theme <name>');
         default:
-          return `E492: Not an editor command: ${cmd}`;
+          return error(`E492: Not an editor command: ${cmd}`);
       }
     },
-    [pathname, router]
+    [pathname, router, setTheme]
   );
 
   useEffect(() => {
