@@ -56,7 +56,7 @@ const EditNoteForm = ({ note, onTextChange }: { note: Note | null; onTextChange?
   const isLoading = form.formState.isSubmitting;
   const error = form.formState.errors.root?.message;
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="font-mono">
+    <form onSubmit={form.handleSubmit(onSubmit)} id="note-form" className="font-mono">
       <div className="grid gap-4 lg:grid-cols-2">
         <FieldGroup>
           <Controller

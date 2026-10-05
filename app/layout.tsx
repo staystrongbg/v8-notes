@@ -2,6 +2,7 @@ import { Footer } from '@/components/layout/footer';
 import Navbar from '@/components/layout/navbar';
 import { doto, robotoMono, silkscreen } from '@/lib/fonts';
 import { Providers } from '@/lib/providers';
+import { VimProvider } from '@/components/vim/vim-provider';
 import type { Metadata } from 'next';
 import { Toaster } from 'sonner';
 
@@ -23,10 +24,12 @@ export default function RootLayout({
         className={`${silkscreen.className} ${doto.className} ${robotoMono.className} bg-background grid min-h-screen grid-rows-[auto_1fr_auto] antialiased`}
       >
         <Providers>
-          <Navbar />
-          <main id="main-content">{children}</main>
-          <Footer />
-          <Toaster />
+          <VimProvider>
+            <Navbar />
+            <main id="main-content">{children}</main>
+            <Footer />
+            <Toaster />
+          </VimProvider>
         </Providers>
       </body>
     </html>

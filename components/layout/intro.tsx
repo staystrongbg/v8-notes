@@ -11,6 +11,16 @@ const ROUTES = [
 
 const FEATURES = ['markdown + code highlight', 'starred filter', 'grid / table views', '5 themes'] as const;
 
+const SHORTCUTS = [
+  { keys: ':', desc: 'open command bar' },
+  { keys: ':w', desc: 'save note' },
+  { keys: ':q', desc: 'back to list' },
+  { keys: ':wq', desc: 'save + back' },
+  { keys: ':e', desc: 'edit this note' },
+  { keys: ':n', desc: 'new note' },
+  { keys: 'Esc', desc: 'close bar' },
+] as const;
+
 export const Intro = () => {
   return (
     <section className="relative overflow-hidden px-4 py-16 sm:py-24">
@@ -55,6 +65,23 @@ export const Intro = () => {
                 </li>
               ))}
             </ul>
+
+            <p className="mt-8 mb-2 font-mono text-xs tracking-wider text-muted-foreground uppercase">
+              Shortcuts
+            </p>
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {SHORTCUTS.map((item) => (
+                <div
+                  key={item.keys}
+                  className="flex items-center gap-3 rounded-lg border border-border/40 bg-muted/30 px-3 py-2 font-mono text-xs"
+                >
+                  <kbd className="shrink-0 rounded border border-border/60 bg-muted px-1.5 py-0.5 font-bold text-primary">
+                    {item.keys}
+                  </kbd>
+                  <span className="truncate text-muted-foreground">{item.desc}</span>
+                </div>
+              ))}
+            </div>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <SignUpButton />

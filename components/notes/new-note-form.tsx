@@ -56,7 +56,7 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
   const error = form.formState.errors.root?.message;
   const textValue = useWatch({ control: form.control, name: "text" });
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="font-mono">
+    <form onSubmit={form.handleSubmit(onSubmit)} id="note-form" className="font-mono">
       <div className="grid gap-4 lg:grid-cols-2">
       <FieldGroup>
         <Controller
