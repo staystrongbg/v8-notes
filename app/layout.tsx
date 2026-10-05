@@ -23,11 +23,9 @@ export default function RootLayout({
         className={`${silkscreen.className} ${doto.className} ${robotoMono.className} bg-background grid min-h-screen grid-rows-[auto_1fr_auto] antialiased`}
       >
         <Providers>
-          <main className="min-h-screen overflow-hidden" id="main-content">
-            <Navbar />
-            {children}
-            <Footer />
-          </main>
+          <Navbar />
+          <main id="main-content">{children}</main>
+          <Footer />
           <Toaster />
         </Providers>
       </body>
