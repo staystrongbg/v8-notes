@@ -17,7 +17,7 @@ export default async function EditNotePage({ params }: { params: Promise<{ noteI
     return <NotesError message="Note not found" />;
   }
   return (
-    <div className="relative mx-auto w-full px-4 py-6 md:max-w-4xl">
+    <div className="relative mx-auto w-full max-w-4xl px-4 py-6">
       <GeekyBackdrop />
       <div className="relative">
         <GeekyPrompt>

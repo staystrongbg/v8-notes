@@ -13,7 +13,7 @@ export default async function Note({ params }: { params: PageParams }) {
   if (!session?.user) unauthorized();
   const { noteId } = await params;
   return (
-    <div className="relative mx-auto w-full max-w-4xl px-4 py-6">
+    <div className="relative mx-auto w-full max-w-4xl overflow-x-clip px-4 py-6">
       <GeekyBackdrop />
       <div className="relative">
         <GeekyPrompt>

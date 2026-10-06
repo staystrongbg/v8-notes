@@ -5,14 +5,14 @@ import ReactMarkdown from 'react-markdown';
 import remarkEmoji from 'remark-emoji';
 import remarkGfm from 'remark-gfm';
 
-import { noteMarkdownComponents } from '../../helpers/note-markdown-components';
 import { highlightPlugin } from '../../helpers/code-highlight';
+import { noteMarkdownComponents } from '../../helpers/note-markdown-components';
 
 export const NotePreview = ({ text }: { text: string }) => {
   return (
-    <aside className="self-start overflow-hidden rounded-lg border border-border/60 bg-card lg:sticky lg:top-28">
-      <p className="border-b border-border/50 bg-muted/40 px-3 py-1.5 font-mono text-[11px] text-muted-foreground">
-        <span className="font-bold text-primary">❯</span> preview --markdown
+    <aside className="border-border/60 bg-card self-start overflow-hidden rounded-lg border lg:sticky lg:top-28">
+      <p className="border-border/50 bg-muted/40 text-muted-foreground border-b px-3 py-1.5 font-mono text-[11px]">
+        <span className="text-primary font-bold">❯</span> preview --markdown
       </p>
       <div className="max-h-[60dvh] overflow-y-auto overscroll-contain p-4">
         <div className="prose prose-sm dark:prose-invert max-w-none">
@@ -25,7 +25,7 @@ export const NotePreview = ({ text }: { text: string }) => {
               {text}
             </ReactMarkdown>
           ) : (
-            <p className="font-mono text-xs text-muted-foreground/60">
+            <p className="text-muted-foreground/60 font-mono text-xs">
               {'// rendered output appears here as you type…'}
             </p>
           )}

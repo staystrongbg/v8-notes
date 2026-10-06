@@ -41,7 +41,7 @@ export const noteMarkdownComponents: Components = {
       <pre
         {...props}
         className={cn(
-          'border-border/60 my-4 overflow-x-auto rounded-lg border bg-[#0d1117]! p-4 font-mono text-[13px] shadow-inner',
+          'border-border/60 my-4 overflow-x-auto rounded-lg border bg-[#0d1117]! p-4 font-mono text-[13px] whitespace-pre-wrap shadow-inner [overflow-wrap:anywhere]',
           className,
         )}
       />
@@ -57,6 +57,10 @@ export const noteMarkdownComponents: Components = {
   },
   hr({ node, ...props }) {
     return <hr {...props} className="border-border my-6 border-dashed" />;
+  },
+  img({ node, ...props }) {
+    // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
+    return <img {...props} className="border-border/50 h-auto max-w-full rounded-lg border" />;
   },
   ul({ node, ...props }) {
     return (
