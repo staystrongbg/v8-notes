@@ -50,7 +50,7 @@ export const NoteContent = ({ noteId }: { noteId: string }) => {
   const readMins = Math.max(1, Math.ceil(words / 200));
 
   return (
-    <div className="mx-auto w-full max-w-4xl">
+    <div className="mx-auto w-full md:max-w-4xl">
       <NoteToolbar noteId={noteId} isStarred={note.isStarred} title={note.title} text={note.text} />
 
       <TerminalWindow
