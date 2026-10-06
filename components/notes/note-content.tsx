@@ -202,7 +202,7 @@ const NoteToolbar = ({
             <span className="text-primary">❯</span> {noteId}
           </span>
           {copied ? (
-            <CheckIcon className="ml-auto size-3.5 shrink-0 text-primary" />
+            <CheckIcon className="text-primary ml-auto size-3.5 shrink-0" />
           ) : (
             <CopyIcon className="ml-auto size-3.5 shrink-0 opacity-50" />
           )}

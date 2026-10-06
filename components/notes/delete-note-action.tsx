@@ -1,11 +1,11 @@
 'use client';
 
+import { useVimActions } from '@/components/vim/vim-provider';
 import { deleteNote } from '@/fetchers/delete-note';
 import { Trash2Icon, TriangleAlertIcon, XIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { useVimActions } from '@/components/vim/vim-provider';
 
 export const DeleteNoteAction = ({ noteId }: { noteId: string }) => {
   const [isDeleting, setIsDeleting] = useState(false);
@@ -67,36 +67,51 @@ const DeleteNoteConfirmationDialog = ({
       <button
         aria-label="Cancel delete"
         onClick={onClose}
-        className="absolute inset-0 cursor-pointer bg-black/70 backdrop-blur-sm"
+        className="absolute inset-0 cursor-pointer bg-black/80 backdrop-blur-md"
       />
       <div
         role="alertdialog"
         aria-modal="true"
         aria-labelledby="delete-note-title"
-        className="border-destructive/60 bg-background shadow-destructive/30 w-full max-w-md overflow-hidden rounded-xl border-2 font-mono shadow-2xl"
+        aria-describedby="delete-note-desc"
+        className="bg-card text-card-foreground border-destructive ring-destructive/40 animate-in fade-in zoom-in-95 relative w-full max-w-md overflow-hidden rounded-xl border-2 font-mono shadow-[0_0_90px_-12px_var(--destructive)] ring-2 duration-200"
       >
-        <div className="border-border/50 bg-muted/50 flex items-center gap-2 border-b px-4 py-2.5">
+        <div className="border-destructive/30 bg-destructive/10 flex items-center gap-2 border-b px-4 py-2.5">
           <span className="text-destructive font-mono text-xs font-bold">[rm]</span>
-          <span className="text-muted-foreground text-xs">~/notes/rm --confirm</span>
+          <span className="text-muted-foreground min-w-0 flex-1 truncate text-xs">
+            ~/notes/rm --confirm
+          </span>
+          <span className="border-destructive/40 bg-destructive/15 text-destructive rounded border px-1.5 py-0.5 text-[10px] font-bold tracking-wide uppercase">
+            danger
+          </span>
           <button
             onClick={onClose}
             aria-label="Close"
-            className="text-muted-foreground hover:bg-muted hover:text-foreground ml-auto rounded p-1 transition-colors"
+            className="text-muted-foreground hover:bg-muted hover:text-foreground ml-1 rounded p-1 transition-colors"
           >
             <XIcon className="size-4" />
           </button>
         </div>
         <div className="p-5">
           <div className="flex items-start gap-3">
-            <div className="border-destructive/30 bg-destructive/15 flex size-10 shrink-0 items-center justify-center rounded-lg border">
+            <div className="border-destructive/40 bg-destructive/15 flex size-10 shrink-0 items-center justify-center rounded-lg border">
               <TriangleAlertIcon className="text-destructive size-5" />
             </div>
-            <div>
+            <div className="min-w-0 flex-1">
               <h2 id="delete-note-title" className="text-foreground text-sm font-bold">
-                $ rm -rf note?
+                <span className="text-destructive" aria-hidden="true">
+                  ❯{' '}
+                </span>
+                $ rm --force note?
               </h2>
-              <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
+              <p
+                id="delete-note-desc"
+                className="text-muted-foreground mt-1 text-xs leading-relaxed"
+              >
                 This action cannot be undone. The note will be permanently removed.
+              </p>
+              <p className="text-muted-foreground mt-2 min-w-0 truncate text-[11px]" title={noteId}>
+                target: <span className="text-foreground break-all">{noteId}</span>
               </p>
             </div>
           </div>
@@ -104,6 +119,7 @@ const DeleteNoteConfirmationDialog = ({
             <button
               onClick={onClose}
               disabled={isPending}
+              autoFocus
               className="border-border bg-background text-foreground hover:bg-muted inline-flex h-9 cursor-pointer items-center justify-center rounded-lg border px-4 font-mono text-xs font-semibold transition-colors disabled:opacity-50"
             >
               --cancel
