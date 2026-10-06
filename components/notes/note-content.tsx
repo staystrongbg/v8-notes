@@ -111,7 +111,7 @@ export const NoteContent = ({ noteId }: { noteId: string }) => {
               <span className="via-border h-px flex-1 bg-gradient-to-r from-transparent to-transparent" />
             </div>
 
-            <div className="prose prose-sm sm:prose-base dark:prose-invert max-w-none">
+            <div className="prose prose-sm sm:prose-base dark:prose-invert w-full">
               <ReactMarkdown
                 components={noteMarkdownComponents}
                 remarkPlugins={[remarkGfm, remarkEmoji]}
