@@ -11,7 +11,7 @@ export const GeekyBackdrop = ({ className }: { className?: string }) => (
 );
 
 export const GeekyPrompt = ({ children, className }: { children: React.ReactNode; className?: string }) => (
-  <p className={cn('mb-4 font-mono text-xs text-muted-foreground', className)}>
+  <p className={cn('mb-4 font-mono text-xs break-words text-muted-foreground', className)}>
     <span className="text-primary">$</span> {children}
   </p>
 );

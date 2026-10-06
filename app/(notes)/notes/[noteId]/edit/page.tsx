@@ -1,9 +1,9 @@
+import { EditNoteView } from '@/components/notes/edit-note-view';
 import { NotesError } from '@/components/notes/notes-error';
 import { GeekyBackdrop, GeekyPrompt } from '@/components/shared/terminal';
 import { getNote } from '@/fetchers/get-note';
 import { requireUserSession } from '@/lib/require-user-session';
 import { unauthorized } from 'next/navigation';
-import { EditNoteView } from '@/components/notes/edit-note-view';
 
 export default async function EditNotePage({ params }: { params: Promise<{ noteId: string }> }) {
   const session = await requireUserSession();
@@ -17,7 +17,7 @@ export default async function EditNotePage({ params }: { params: Promise<{ noteI
     return <NotesError message="Note not found" />;
   }
   return (
-    <div className="relative mx-auto w-full max-w-[75vw] px-4 py-6">
+    <div className="relative mx-auto w-full px-4 py-6 md:max-w-4xl">
       <GeekyBackdrop />
       <div className="relative">
         <GeekyPrompt>

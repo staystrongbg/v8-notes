@@ -1,6 +1,7 @@
 'use client';
 
 import { TerminalWindow } from '@/components/shared/terminal';
+import { useVimActions } from '@/components/vim/vim-provider';
 import { getNote } from '@/fetchers/get-note';
 import { useQuery } from '@tanstack/react-query';
 import 'highlight.js/styles/atom-one-dark.css';
@@ -49,7 +50,7 @@ export const NoteContent = ({ noteId }: { noteId: string }) => {
   const readMins = Math.max(1, Math.ceil(words / 200));
 
   return (
-    <div className="mx-auto w-full max-w-4xl">
+    <div className="mx-auto w-full md:max-w-4xl">
       <NoteToolbar noteId={noteId} isStarred={note.isStarred} title={note.title} text={note.text} />
 
       <TerminalWindow
@@ -89,7 +90,7 @@ export const NoteContent = ({ noteId }: { noteId: string }) => {
               <ChevronRightIcon className="text-primary size-3.5" />
               cat ./title.md
             </p>
-            <h1 className="text-foreground font-mono text-2xl leading-tight font-bold tracking-tight sm:text-3xl">
+            <h1 className="text-foreground font-mono text-2xl leading-tight font-bold tracking-tight break-words sm:text-3xl">
               <span className="text-primary mr-2">#</span>
               {note.title}
             </h1>
@@ -139,7 +140,7 @@ const HudStat = ({
   children: React.ReactNode;
   mono?: boolean;
 }) => (
-  <div className="bg-card flex items-center gap-2.5 px-4 py-3">
+  <div className="bg-card flex min-w-0 items-center gap-2.5 px-4 py-3">
     <span className="border-border/50 bg-muted/60 text-muted-foreground flex size-7 shrink-0 items-center justify-center rounded-md border">
       {icon}
     </span>
@@ -177,6 +178,7 @@ const NoteToolbar = ({
       setCopied(false);
     }
   };
+  useVimActions({ yank: () => void copyNote() });
 
   return (
     <div className="border-border/60 bg-card mb-4 overflow-hidden rounded-xl border">
@@ -192,7 +194,7 @@ const NoteToolbar = ({
 
         <button
           onClick={copyNote}
-          title="Copy whole note"
+          title="Copy note (:y)"
           className="text-muted-foreground hover:border-border/40 hover:text-foreground hidden min-w-0 flex-1 cursor-pointer items-center gap-2 overflow-hidden rounded-lg border border-transparent px-3 py-2 font-mono text-xs transition-all md:inline-flex"
         >
           <span className="truncate">

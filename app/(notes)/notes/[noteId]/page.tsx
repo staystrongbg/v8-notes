@@ -1,7 +1,7 @@
-import { NoteContent } from "@/components/notes/note-content";
-import { requireUserSession } from "@/lib/require-user-session";
-import { unauthorized } from "next/navigation";
-import { GeekyBackdrop, GeekyPrompt } from "@/components/shared/terminal";
+import { NoteContent } from '@/components/notes/note-content';
+import { GeekyBackdrop, GeekyPrompt } from '@/components/shared/terminal';
+import { requireUserSession } from '@/lib/require-user-session';
+import { unauthorized } from 'next/navigation';
 
 type PageParams = Promise<{
   noteId: string;
@@ -13,7 +13,7 @@ export default async function Note({ params }: { params: PageParams }) {
   if (!session?.user) unauthorized();
   const { noteId } = await params;
   return (
-    <div className="relative mx-auto w-full max-w-7xl px-4 py-6">
+    <div className="relative mx-auto w-full max-w-4xl px-4 py-6">
       <GeekyBackdrop />
       <div className="relative">
         <GeekyPrompt>

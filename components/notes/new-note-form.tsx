@@ -2,7 +2,9 @@
 
 import { z } from "zod";
 import { Controller, useForm, useWatch } from "react-hook-form";
+import { useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useVimActions } from "@/components/vim/vim-provider";
 import { useRouter } from "next/navigation";
 import { Field, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
@@ -55,8 +57,10 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
   const isLoading = form.formState.isSubmitting;
   const error = form.formState.errors.root?.message;
   const textValue = useWatch({ control: form.control, name: "text" });
+  const formEl = useRef<HTMLFormElement>(null);
+  useVimActions({ save: () => formEl.current?.requestSubmit() });
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="font-mono">
+    <form ref={formEl} onSubmit={form.handleSubmit(onSubmit)} className="font-mono">
       <div className="grid gap-4 lg:grid-cols-2">
       <FieldGroup>
         <Controller

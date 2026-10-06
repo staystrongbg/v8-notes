@@ -5,9 +5,11 @@ import { Trash2Icon, TriangleAlertIcon, XIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { useVimActions } from '@/components/vim/vim-provider';
 
 export const DeleteNoteAction = ({ noteId }: { noteId: string }) => {
   const [isDeleting, setIsDeleting] = useState(false);
+  useVimActions({ remove: () => setIsDeleting(true) });
 
   return (
     <>
@@ -19,7 +21,7 @@ export const DeleteNoteAction = ({ noteId }: { noteId: string }) => {
         <Trash2Icon className="h-3.5 w-3.5" />
         <span className="hidden sm:inline">rm</span>
         <kbd className="border-destructive/20 hidden rounded border px-1 text-[10px] lg:inline">
-          del
+          :d
         </kbd>
       </button>
       {isDeleting && (
