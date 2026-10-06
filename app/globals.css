@@ -62,7 +62,7 @@ h6 {
   @apply text-sm font-bold;
 }
 h1.cyber {
-  @apply text-[3rem] leading-[2.5rem] sm:text-[4rem] sm:leading-[3rem] md:text-[6rem] md:leading-[5rem] lg:text-[8rem] lg:leading-[6rem] xl:text-[10rem] xl:leading-[8rem] 2xl:text-[14rem] 2xl:leading-44 font-cyber text-blue-600;
+  @apply text-[3rem] leading-[2.5rem] sm:text-[4rem] sm:leading-[3rem] md:text-[6rem] md:leading-[5rem] lg:text-[8rem] lg:leading-[6rem] xl:text-[10rem] xl:leading-[8rem] 2xl:text-[14rem] 2xl:leading-44 font-cyber text-primary;
 }
 
 @keyframes flicker {

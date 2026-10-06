@@ -13,14 +13,14 @@ export default async function VerifyEmailPage() {
     redirect("/profile");
   }
   return (
-    <div className="relative mx-auto flex min-h-[70vh] w-full max-w-md flex-col justify-center px-4 py-10">
+    <div className="relative mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-4 py-10">
       <GeekyBackdrop />
       <div className="relative">
         <p className="mb-4 font-mono text-xs text-muted-foreground">
           <span className="text-primary">$</span> v8-notes verify --email
         </p>
         <TerminalWindow title="~/auth --verify" bodyClassName="p-6 text-center">
-          <MailWarningIcon className="mx-auto h-10 w-10 text-amber-500" />
+          <MailWarningIcon className="mx-auto h-10 w-10 text-primary" />
           <h1 className="mt-3 font-mono text-lg font-bold text-foreground">[pending] verify your email</h1>
           <p className="mt-2 font-mono text-xs text-muted-foreground">
             Check <span className="text-foreground">{session?.user?.email}</span> for a verification link.

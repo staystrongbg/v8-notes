@@ -9,7 +9,7 @@ const ROUTES = [
   { path: '/profile', desc: 'account and settings' },
 ] as const;
 
-const FEATURES = ['markdown + code highlight', 'starred filter', 'grid / table views', '5 themes'] as const;
+const FEATURES = ['markdown + code highlight', 'starred filter', 'grid / table views', '7 themes'] as const;
 
 const SHORTCUTS = [
   { keys: ':', desc: 'open command bar' },
@@ -31,7 +31,7 @@ export const Intro = () => {
   return (
     <section className="relative overflow-hidden px-4 py-16 sm:py-24">
       <GeekyBackdrop />
-      <div className="relative mx-auto w-full max-w-4xl">
+      <div className="relative mx-auto max-w-4xl">
         <GeekyPrompt>v8-notes --help</GeekyPrompt>
         <TerminalWindow title="v8-notes --help" bodyClassName="p-0">
           <div className="px-6 py-8 sm:px-10 sm:py-10">
@@ -67,7 +67,7 @@ export const Intro = () => {
             <ul className="space-y-1.5 font-mono text-xs text-muted-foreground">
               {FEATURES.map((feature) => (
                 <li key={feature} className="flex items-center gap-2">
-                  <span className="text-emerald-500">✓</span> {feature}
+                  <span className="text-primary">✓</span> {feature}
                 </li>
               ))}
             </ul>

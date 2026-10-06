@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Forbidden() {
   return (
-    <div className="mx-auto grid min-h-[60vh] w-full max-w-md place-items-center px-4 py-10">
+    <div className="mx-auto grid min-h-[60vh] max-w-md place-items-center px-4 py-10">
       <div className="w-full overflow-hidden rounded-xl border border-destructive/40 bg-card text-center">
         <div className="flex items-center gap-2 border-b border-border/50 bg-muted/40 px-4 py-2.5">
           <span className="font-mono text-xs font-bold text-destructive">[403]</span>

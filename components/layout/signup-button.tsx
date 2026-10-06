@@ -10,7 +10,7 @@ export const SignUpButton = () => {
   return session ? null : (
     <Button
       asChild
-      className="bg-primary text-primary-foreground hover:brightness-110 px-8 py-3 font-mono shadow-lg transition-all active:scale-[0.98]"
+      className="hover:brightness-110 px-8 py-3 font-mono shadow-lg transition-all active:scale-[0.98]"
     >
       <Link href="/sign-up">$ sign-up --create</Link>
     </Button>

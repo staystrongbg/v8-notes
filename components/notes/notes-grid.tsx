@@ -10,7 +10,7 @@ export const NotesGrid = React.memo(({ notes }: { notes: Note[] }) => {
         <span className="font-mono text-xs text-muted-foreground">~/notes --grid</span>
         <span className="ml-auto font-mono text-[11px] text-muted-foreground">{notes.length} files</span>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:h-auto overflow-y-auto snap-y snap-mandatory sm:snap-none p-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-y-auto snap-y snap-mandatory sm:snap-none p-4">
         {notes.map((note) => (
           <NoteCard key={note.id} note={note} />
         ))}

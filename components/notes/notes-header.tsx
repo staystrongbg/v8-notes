@@ -67,11 +67,11 @@ export const NotesHeader = () => {
         <span
           className={cn(
             "size-1.5 shrink-0 rounded-full",
-            fetching ? "animate-pulse bg-amber-500" : "bg-emerald-500"
+            fetching ? "animate-pulse bg-primary" : "bg-muted-foreground"
           )}
         />
         <span className="shrink-0">{fetching ? "syncing…" : "live"}</span>
-        <span className="truncate text-muted-foreground/70">{flags}</span>
+        <span className="min-w-0 truncate text-muted-foreground/70">{flags}</span>
       </span>
     </header>
   );

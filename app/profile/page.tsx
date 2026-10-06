@@ -14,7 +14,7 @@ export default async function ProfilePage() {
   const userInitials = session.user.name.slice(0, 1).toUpperCase() || "U";
 
   return (
-    <div className="relative mx-auto w-full max-w-2xl px-4 py-6">
+    <div className="relative mx-auto max-w-2xl px-4 py-6">
       <GeekyBackdrop />
       <div className="relative">
         <GeekyPrompt>
@@ -23,15 +23,14 @@ export default async function ProfilePage() {
         <TerminalWindow
           title="~/profile --whoami"
           right={
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 font-mono text-[11px] text-emerald-600 dark:text-emerald-400">
-              <span className="size-1.5 animate-pulse rounded-full bg-emerald-500" />
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-2 py-0.5 font-mono text-[11px] text-primary">
+              <span className="size-1.5 animate-pulse rounded-full bg-primary" />
               online
             </span>
           }
           footer={
             <>
-              <span className="max-w-48 truncate">uid {session.user.id}</span>
-              <span className="ml-auto">groups: notes, sudo</span>
+              <span title={session.user.id} className="min-w-0 max-w-48 truncate">uid {session.user.id}</span>
             </>
           }
         >
@@ -48,7 +47,7 @@ export default async function ProfilePage() {
               <p className="mt-1 truncate text-xs text-muted-foreground">
                 {session.user.email}{" "}
                 {session.user.emailVerified ? (
-                  <span className="ml-1 rounded border border-emerald-500/30 bg-emerald-500/10 px-1.5 py-0.5 text-[10px] text-emerald-600 dark:text-emerald-400">
+                  <span className="ml-1 rounded border border-primary/30 bg-primary/10 px-1.5 py-0.5 text-[10px] text-primary">
                     verified
                   </span>
                 ) : (

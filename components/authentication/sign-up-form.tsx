@@ -76,7 +76,7 @@ export const SignUpForm = () => {
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         id="signup-form"
-        className="space-y-4 w-full font-mono"
+        className="space-y-4 font-mono"
       >
         <FieldGroup>
           {FIELDS.map((item) => (
@@ -86,7 +86,7 @@ export const SignUpForm = () => {
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={field.name} className="font-mono text-xs tracking-wider uppercase">
+                  <FieldLabel htmlFor={field.name} className="text-xs tracking-wider uppercase">
                     <span className="text-primary">❯</span> {item.label}
                   </FieldLabel>
                   <Input
@@ -96,7 +96,6 @@ export const SignUpForm = () => {
                     placeholder={item.placeholder}
                     autoComplete={item.autoComplete}
                     type={item.type}
-                    className="font-mono"
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -105,16 +104,15 @@ export const SignUpForm = () => {
               )}
             />
           ))}
-          {error && <p className="font-mono text-xs text-destructive">[stderr] {error}</p>}
+          {error && <p className="text-xs text-destructive">[stderr] {error}</p>}
           <SubmitButton
             isLoading={isLoading}
             label="$ useradd --create"
             loadingLabel="$ creating..."
-            className="font-mono"
           />
           <Link
             href="/sign-in"
-            className="block text-center font-mono text-xs text-primary underline decoration-dotted decoration-primary/50 underline-offset-4 hover:decoration-solid"
+            className="text-center text-xs text-primary underline decoration-dotted decoration-primary/50 underline-offset-4 hover:decoration-solid"
           >
             $ have-account? --login
           </Link>

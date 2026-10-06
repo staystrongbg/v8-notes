@@ -6,13 +6,13 @@ export default function NoteCard({ note }: { note: Note }) {
   const preview = note.text.trim().split('\n')[0]?.slice(0, 120) || '// empty file';
 
   return (
-    <article className="group border-border/60 bg-card hover:border-primary/50 hover:shadow-primary/10 relative flex flex-col overflow-hidden rounded-xl border transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl">
+    <article className="group border-border/60 bg-card hover:border-primary/50 hover:shadow-primary/10 flex flex-col overflow-hidden rounded-xl border transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl">
       <div className="border-border/50 bg-muted/40 flex items-center gap-1.5 border-b px-3.5 py-2">
         <span className="text-primary font-mono text-[11px] font-bold">❯</span>
-        <span className="text-muted-foreground truncate font-mono text-[11px]">./{note.id}</span>
+        <span className="text-muted-foreground min-w-0 flex-1 truncate font-mono text-[11px]">./{note.id}</span>
         {note.isStarred && (
           <StarIcon
-            className="ml-auto h-3.5 w-3.5 shrink-0 fill-amber-400 text-amber-400"
+            className="fill-primary text-primary ml-auto h-3.5 w-3.5 shrink-0"
             aria-label="Starred note"
           />
         )}

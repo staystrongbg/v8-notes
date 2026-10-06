@@ -61,7 +61,7 @@ export default function UpdateEmailForm() {
             </Field>
           )}
         />
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-destructive">{error}</p>}
         <SubmitButton
           isLoading={isLoading}
           label="Update Email"
@@ -69,7 +69,7 @@ export default function UpdateEmailForm() {
         />
       </FieldGroup>
       {form.formState.isSubmitSuccessful ? (
-        <p className="text-green-500">Email updated successfully.</p>
+        <p className="text-primary">Email updated successfully.</p>
       ) : null}
     </form>
   );

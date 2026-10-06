@@ -14,7 +14,7 @@ export const NoNotes = ({ variant = 'all' }: NoNotesProps) => {
     : 'Create a note to capture your first idea.';
 
   return (
-    <div className="w-full">
+    <div>
       <div className="mx-auto mt-8 max-w-lg overflow-hidden rounded-xl border border-dashed border-border bg-card">
         <div className="flex items-center gap-2 border-b border-border/50 bg-muted/40 px-4 py-2.5">
           <span className="font-mono text-xs font-bold text-primary">❯</span>

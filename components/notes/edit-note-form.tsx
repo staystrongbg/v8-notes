@@ -76,7 +76,7 @@ const EditNoteForm = ({
               <Field>
                 <FieldLabel
                   htmlFor={field.name}
-                  className="font-mono text-xs tracking-wider uppercase"
+                  className="text-xs tracking-wider uppercase"
                 >
                   <span className="text-primary">❯</span> ./title
                 </FieldLabel>
@@ -85,7 +85,6 @@ const EditNoteForm = ({
                   id={field.name}
                   placeholder="$ note --title 'hello world'"
                   aria-invalid={fieldState.invalid}
-                  className="font-mono"
                 />
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
@@ -98,7 +97,7 @@ const EditNoteForm = ({
               <Field>
                 <FieldLabel
                   htmlFor={field.name}
-                  className="font-mono text-xs tracking-wider uppercase"
+                  className="text-xs tracking-wider uppercase"
                 >
                   <span className="text-primary">❯</span> ./body.md
                 </FieldLabel>
@@ -111,26 +110,26 @@ const EditNoteForm = ({
                   id={field.name}
                   placeholder="# markdown supported · ```code``` · :emoji:"
                   aria-invalid={fieldState.invalid}
-                  className="min-h-[220px] font-mono leading-relaxed"
+                  className="min-h-[220px] leading-relaxed"
                 />
                 <CharacterCounter value={field.value || ''} />
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />
-          {error && <p className="text-destructive font-mono text-xs">[stderr] {error}</p>}
+          {error && <p className="text-destructive text-xs">[stderr] {error}</p>}
           <div className="flex items-center gap-2">
             <Button
               type="button"
               disabled={isLoading}
               variant="outline"
               onClick={() => router.back()}
-              className="flex-1 font-mono"
+              className="flex-1"
             >
               --cancel
             </Button>
             <SubmitButton
-              className="flex-2 font-mono"
+              className="flex-2"
               isLoading={isLoading}
               label="$ commit --update"
               loadingLabel="$ committing..."

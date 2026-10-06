@@ -11,11 +11,11 @@ export const UserDetails = () => {
   const [onClose, setOnClose] = useState(true);
   return (
     <div className="mt-6 border-t border-dashed border-border pt-5 font-mono">
-      <Button variant="outline" size="sm" onClick={() => setOnClose(!onClose)} className="font-mono text-xs">
+      <Button variant="outline" size="sm" onClick={() => setOnClose(!onClose)} className="text-xs">
         {onClose ? "$ settings --open" : "$ settings --close"}
       </Button>
       {!onClose && (
-        <section className="mt-5 flex w-full flex-col gap-6">
+        <section className="mt-5 flex flex-col gap-6">
           <div>
             <h3 className="mb-2 text-xs font-bold tracking-wider text-foreground uppercase">
               <span className="mr-1.5 text-primary">❯</span>passwd

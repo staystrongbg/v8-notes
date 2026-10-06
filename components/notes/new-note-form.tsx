@@ -68,7 +68,7 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field>
-              <FieldLabel htmlFor={field.name} className="font-mono text-xs tracking-wider uppercase">
+              <FieldLabel htmlFor={field.name} className="text-xs tracking-wider uppercase">
                 <span className="text-primary">❯</span> ./title
               </FieldLabel>
               <Input
@@ -76,7 +76,6 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
                 id={field.name}
                 placeholder="$ note --title 'hello world'"
                 aria-invalid={fieldState.invalid}
-                className="font-mono"
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -87,7 +86,7 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field>
-              <FieldLabel htmlFor={field.name} className="font-mono text-xs tracking-wider uppercase">
+              <FieldLabel htmlFor={field.name} className="text-xs tracking-wider uppercase">
                 <span className="text-primary">❯</span> ./body.md
               </FieldLabel>
               <Textarea
@@ -95,7 +94,7 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
                 id={field.name}
                 placeholder="# markdown supported · ```code``` · :emoji:"
                 aria-invalid={fieldState.invalid}
-                className="min-h-[220px] font-mono leading-relaxed"
+                className="min-h-[220px] leading-relaxed"
                 maxLength={2000}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
@@ -103,19 +102,19 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
             </Field>
           )}
         />
-        {error && <p className="font-mono text-xs text-destructive">[stderr] {error}</p>}
+        {error && <p className="text-xs text-destructive">[stderr] {error}</p>}
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
             type="button"
             onClick={onCancel}
             disabled={isLoading}
-            className="flex-1 font-mono"
+            className="flex-1"
           >
             --cancel
           </Button>
           <SubmitButton
-            className="flex-2 font-mono"
+            className="flex-2"
             isLoading={isLoading}
             label="$ commit --new"
             loadingLabel="$ committing..."

@@ -35,7 +35,7 @@ export const NotesToolbar = () => {
             className={cn(
               "inline-flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 font-medium transition-all",
               isStarred
-                ? "bg-amber-500/15 text-amber-500 shadow-sm"
+                ? "bg-primary/15 text-primary shadow-sm"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground"
             )}
           >

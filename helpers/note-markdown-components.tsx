@@ -41,7 +41,7 @@ export const noteMarkdownComponents: Components = {
       <pre
         {...props}
         className={cn(
-          'border-border/60 my-4 overflow-x-auto rounded-lg border bg-[#0d1117]! p-4 font-mono text-[13px] whitespace-pre-wrap shadow-inner [overflow-wrap:anywhere]',
+          'border-border/60 bg-muted text-foreground my-4 overflow-x-auto rounded-lg border p-4 font-mono text-[13px] whitespace-pre-wrap shadow-inner [overflow-wrap:anywhere]',
           className,
         )}
       />

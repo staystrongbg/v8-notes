@@ -60,7 +60,7 @@ export const SignInForm = () => {
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         id="signin-form"
-        className="space-y-4 w-full font-mono"
+        className="space-y-4 font-mono"
       >
         <FieldGroup>
           <Controller
@@ -68,7 +68,7 @@ export const SignInForm = () => {
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name} className="font-mono text-xs tracking-wider uppercase">
+                <FieldLabel htmlFor={field.name} className="text-xs tracking-wider uppercase">
                   <span className="text-primary">❯</span> ./email
                 </FieldLabel>
                 <Input
@@ -78,7 +78,6 @@ export const SignInForm = () => {
                   placeholder="$ auth --email user@example.com"
                   autoComplete="on"
                   type="text"
-                  className="font-mono"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -91,7 +90,7 @@ export const SignInForm = () => {
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name} className="font-mono text-xs tracking-wider uppercase">
+                <FieldLabel htmlFor={field.name} className="text-xs tracking-wider uppercase">
                   <span className="text-primary">❯</span> ./password
                 </FieldLabel>
                 <Input
@@ -101,7 +100,6 @@ export const SignInForm = () => {
                   placeholder="••••••••"
                   autoComplete="off"
                   type="password"
-                  className="font-mono"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -109,15 +107,14 @@ export const SignInForm = () => {
               </Field>
             )}
           />
-          {error && <p className="font-mono text-xs text-destructive">[stderr] {error}</p>}
+          {error && <p className="text-xs text-destructive">[stderr] {error}</p>}
           <SubmitButton
             isLoading={isLoading}
             label="$ ssh --login"
             loadingLabel="$ connecting..."
-            className="font-mono"
           />
         </FieldGroup>
-        <div className="flex items-center gap-3 font-mono text-[11px] text-muted-foreground/70">
+        <div className="flex items-center gap-3 text-[11px] text-muted-foreground/70">
           <span className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
           <span>{'// ---- oauth ----'}</span>
           <span className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
@@ -128,10 +125,9 @@ export const SignInForm = () => {
             variant="outline"
             type="button"
             onClick={() =>
-              signIn.social({ provider: "google", callbackURL: "/notes" })
+              signIn.social({ provider: "google", callbackURL: redirect || "/notes" })
             }
             disabled={isLoading}
-            className="font-mono"
           >
             <Image src="/google-icon.svg" alt="Google" width={20} height={20} />
             google
@@ -140,10 +136,9 @@ export const SignInForm = () => {
             variant="outline"
             type="button"
             onClick={() =>
-              signIn.social({ provider: "github", callbackURL: "/notes" })
+              signIn.social({ provider: "github", callbackURL: redirect || "/notes" })
             }
             disabled={isLoading}
-            className="font-mono"
           >
             <Image src="/git-icon.svg" alt="GitHub" width={20} height={20} />
             github
@@ -152,7 +147,7 @@ export const SignInForm = () => {
 
         <Link
           href="/sign-up"
-          className="block text-center font-mono text-xs text-primary underline decoration-dotted decoration-primary/50 underline-offset-4 hover:decoration-solid"
+          className="block text-center text-xs text-primary underline decoration-dotted decoration-primary/50 underline-offset-4 hover:decoration-solid"
         >
           $ no-account? --register
         </Link>

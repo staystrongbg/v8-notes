@@ -82,7 +82,7 @@ export default function UpdatePasswordForm() {
             </Field>
           )}
         />
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-destructive">{error}</p>}
         <SubmitButton
           isLoading={isLoading}
           label="Update Password"
@@ -90,7 +90,7 @@ export default function UpdatePasswordForm() {
         />
       </FieldGroup>
       {form.formState.isSubmitSuccessful ? (
-        <p className="text-green-500">Password updated successfully.</p>
+        <p className="text-primary">Password updated successfully.</p>
       ) : null}
     </form>
   );

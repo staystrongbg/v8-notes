@@ -1,11 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 import { GitBranchIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const formatClock = (d: Date) =>
   `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+
+// Refresh the clock by notifying subscribers, not by setState-in-effect.
+const subscribeClock = (notify: () => void) => {
+  const id = setInterval(notify, 10_000);
+  return () => clearInterval(id);
+};
 
 export const VimStatusline = ({
   mode,
@@ -20,18 +26,16 @@ export const VimStatusline = ({
   modified?: boolean;
   meta?: string[];
 }) => {
-  const [now, setNow] = useState(() => formatClock(new Date()));
-  useEffect(() => {
-    const id = setInterval(() => setNow(formatClock(new Date())), 10_000);
-    return () => clearInterval(id);
-  }, []);
+  // Server and first client pass render '--:--' identically; the live
+  // time subscribes after mount.
+  const now = useSyncExternalStore(subscribeClock, () => formatClock(new Date()), () => '--:--');
 
   return (
     <div className="flex items-stretch font-mono text-[11px]">
       <span
         className={cn(
           'shrink-0 px-3 py-1.5 font-bold tracking-wider uppercase',
-          mode === 'normal' ? 'bg-primary text-primary-foreground' : 'bg-emerald-500 text-white'
+          mode === 'normal' ? 'bg-primary text-primary-foreground' : 'bg-primary/80 text-primary-foreground'
         )}
       >
         {mode}
@@ -41,7 +45,7 @@ export const VimStatusline = ({
         {branch}
       </span>
       {modified && (
-        <span className="flex shrink-0 items-center pr-1 text-amber-500" title="Modified">
+        <span className="flex shrink-0 items-center pr-1 text-primary" title="Modified">
           ●
         </span>
       )}

@@ -14,13 +14,13 @@ export default async function NewNotePage() {
       <GeekyBackdrop />
       <div className="relative">
         <GeekyPrompt>
-          v8-notes touch ./new.md <span className="text-muted-foreground/60">--markdown --encrypt</span>
+          v8-notes touch ./new.md <span className="text-muted-foreground/60">--markdown</span>
         </GeekyPrompt>
         <TerminalWindow
           title="vim ./new.md --insert"
           right={
-            <span className="hidden items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 font-mono text-[11px] text-emerald-600 sm:inline-flex dark:text-emerald-400">
-              <span className="size-1.5 animate-pulse rounded-full bg-emerald-500" />
+            <span className="hidden items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-2 py-0.5 font-mono text-[11px] text-primary sm:inline-flex">
+              <span className="size-1.5 animate-pulse rounded-full bg-primary" />
               insert
             </span>
           }

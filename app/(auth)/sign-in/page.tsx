@@ -14,7 +14,7 @@ export default async function SignInPage() {
   }
 
   return (
-    <main className="relative mx-auto flex min-h-[80vh] w-full max-w-md flex-col justify-center px-4 py-10">
+    <main className="relative mx-auto flex min-h-[80vh] max-w-md flex-col justify-center px-4 py-10">
       <GeekyBackdrop />
       <div className="relative">
         <p className="mb-4 font-mono text-xs text-muted-foreground">

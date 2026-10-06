@@ -6,6 +6,7 @@ import { headers } from "next/headers";
 import { unauthorized } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { Note } from "@prisma/client";
+import { noteInputSchema } from "@/fetchers/note-input-schema";
 
 export const updateNote = async (
   note: Omit<Note, "createdAt" | "updatedAt" | "user">
@@ -18,14 +19,19 @@ export const updateNote = async (
     return unauthorized();
   }
 
+  const parsed = noteInputSchema.safeParse({ title: note.title, text: note.text });
+  if (!parsed.success) {
+    throw new Error(parsed.error.message);
+  }
+
   const updatedNote = await prisma.note.update({
     where: {
       id: note.id,
       userId: session.user.id,
     },
     data: {
-      title: note.title,
-      text: note.text,
+      title: parsed.data.title,
+      text: parsed.data.text,
       isStarred: note.isStarred,
     },
   });

@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 type FilterNotesProps = {
   activeFilter?: "all" | "starred";
@@ -15,12 +15,20 @@ type FilterNotesProps = {
 
 export const FilterNotes = ({ activeFilter }: FilterNotesProps) => {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
-  const currentFilter = activeFilter ?? searchParams.get("filter") ?? "all";
+  const currentFilter =
+    activeFilter ?? (searchParams.get("starred") === "true" ? "starred" : "all");
 
   const handleFilterChange = (value: string) => {
-    const url = value === "all" ? "/notes" : `/notes?filter=${value}`;
-    router.push(url);
+    const params = new URLSearchParams(searchParams.toString());
+    if (value === "all") {
+      params.delete("starred");
+    } else {
+      params.set("starred", "true");
+    }
+    const query = params.toString();
+    router.push(query ? `${pathname}?${query}` : pathname);
   };
 
   return (

@@ -111,7 +111,7 @@ export default function UpdateImageForm() {
             );
           }}
         />
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-destructive">{error}</p>}
         <SubmitButton
           isLoading={isLoading}
           label="Update Image"
@@ -119,7 +119,7 @@ export default function UpdateImageForm() {
         />
       </FieldGroup>
       {form.formState.isSubmitSuccessful ? (
-        <p className="text-green-500">Image updated successfully.</p>
+        <p className="text-primary">Image updated successfully.</p>
       ) : null}
     </form>
   );

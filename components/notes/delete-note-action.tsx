@@ -47,6 +47,8 @@ const DeleteNoteConfirmationDialog = ({
       await deleteNote(noteId);
       toast.success('Note deleted successfully');
       router.push('/notes');
+    } catch {
+      toast.error('Failed to delete note');
     } finally {
       setIsPending(false);
     }
@@ -71,7 +73,7 @@ const DeleteNoteConfirmationDialog = ({
         role="alertdialog"
         aria-modal="true"
         aria-labelledby="delete-note-title"
-        className="border-destructive/60 bg-background shadow-destructive/30 relative w-full max-w-md overflow-hidden rounded-xl border-2 font-mono shadow-2xl"
+        className="border-destructive/60 bg-background shadow-destructive/30 w-full max-w-md overflow-hidden rounded-xl border-2 font-mono shadow-2xl"
       >
         <div className="border-border/50 bg-muted/50 flex items-center gap-2 border-b px-4 py-2.5">
           <span className="text-destructive font-mono text-xs font-bold">[rm]</span>
@@ -109,7 +111,7 @@ const DeleteNoteConfirmationDialog = ({
             <button
               onClick={onDelete}
               disabled={isPending}
-              className="bg-destructive shadow-destructive/30 hover:bg-destructive/90 inline-flex h-9 cursor-pointer items-center justify-center gap-2 rounded-lg px-4 font-mono text-xs font-semibold text-white shadow-lg transition-all active:scale-[0.98] disabled:opacity-50"
+              className="bg-destructive shadow-destructive/30 hover:bg-destructive/90 text-primary-foreground inline-flex h-9 cursor-pointer items-center justify-center gap-2 rounded-lg px-4 font-mono text-xs font-semibold shadow-lg transition-all active:scale-[0.98] disabled:opacity-50"
             >
               <Trash2Icon className="size-3.5" />
               {isPending ? 'deleting...' : '--force'}

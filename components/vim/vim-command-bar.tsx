@@ -35,7 +35,7 @@ export const VimCommandBar = ({
     <div className="border-border/60 bg-card fixed inset-x-0 bottom-0 z-50 border-t">
       <form
         onSubmit={submit}
-        className="mx-auto flex w-full max-w-7xl items-center gap-2 px-4 py-2"
+        className="mx-auto flex max-w-7xl items-center gap-2 px-4 py-2"
       >
         <span className="text-primary font-mono text-sm font-bold">:</span>
         <input

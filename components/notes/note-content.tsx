@@ -28,6 +28,7 @@ import { highlightPlugin } from '../../helpers/code-highlight';
 import { noteMarkdownComponents } from '../../helpers/note-markdown-components';
 import { DeleteNoteAction } from './delete-note-action';
 import { NoteContentLoading } from './loaders-ui/note-content-loading';
+import { NotesError } from './notes-error';
 import { StarredNote } from './starred-note';
 import { VimStatusline } from './vim-statusline';
 
@@ -41,7 +42,7 @@ export const NoteContent = ({ noteId }: { noteId: string }) => {
     return <NoteContentLoading />;
   }
   if (!note) {
-    return null;
+    return <NotesError message="Note not found" />;
   }
 
   const words = note.text.trim() ? note.text.trim().split(/\s+/).length : 0;
@@ -50,7 +51,7 @@ export const NoteContent = ({ noteId }: { noteId: string }) => {
   const readMins = Math.max(1, Math.ceil(words / 200));
 
   return (
-    <div className="mx-auto w-full max-w-4xl">
+    <div className="mx-auto max-w-4xl">
       <NoteToolbar noteId={noteId} isStarred={note.isStarred} title={note.title} text={note.text} />
 
       <TerminalWindow
@@ -120,7 +121,7 @@ export const NoteContent = ({ noteId }: { noteId: string }) => {
               </ReactMarkdown>
             </div>
             <p className="text-muted-foreground/60 mt-6 font-mono text-[11px]">
-              <span className="text-emerald-500">✓</span> exit 0 — EOF
+              <span className="text-primary">✓</span> exit 0 — EOF
             </p>
           </div>
         </div>
@@ -201,7 +202,7 @@ const NoteToolbar = ({
             <span className="text-primary">❯</span> {noteId}
           </span>
           {copied ? (
-            <CheckIcon className="ml-auto size-3.5 shrink-0 text-emerald-500" />
+            <CheckIcon className="ml-auto size-3.5 shrink-0 text-primary" />
           ) : (
             <CopyIcon className="ml-auto size-3.5 shrink-0 opacity-50" />
           )}

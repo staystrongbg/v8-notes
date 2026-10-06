@@ -41,7 +41,7 @@ export const TerminalWindow = ({
   >
     <div className="flex items-center gap-2 border-b border-border/50 bg-muted/40 px-4 py-2.5">
       <span className="font-mono text-xs font-bold text-primary">❯</span>
-      <span className="truncate font-mono text-xs text-muted-foreground">{title}</span>
+      <span className="min-w-0 truncate font-mono text-xs text-muted-foreground">{title}</span>
       <span aria-hidden className="animate-pulse font-mono text-xs text-primary">▌</span>
       {right ? <div className="ml-auto flex shrink-0 items-center gap-2">{right}</div> : null}
     </div>

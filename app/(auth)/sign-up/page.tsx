@@ -14,7 +14,7 @@ export default async function SignUpPage() {
   }
 
   return (
-    <main className="relative mx-auto w-full max-w-md px-4 py-10">
+    <main className="relative mx-auto max-w-md px-4 py-10">
       <GeekyBackdrop />
       <div className="relative">
         <p className="mb-4 font-mono text-xs text-muted-foreground">

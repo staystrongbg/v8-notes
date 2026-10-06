@@ -8,16 +8,19 @@ import { Loader2 } from "lucide-react";
 export const ResendVerificationEmail = ({ email }: { email: string }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const resendEmail = async () => {
     setIsLoading(true);
+    setErrorMsg(null);
     const { error } = await sendVerificationEmail({
       email,
       callbackURL: "/profile",
     });
     if (error) {
-      console.error(error);
+      setErrorMsg(error.message || "Failed to send verification email");
+    } else {
+      setSuccess(true);
     }
-    setSuccess(true);
     setIsLoading(false);
   };
   return (
@@ -38,8 +41,9 @@ export const ResendVerificationEmail = ({ email }: { email: string }) => {
         )}
       </Button>
       {success && (
-        <p className="text-green-500">Verification email sent successfully</p>
+        <p className="text-primary">Verification email sent successfully</p>
       )}
+      {errorMsg && <p className="text-xs text-destructive">[stderr] {errorMsg}</p>}
     </>
   );
 };
