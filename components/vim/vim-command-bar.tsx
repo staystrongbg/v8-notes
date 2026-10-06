@@ -14,7 +14,10 @@ export const VimCommandBar = ({
   onClose: () => void;
 }) => {
   const [value, setValue] = useState('');
-  const [result, setResult] = useState<Extract<VimCommandResult, { status: 'error' | 'info' }> | null>(null);
+  const [result, setResult] = useState<Extract<
+    VimCommandResult,
+    { status: 'error' | 'info' }
+  > | null>(null);
 
   if (!open) return null;
 
@@ -29,16 +32,16 @@ export const VimCommandBar = ({
   };
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-border/60 bg-card">
+    <div className="border-border/60 bg-card fixed inset-x-0 bottom-0 z-50 border-t">
       <form
         onSubmit={submit}
         className="mx-auto flex w-full max-w-7xl items-center gap-2 px-4 py-2"
       >
-        <span className="font-mono text-sm font-bold text-primary">:</span>
+        <span className="text-primary font-mono text-sm font-bold">:</span>
         <input
           autoFocus
           value={value}
-          onChange={(e) => {
+          onChange={e => {
             setValue(e.target.value);
             setResult(null);
           }}
@@ -46,21 +49,21 @@ export const VimCommandBar = ({
           aria-label="Vim command"
           autoComplete="off"
           spellCheck={false}
-          className="min-w-0 flex-1 bg-transparent font-mono text-sm text-foreground outline-none placeholder:text-muted-foreground/50"
+          className="text-foreground placeholder:text-muted-foreground/50 min-w-0 flex-1 bg-transparent font-mono text-sm outline-none"
         />
         {result ? (
           <span
             title={result.message}
             className={
               result.status === 'error'
-                ? 'max-w-[60vw] shrink-0 truncate font-mono text-xs text-destructive'
-                : 'max-w-[60vw] shrink-0 truncate font-mono text-xs text-muted-foreground'
+                ? 'text-destructive max-w-[60vw] shrink-0 truncate font-mono text-xs'
+                : 'text-muted-foreground max-w-[60vw] shrink-0 truncate font-mono text-xs'
             }
           >
             {result.message}
           </span>
         ) : (
-          <span className="hidden shrink-0 font-mono text-[11px] text-muted-foreground sm:inline">
+          <span className="text-muted-foreground hidden shrink-0 font-mono text-[11px] sm:inline">
             Enter ↵ · Esc closes
           </span>
         )}

@@ -5,14 +5,15 @@ import { Trash2Icon, TriangleAlertIcon, XIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { useVimActions } from '@/components/vim/vim-provider';
 
 export const DeleteNoteAction = ({ noteId }: { noteId: string }) => {
   const [isDeleting, setIsDeleting] = useState(false);
+  useVimActions({ remove: () => setIsDeleting(true) });
 
   return (
     <>
       <button
-        id="delete-note-button"
         onClick={() => setIsDeleting(true)}
         disabled={isDeleting}
         className="border-destructive/30 bg-background/60 text-destructive/80 hover:border-destructive/60 hover:bg-destructive/10 hover:text-destructive inline-flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 font-mono text-xs font-medium tracking-wide uppercase transition-all disabled:opacity-50"

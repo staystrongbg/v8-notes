@@ -4,10 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { useVimActions } from '@/components/vim/vim-provider';
 import { updateNote } from '@/fetchers/update-note';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Note } from '@prisma/client';
 import { useRouter } from 'next/navigation';
+import { useRef } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -20,7 +22,13 @@ const newNoteFormSchema = z.object({
   text: z.string().min(1).max(2000).trim(),
 });
 
-const EditNoteForm = ({ note, onTextChange }: { note: Note | null; onTextChange?: (text: string) => void }) => {
+const EditNoteForm = ({
+  note,
+  onTextChange,
+}: {
+  note: Note | null;
+  onTextChange?: (text: string) => void;
+}) => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof newNoteFormSchema>>({
@@ -31,6 +39,8 @@ const EditNoteForm = ({ note, onTextChange }: { note: Note | null; onTextChange?
     },
   });
   const textValue = useWatch({ control: form.control, name: 'text' });
+  const formEl = useRef<HTMLFormElement>(null);
+  useVimActions({ save: () => formEl.current?.requestSubmit() });
 
   if (!note) {
     return <div>Note not found.</div>;
@@ -56,7 +66,7 @@ const EditNoteForm = ({ note, onTextChange }: { note: Note | null; onTextChange?
   const isLoading = form.formState.isSubmitting;
   const error = form.formState.errors.root?.message;
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} id="note-form" className="font-mono">
+    <form ref={formEl} onSubmit={form.handleSubmit(onSubmit)} className="font-mono">
       <div className="grid gap-4 lg:grid-cols-2">
         <FieldGroup>
           <Controller
@@ -94,7 +104,7 @@ const EditNoteForm = ({ note, onTextChange }: { note: Note | null; onTextChange?
                 </FieldLabel>
                 <Textarea
                   {...field}
-                  onChange={(e) => {
+                  onChange={e => {
                     field.onChange(e);
                     onTextChange?.(e.target.value);
                   }}

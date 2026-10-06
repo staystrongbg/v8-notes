@@ -3,13 +3,13 @@ import { Components } from 'react-markdown';
 
 export const noteMarkdownComponents: Components = {
   p({ node, ...props }) {
-    return <p {...props} className="text-foreground/85 text-[15px] leading-7" />;
+    return <p {...props} className="text-foreground/85 text-[15px] leading-7 break-words" />;
   },
   a({ node, ...props }) {
     return (
       <a
         {...props}
-        className="text-primary decoration-primary/50 font-mono text-sm underline decoration-dotted underline-offset-4 hover:decoration-solid"
+        className="text-primary decoration-primary/50 font-mono text-sm break-words underline decoration-dotted underline-offset-4 hover:decoration-solid"
       />
     );
   },
@@ -51,7 +51,7 @@ export const noteMarkdownComponents: Components = {
     return (
       <blockquote
         {...props}
-        className="border-primary bg-primary/5 text-muted-foreground my-4 rounded-r-lg border-l-2 px-4 py-3 font-mono text-sm italic"
+        className="border-primary bg-primary/5 text-muted-foreground my-4 rounded-r-lg border-l-2 px-4 py-3 font-mono text-sm break-words italic"
       />
     );
   },
@@ -72,13 +72,13 @@ export const noteMarkdownComponents: Components = {
     );
   },
   li({ node, ...props }) {
-    return <li {...props} className="text-foreground/85 leading-7" />;
+    return <li {...props} className="text-foreground/85 leading-7 break-words" />;
   },
   h1({ node, ...props }) {
     return (
       <h1
         {...props}
-        className="text-foreground before:text-primary/60 mt-6 mb-3 font-mono font-bold before:mr-2 before:content-['#'] md:text-xl"
+        className="text-foreground before:text-primary/60 mt-6 mb-3 font-mono font-bold break-words before:mr-2 before:content-['#'] md:text-xl"
       />
     );
   },
@@ -86,7 +86,7 @@ export const noteMarkdownComponents: Components = {
     return (
       <h2
         {...props}
-        className="text-foreground before:text-primary/60 mt-5 mb-2 font-mono font-bold before:mr-2 before:content-['##'] md:text-lg"
+        className="text-foreground before:text-primary/60 mt-5 mb-2 font-mono font-bold break-words before:mr-2 before:content-['##'] md:text-lg"
       />
     );
   },
@@ -94,7 +94,7 @@ export const noteMarkdownComponents: Components = {
     return (
       <h3
         {...props}
-        className="text-foreground before:text-primary/60 mt-4 mb-2 font-mono font-bold before:mr-2 before:content-['###'] md:text-base"
+        className="text-foreground before:text-primary/60 mt-4 mb-2 font-mono font-bold break-words before:mr-2 before:content-['###'] md:text-base"
       />
     );
   },

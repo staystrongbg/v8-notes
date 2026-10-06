@@ -3,9 +3,22 @@
 import { THEME_VALUES } from '@/lib/themes';
 import { useTheme } from 'next-themes';
 import { usePathname, useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import { VimCommandBar, type VimCommandResult } from './vim-command-bar';
+
+export type VimActions = {
+  save?: () => void;
+  remove?: () => void;
+  yank?: () => void;
+};
+
+const VimActionsContext = createContext<(actions: VimActions) => () => void>(() => () => {});
+
+export const useVimActions = (actions: VimActions) => {
+  const register = useContext(VimActionsContext);
+  useEffect(() => register(actions));
+};
 
 const isTypingTarget = (target: EventTarget | null) =>
   target instanceof HTMLElement &&
@@ -13,33 +26,6 @@ const isTypingTarget = (target: EventTarget | null) =>
     target.tagName === 'TEXTAREA' ||
     target.tagName === 'SELECT' ||
     target.isContentEditable);
-
-const submitNoteForm = () => {
-  const form = document.getElementById('note-form');
-  if (form instanceof HTMLFormElement) {
-    form.requestSubmit();
-    return true;
-  }
-  return false;
-};
-
-const clickDeleteButton = () => {
-  const button = document.getElementById('delete-note-button');
-  if (button instanceof HTMLButtonElement && !button.disabled) {
-    button.click();
-    return true;
-  }
-  return false;
-};
-
-const clickCopyButton = () => {
-  const button = document.getElementById('copy-note-button');
-  if (button instanceof HTMLButtonElement && !button.disabled) {
-    button.click();
-    return true;
-  }
-  return false;
-};
 
 /** Note id when on `/notes/<id>`, otherwise null. */
 const viewedNoteId = (pathname: string) => {
@@ -52,10 +38,25 @@ export const VimProvider = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const { setTheme } = useTheme();
   const [cmdOpen, setCmdOpen] = useState(false);
+  const actionsRef = useRef<VimActions>({});
+
+  const register = useCallback((actions: VimActions) => {
+    const prev = actionsRef.current;
+    actionsRef.current = { ...prev, ...actions };
+    return () => {
+      const cur = actionsRef.current;
+      const next: VimActions = { ...cur };
+      (Object.keys(actions) as (keyof VimActions)[]).forEach(key => {
+        if (next[key] === actions[key]) delete next[key];
+      });
+      actionsRef.current = next;
+    };
+  }, []);
 
   const runCommand = useCallback(
     (raw: string): VimCommandResult => {
       const [cmd, ...args] = raw.trim().split(/\s+/);
+      const actions = actionsRef.current;
       const done = (): VimCommandResult => ({ status: 'done' });
       const error = (message: string): VimCommandResult => ({ status: 'error', message });
       const info = (message: string): VimCommandResult => ({ status: 'info', message });
@@ -63,14 +64,22 @@ export const VimProvider = ({ children }: { children: React.ReactNode }) => {
         case '':
           return done();
         case 'w':
-          return submitNoteForm() ? done() : error('E: nothing to write');
+          if (actions.save) {
+            actions.save();
+            return done();
+          }
+          return error('E: nothing to write');
         case 'q':
         case 'q!':
           router.back();
           return done();
         case 'wq':
         case 'x':
-          return submitNoteForm() ? done() : error('E: nothing to write');
+          if (actions.save) {
+            actions.save();
+            return done();
+          }
+          return error('E: nothing to write');
         case 'e': {
           const noteId = viewedNoteId(pathname);
           if (noteId) {
@@ -85,10 +94,18 @@ export const VimProvider = ({ children }: { children: React.ReactNode }) => {
           return done();
         case 'd':
         case 'delete':
-          return clickDeleteButton() ? done() : error('E: nothing to delete here');
+          if (actions.remove) {
+            actions.remove();
+            return done();
+          }
+          return error('E: nothing to delete here');
         case 'y':
         case 'yank':
-          return clickCopyButton() ? done() : error('E: nothing to yank here');
+          if (actions.yank) {
+            actions.yank();
+            return done();
+          }
+          return error('E: nothing to yank here');
         case 'notes':
           router.push('/notes');
           return done();
@@ -136,7 +153,7 @@ export const VimProvider = ({ children }: { children: React.ReactNode }) => {
   }, [cmdOpen]);
 
   return (
-    <>
+    <VimActionsContext.Provider value={register}>
       {children}
       <VimCommandBar
         key={cmdOpen ? 'open' : 'shut'}
@@ -144,6 +161,6 @@ export const VimProvider = ({ children }: { children: React.ReactNode }) => {
         onRun={runCommand}
         onClose={() => setCmdOpen(false)}
       />
-    </>
+    </VimActionsContext.Provider>
   );
 };
