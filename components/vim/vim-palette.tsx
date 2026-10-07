@@ -1,14 +1,16 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
-import { useTheme } from 'next-themes';
-import { useQuery } from '@tanstack/react-query';
-import { useSession } from '@/lib/auth-client';
 import { getNotes } from '@/fetchers/get-notes';
+import { useSession } from '@/lib/auth-client';
 import { THEME_VALUES } from '@/lib/themes';
 import { cn } from '@/lib/utils';
-import { useVim, viewedNoteId, type VimActions } from './vim-provider';
+import { useQuery } from '@tanstack/react-query';
+import { Loader2 } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
+
+import { type VimActions, useVim, viewedNoteId } from './vim-provider';
 
 type PaletteItem = {
   id: string;
@@ -58,7 +60,14 @@ export const VimPalette = ({ available }: { available: (keyof VimActions)[] }) =
       ? [{ id: 'save', label: 'Save note', hint: ':w', run: () => invoke('save') }]
       : []),
     ...(noteId
-      ? [{ id: 'edit', label: 'Edit this note', hint: ':e', run: () => go(`/notes/${noteId}/edit`) }]
+      ? [
+          {
+            id: 'edit',
+            label: 'Edit this note',
+            hint: ':e',
+            run: () => go(`/notes/${noteId}/edit`),
+          },
+        ]
       : []),
     ...(has('remove')
       ? [{ id: 'delete', label: 'Delete note', hint: ':d', run: () => invoke('remove') }]
@@ -84,7 +93,11 @@ export const VimPalette = ({ available }: { available: (keyof VimActions)[] }) =
     queryFn: () => getNotes(userId ?? '', 'all', 1, 5, 'updated'),
     enabled: paletteOpen && !!userId && !q,
   });
-  const { data: found, error: searchError } = useQuery({
+  const {
+    data: found,
+    error: searchError,
+    isPending,
+  } = useQuery({
     queryKey: ['palette-search', userId, q],
     queryFn: () => getNotes(userId ?? '', 'all', 1, 7, 'updated', q),
     enabled: paletteOpen && !!userId && !!q,
@@ -92,16 +105,22 @@ export const VimPalette = ({ available }: { available: (keyof VimActions)[] }) =
   const notes = (q ? found?.notes : recent?.notes) ?? [];
   const notesError = q ? searchError : recentError;
 
-  const matchedCommands = (q
-    ? commands
-        .map(item => ({ item, rank: score(`${item.label} ${item.hint} ${item.id}`, q) }))
-        .filter(entry => entry.rank > 0)
-        .sort((a, b) => b.rank - a.rank)
-        .map(entry => entry.item)
-    : commands
+  const matchedCommands = (
+    q
+      ? commands
+          .map(item => ({ item, rank: score(`${item.label} ${item.hint} ${item.id}`, q) }))
+          .filter(entry => entry.rank > 0)
+          .sort((a, b) => b.rank - a.rank)
+          .map(entry => entry.item)
+      : commands
   ).slice(0, 9);
 
-  const rows: Array<{ key: string; render: () => React.ReactNode; run: () => void; section: string }> = [
+  const rows: Array<{
+    key: string;
+    render: () => React.ReactNode;
+    run: () => void;
+    section: string;
+  }> = [
     ...(notesError
       ? [
           {
@@ -109,7 +128,7 @@ export const VimPalette = ({ available }: { available: (keyof VimActions)[] }) =
             section: 'notes',
             run: () => {},
             render: () => (
-              <span className="font-mono text-xs text-destructive">
+              <span className="text-destructive font-mono text-xs">
                 [stderr] notes failed to load — try again
               </span>
             ),
@@ -126,7 +145,7 @@ export const VimPalette = ({ available }: { available: (keyof VimActions)[] }) =
       render: () => (
         <>
           <span className="truncate">{item.label}</span>
-          <kbd className="ml-auto shrink-0 rounded border border-border/60 bg-muted px-1.5 py-0.5 font-mono text-[11px] text-primary">
+          <kbd className="border-border/60 bg-muted text-primary ml-auto shrink-0 rounded border px-1.5 py-0.5 font-mono text-[11px]">
             {item.hint}
           </kbd>
         </>
@@ -139,7 +158,7 @@ export const VimPalette = ({ available }: { available: (keyof VimActions)[] }) =
       render: () => (
         <>
           <span className="truncate">{note.title}</span>
-          <span className="ml-auto shrink-0 font-mono text-[11px] text-muted-foreground">
+          <span className="text-muted-foreground ml-auto shrink-0 font-mono text-[11px]">
             ❯ {note.id.slice(0, 8)}
           </span>
         </>
@@ -179,6 +198,7 @@ export const VimPalette = ({ available }: { available: (keyof VimActions)[] }) =
     }
   }
   let flatIndex = -1;
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-start justify-center bg-black/70 p-4 pt-[12vh]"
@@ -188,11 +208,11 @@ export const VimPalette = ({ available }: { available: (keyof VimActions)[] }) =
       aria-label="Command palette"
     >
       <div
-        className="w-full max-w-lg overflow-hidden rounded-xl border border-border/60 bg-card shadow-2xl"
+        className="border-border/60 bg-card w-full max-w-lg overflow-hidden rounded-xl border shadow-2xl"
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex items-center gap-2 border-b border-border/50 px-4 py-2.5">
-          <span className="font-mono text-sm font-bold text-primary">❯</span>
+        <div className="border-border/50 flex items-center gap-2 border-b px-4 py-2.5">
+          <span className="text-primary font-mono text-sm font-bold">❯</span>
           <input
             autoFocus
             value={query}
@@ -205,42 +225,43 @@ export const VimPalette = ({ available }: { available: (keyof VimActions)[] }) =
             aria-label="Command palette"
             autoComplete="off"
             spellCheck={false}
-            className="min-w-0 flex-1 bg-transparent font-mono text-sm text-foreground outline-none placeholder:text-muted-foreground/50"
+            className="text-foreground placeholder:text-muted-foreground/50 min-w-0 flex-1 bg-transparent font-mono text-sm outline-none"
           />
-          <kbd className="shrink-0 rounded border border-border/60 bg-muted px-1.5 py-0.5 font-mono text-[11px] text-muted-foreground">
+          <kbd className="border-border/60 bg-muted text-muted-foreground shrink-0 rounded border px-1.5 py-0.5 font-mono text-[11px]">
             esc
           </kbd>
         </div>
         <div ref={listRef} className="max-h-[50vh] overflow-y-auto p-1.5">
+          {isPending && <Loader2 className="text-muted-foreground mx-auto h-4 w-4 animate-spin" />}
           {rows.length === 0 && (
-            <p className="px-3 py-6 text-center font-mono text-xs text-muted-foreground">
+            <p className="text-muted-foreground px-3 py-6 text-center font-mono text-xs">
               0 matches
             </p>
           )}
           {blocks.map(block => (
             <div key={block.section}>
-              <p className="px-3 pt-2 pb-1 font-mono text-[10px] tracking-wider text-muted-foreground/70 uppercase">
+              <p className="text-muted-foreground/70 px-3 pt-2 pb-1 font-mono text-[10px] tracking-wider uppercase">
                 {block.section}
               </p>
               {block.rows.map(row => {
-            flatIndex += 1;
-            const i = flatIndex;
-            return (
-              <button
-                key={row.key}
-                data-index={i}
-                onClick={row.run}
-                onMouseEnter={() => setActive(i)}
-                className={cn(
-                  'flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left font-mono text-xs transition-colors',
-                  i === current ? 'bg-primary/15 text-primary' : 'text-foreground',
-                )}
-              >
-                {row.render()}
-              </button>
-            );
-          })}
-          </div>
+                flatIndex += 1;
+                const i = flatIndex;
+                return (
+                  <button
+                    key={row.key}
+                    data-index={i}
+                    onClick={row.run}
+                    onMouseEnter={() => setActive(i)}
+                    className={cn(
+                      'flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left font-mono text-xs transition-colors',
+                      i === current ? 'bg-primary/15 text-primary' : 'text-foreground',
+                    )}
+                  >
+                    {row.render()}
+                  </button>
+                );
+              })}
+            </div>
           ))}
         </div>
       </div>
