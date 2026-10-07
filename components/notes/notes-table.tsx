@@ -8,13 +8,28 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Note } from "@prisma/client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { NoteWithTags } from "@/fetchers/get-notes";
 import { PurgeNoteButton, RestoreNoteButton } from "./trash-note-actions";
 
-export const NotesTable = React.memo(({ notes, trashed = false }: { notes: Note[]; trashed?: boolean }) => {
-  const pathname = usePathname();
+export const NotesTable = React.memo(
+  ({
+    notes,
+    trashed = false,
+    baseQuery = '',
+  }: {
+    notes: NoteWithTags[];
+    trashed?: boolean;
+    baseQuery?: string;
+  }) => {
+    const pathname = usePathname();
+    const chipHref = (name: string) => {
+      const params = new URLSearchParams(baseQuery);
+      params.set('tag', name);
+      params.delete('page');
+      return `/notes?${params.toString()}`;
+    };
   return (
     <div className="overflow-hidden rounded-xl border border-border/60 bg-card">
       <div className="flex items-center gap-2 border-b border-border/50 bg-muted/40 px-4 py-2.5">
@@ -42,6 +57,19 @@ export const NotesTable = React.memo(({ notes, trashed = false }: { notes: Note[
                   <span className="text-muted-foreground">❯ </span>./{note.id}
                   <span className="ml-2 hidden text-xs text-muted-foreground lg:inline">{note.title}</span>
                 </Link>
+                {note.tags.length > 0 && (
+                  <span className="mt-1 flex max-w-56 flex-wrap gap-1 overflow-hidden font-mono text-[11px]">
+                    {note.tags.slice(0, 3).map(tag => (
+                      <Link
+                        key={tag.id}
+                        href={chipHref(tag.name)}
+                        className="text-primary/80 hover:text-primary rounded border border-border/50 bg-muted/50 px-1 py-px transition-colors"
+                      >
+                        #{tag.name}
+                      </Link>
+                    ))}
+                  </span>
+                )}
               </TableCell>
               <TableCell>{note.isStarred ? <span className="text-primary">★</span> : <span className="text-muted-foreground/40">·</span>}</TableCell>
               <TableCell className="text-right text-xs text-muted-foreground">

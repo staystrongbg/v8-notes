@@ -2,7 +2,7 @@
 
 import { auth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
-import { Note } from '@prisma/client';
+import { Note, Tag } from '@prisma/client';
 import { headers } from 'next/headers';
 import { unauthorized } from 'next/navigation';
 
@@ -15,6 +15,7 @@ const sortOrder: Record<NotesSort, { updatedAt?: 'desc'; createdAt?: 'desc' | 'a
 };
 
 export type NotesFilter = 'all' | 'starred' | 'trashed';
+export type NoteWithTags = Note & { tags: Tag[] };
 
 export const getNotes = async (
   userId: string,
@@ -23,7 +24,8 @@ export const getNotes = async (
   limit?: number,
   sort: NotesSort = 'updated',
   query?: string,
-): Promise<{ notes: Note[]; total: number }> => {
+  tagName?: string,
+): Promise<{ notes: NoteWithTags[]; total: number }> => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -33,6 +35,7 @@ export const getNotes = async (
   }
 
   const q = query?.trim() || undefined;
+  const tag = tagName?.trim().toLowerCase() || undefined;
 
   // Trashed notes are hidden everywhere except the trash view, which lists
   // only trashed notes and lazily purges anything older than 30 days.
@@ -49,6 +52,7 @@ export const getNotes = async (
     userId,
     ...(filter === 'starred' && { isStarred: true }),
     ...(filter === 'trashed' ? { deletedAt: { not: null } } : { deletedAt: null }),
+    ...(tag && { tags: { some: { name: tag } } }),
     ...(q && {
       OR: [
         { title: { contains: q, mode: 'insensitive' as const } },
@@ -63,6 +67,7 @@ export const getNotes = async (
   const notes = await prisma.note.findMany({
     where,
     orderBy: sortOrder[sort] ?? sortOrder.updated,
+    include: { tags: { orderBy: { name: 'asc' } } },
     skip,
     take,
   });

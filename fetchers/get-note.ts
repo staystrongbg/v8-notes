@@ -4,9 +4,9 @@ import prisma from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { unauthorized } from "next/navigation";
-import { Note } from "@prisma/client";
+import { Note, Tag } from "@prisma/client";
 
-export const getNote = async (id: string): Promise<Note | null> => {
+export const getNote = async (id: string): Promise<(Note & { tags: Tag[] }) | null> => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -20,5 +20,6 @@ export const getNote = async (id: string): Promise<Note | null> => {
       id,
       userId: session.user.id,
     },
+    include: { tags: { orderBy: { name: 'asc' } } },
   });
 };

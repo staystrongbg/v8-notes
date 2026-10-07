@@ -20,7 +20,14 @@ import { NotePreview } from "./note-preview";
 const newNoteFormSchema = z.object({
   title: z.string().min(1).max(100).trim(),
   text: z.string().min(1).max(2000).trim(),
+  tags: z.string().max(200).trim(),
 });
+
+const parseTagsInput = (raw: string): string[] =>
+  raw
+    .split(',')
+    .map(part => part.trim())
+    .filter(Boolean);
 
 export const NewNoteForm = ({ userId }: { userId: string }) => {
   const router = useRouter();
@@ -30,6 +37,7 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
     defaultValues: {
       title: "",
       text: "",
+      tags: "",
     },
   });
 
@@ -37,6 +45,7 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
     try {
       await newNote({
         ...data,
+        tags: parseTagsInput(data.tags),
         userId,
       });
       router.push("/notes");
@@ -113,6 +122,27 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               <CharacterCounter value={field.value || ""} />
+            </Field>
+          )}
+        />
+        <Controller
+          name="tags"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field>
+              <FieldLabel htmlFor={field.name} className="text-xs tracking-wider uppercase">
+                <span className="text-primary">❯</span> ./tags
+              </FieldLabel>
+              <Input
+                {...field}
+                id={field.name}
+                placeholder="$ tag --add work, urgent"
+                aria-invalid={fieldState.invalid}
+              />
+              <p className="font-mono text-[11px] text-muted-foreground/60">
+                comma-separated · a-z 0-9 - _ · max 10 tags
+              </p>
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />

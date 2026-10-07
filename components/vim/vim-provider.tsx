@@ -173,10 +173,22 @@ export const VimProvider = ({ children }: { children: React.ReactNode }) => {
           }
           return info(`usage: :theme <${THEME_VALUES.join('|')}>`);
         }
+        case 'tag': {
+          const [name] = args;
+          const params = new URLSearchParams(window.location.search);
+          if (name) {
+            params.set('tag', name.toLowerCase());
+          } else {
+            params.delete('tag');
+          }
+          params.delete('page');
+          router.push(`/notes?${params.toString()}`);
+          return done();
+        }
         case 'h':
         case 'help':
           return info(
-            ':w save · :q back · :wq save+back · :e edit · :n new · :d delete · :y yank · :notes :profile :home · :theme <name>',
+            ':w save · :q back · :wq save+back · :e edit · :n new · :d delete · :y yank · :tag <name> · :notes :profile :home · :theme <name>',
           );
         default:
           return error(`E492: Not an editor command: ${cmd}`);

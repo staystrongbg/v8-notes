@@ -21,13 +21,20 @@ import { NotePreview } from './note-preview';
 const newNoteFormSchema = z.object({
   title: z.string().min(1).max(100).trim(),
   text: z.string().min(1).max(2000).trim(),
+  tags: z.string().max(200).trim(),
 });
+
+const parseTagsInput = (raw: string): string[] =>
+  raw
+    .split(',')
+    .map(part => part.trim())
+    .filter(Boolean);
 
 const EditNoteForm = ({
   note,
   onTextChange,
 }: {
-  note: Note | null;
+  note: (Note & { tags?: { name: string }[] }) | null;
   onTextChange?: (text: string) => void;
 }) => {
   const router = useRouter();
@@ -37,6 +44,7 @@ const EditNoteForm = ({
     defaultValues: {
       title: note?.title || '',
       text: note?.text || '',
+      tags: note?.tags?.map(tag => tag.name).join(', ') || '',
     },
   });
   const textValue = useWatch({ control: form.control, name: 'text' });
@@ -59,6 +67,7 @@ const EditNoteForm = ({
     try {
       await updateNote({
         ...data,
+        tags: parseTagsInput(data.tags),
         id: note.id,
         userId: note.userId,
         isStarred: note.isStarred,
@@ -127,6 +136,30 @@ const EditNoteForm = ({
                   className="min-h-[220px] leading-relaxed"
                 />
                 <CharacterCounter value={field.value || ''} />
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+              </Field>
+            )}
+          />
+          <Controller
+            name="tags"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field>
+                <FieldLabel
+                  htmlFor={field.name}
+                  className="text-xs tracking-wider uppercase"
+                >
+                  <span className="text-primary">❯</span> ./tags
+                </FieldLabel>
+                <Input
+                  {...field}
+                  id={field.name}
+                  placeholder="$ tag --add work, urgent"
+                  aria-invalid={fieldState.invalid}
+                />
+                <p className="font-mono text-[11px] text-muted-foreground/60">
+                  comma-separated · a-z 0-9 - _ · max 10 tags
+                </p>
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}

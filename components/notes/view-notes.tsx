@@ -11,6 +11,7 @@ import { NotesGrid } from './notes-grid';
 import { NotesPagination } from './notes-pagination';
 import { NotesTable } from './notes-table';
 import { NotesToolbar } from './notes-toolbar';
+import { TagCloud } from './tag-cloud';
 
 type Props = {
   userId: string;
@@ -32,6 +33,7 @@ export const ViewNotes = ({ userId }: Props) => {
   const trashed = searchParams.get('trashed');
   const sort = searchParams.get('sort');
   const q = searchParams.get('q') ?? undefined;
+  const tag = searchParams.get('tag') ?? undefined;
 
   const pageNum = parseInt(page || '1') || 1;
 
@@ -40,8 +42,8 @@ export const ViewNotes = ({ userId }: Props) => {
   const notesSort = parseSort(sort || undefined);
 
   const { data, isPending } = useQuery({
-    queryKey: ['notes', userId, pageNum, LIMIT, notesFilter, notesSort, q ?? ''],
-    queryFn: () => getNotes(userId, notesFilter, pageNum, LIMIT, notesSort, q),
+    queryKey: ['notes', userId, pageNum, LIMIT, notesFilter, notesSort, q ?? '', tag ?? ''],
+    queryFn: () => getNotes(userId, notesFilter, pageNum, LIMIT, notesSort, q, tag),
   });
 
   if (isPending) return <NotesGridLoading />;
@@ -49,6 +51,7 @@ export const ViewNotes = ({ userId }: Props) => {
     return (
       <div className="space-y-4">
         <NotesToolbar />
+        <TagCloud userId={userId} />
         <NoNotes
           variant={
             q ? 'search' : trashed === 'true' ? 'trash' : starred === 'true' ? 'starred' : 'all'
@@ -63,10 +66,19 @@ export const ViewNotes = ({ userId }: Props) => {
   return (
     <div className="space-y-4">
       <NotesToolbar />
+      <TagCloud userId={userId} />
       {view === 'table' ? (
-        <NotesTable notes={data.notes} trashed={trashed === 'true'} />
+        <NotesTable
+          notes={data.notes}
+          trashed={trashed === 'true'}
+          baseQuery={searchParams.toString()}
+        />
       ) : (
-        <NotesGrid notes={data.notes} trashed={trashed === 'true'} />
+        <NotesGrid
+          notes={data.notes}
+          trashed={trashed === 'true'}
+          baseQuery={searchParams.toString()}
+        />
       )}
       <NotesPagination total={total} limit={LIMIT} currentPage={pageNum} />
     </div>

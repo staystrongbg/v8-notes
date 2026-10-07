@@ -14,7 +14,7 @@ const ROUTES = [
 const FEATURES = [
   'markdown + code highlight',
   'full-text search ( / )',
-  'starred filter',
+  'tags + starred filter',
   'trash + restore (30d)',
   'markdown toolbar',
   'grid / table views',
@@ -30,6 +30,7 @@ const SHORTCUTS = [
   { keys: ':n', desc: 'new note' },
   { keys: ':d', desc: 'delete note' },
   { keys: ':y', desc: 'yank (copy) note' },
+  { keys: ':tag …', desc: 'filter by tag' },
   { keys: 'ctrl+k', desc: 'command palette' },
   { keys: ':notes', desc: 'go to notes' },
   { keys: ':profile', desc: 'go to profile' },

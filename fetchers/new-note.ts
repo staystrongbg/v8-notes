@@ -6,11 +6,14 @@ import { headers } from "next/headers";
 import { unauthorized } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { noteInputSchema } from "@/fetchers/note-input-schema";
+import { extractHashtags } from "@/lib/tags";
+import { applyTags } from "@/fetchers/tags";
 
 export const newNote = async (note: {
   userId: string;
   title: string;
   text: string;
+  tags?: string[];
 }) => {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -25,13 +28,20 @@ export const newNote = async (note: {
     throw new Error(parsed.error.message);
   }
 
-  await prisma.note.create({
-    data: {
-      title: parsed.data.title,
-      text: parsed.data.text,
-      userId: session.user.id,
-      isStarred: false,
-    },
+  await prisma.$transaction(async tx => {
+    const saved = await tx.note.create({
+      data: {
+        title: parsed.data.title,
+        text: parsed.data.text,
+        userId: session.user.id,
+        isStarred: false,
+      },
+    });
+    await applyTags(tx, saved.id, session.user.id, [
+      ...(note.tags ?? []),
+      ...extractHashtags(parsed.data.text),
+    ]);
+    return saved;
   });
-  revalidatePath("/notes");
+  revalidatePath('/notes');
 };

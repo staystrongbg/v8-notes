@@ -20,6 +20,7 @@ model User {
   sessions      Session[]
   accounts      Account[]
   notes         Note[]
+  tags          Tag[]
 
   @@unique([email])
   @@map("user")
@@ -80,6 +81,19 @@ model Note {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   isStarred Boolean @default(false)
   deletedAt DateTime?
+  tags      Tag[]
 
   @@map("note")
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  notes     Note[]
+
+  @@unique([userId, name])
+  @@map("tag")
 }

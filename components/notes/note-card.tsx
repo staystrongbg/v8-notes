@@ -1,10 +1,24 @@
-import { Note } from '@prisma/client';
 import { ArrowRightIcon, StarIcon } from 'lucide-react';
 import Link from 'next/link';
+import type { NoteWithTags } from '@/fetchers/get-notes';
 import { PurgeNoteButton, RestoreNoteButton } from './trash-note-actions';
 
-export default function NoteCard({ note, trashed = false }: { note: Note; trashed?: boolean }) {
+export default function NoteCard({
+  note,
+  trashed = false,
+  baseQuery = '',
+}: {
+  note: NoteWithTags;
+  trashed?: boolean;
+  baseQuery?: string;
+}) {
   const preview = note.text.trim().split('\n')[0]?.slice(0, 120) || '// empty file';
+  const chipHref = (name: string) => {
+    const params = new URLSearchParams(baseQuery);
+    params.set('tag', name);
+    params.delete('page');
+    return `/notes?${params.toString()}`;
+  };
 
   return (
     <article className="group border-border/60 bg-card hover:border-primary/50 hover:shadow-primary/10 flex flex-col overflow-hidden rounded-xl border transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl">
@@ -27,6 +41,19 @@ export default function NoteCard({ note, trashed = false }: { note: Note; trashe
         <p className="text-muted-foreground mt-2 line-clamp-3 font-mono text-xs leading-relaxed">
           <span className="text-primary/60">❯</span> {preview}
         </p>
+        {note.tags.length > 0 && (
+          <p className="mt-2 flex flex-wrap gap-1.5 font-mono text-[11px]">
+            {note.tags.map(tag => (
+              <Link
+                key={tag.id}
+                href={chipHref(tag.name)}
+                className="text-primary/80 hover:text-primary rounded border border-border/50 bg-muted/50 px-1.5 py-0.5 transition-colors"
+              >
+                #{tag.name}
+              </Link>
+            ))}
+          </p>
+        )}
         <time className="text-muted-foreground/70 mt-3 font-mono text-[11px]">
           mtime{' '}
           {note.updatedAt.toLocaleDateString('en-US', {

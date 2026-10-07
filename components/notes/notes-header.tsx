@@ -21,7 +21,8 @@ export const NotesHeader = () => {
   const starred = searchParams.get("starred") === "true";
   const sort = parseSort(searchParams.get("sort"));
   const q = searchParams.get("q");
-  const flags = `--view=${view} --page=${page} --sort=${sort}${starred ? " --starred" : ""}${q ? ` --query="${q}"` : ""}`;
+  const tag = searchParams.get("tag");
+  const flags = `--view=${view} --page=${page} --sort=${sort}${starred ? " --starred" : ""}${q ? ` --query="${q}"` : ""}${tag ? ` --tag=${tag}` : ""}`;
 
   const setSort = (next: Sort) => {
     const params = new URLSearchParams(searchParams.toString());
