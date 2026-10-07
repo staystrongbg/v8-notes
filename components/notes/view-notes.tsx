@@ -1,7 +1,7 @@
 'use client';
 
 import { LIMIT } from '@/constants';
-import { type NotesSort, getNotes } from '@/fetchers/get-notes';
+import { type NotesFilter, type NotesSort, getNotes } from '@/fetchers/get-notes';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 
@@ -29,26 +29,45 @@ export const ViewNotes = ({ userId }: Props) => {
   const page = searchParams.get('page');
   const view = searchParams.get('view');
   const starred = searchParams.get('starred');
+  const trashed = searchParams.get('trashed');
   const sort = searchParams.get('sort');
+  const q = searchParams.get('q') ?? undefined;
 
   const pageNum = parseInt(page || '1') || 1;
 
-  const notesFilter = starred === 'true' ? 'starred' : 'all';
+  const notesFilter: NotesFilter =
+    trashed === 'true' ? 'trashed' : starred === 'true' ? 'starred' : 'all';
   const notesSort = parseSort(sort || undefined);
 
   const { data, isPending } = useQuery({
-    queryKey: ['notes', userId, pageNum, LIMIT, notesFilter, notesSort],
-    queryFn: () => getNotes(userId, notesFilter, pageNum, LIMIT, notesSort),
+    queryKey: ['notes', userId, pageNum, LIMIT, notesFilter, notesSort, q ?? ''],
+    queryFn: () => getNotes(userId, notesFilter, pageNum, LIMIT, notesSort, q),
   });
 
   if (isPending) return <NotesGridLoading />;
-  if (!data || !data.notes || data.notes.length === 0) return <NoNotes />;
+  if (!data || !data.notes || data.notes.length === 0) {
+    return (
+      <div className="space-y-4">
+        <NotesToolbar />
+        <NoNotes
+          variant={
+            q ? 'search' : trashed === 'true' ? 'trash' : starred === 'true' ? 'starred' : 'all'
+          }
+          query={q}
+        />
+      </div>
+    );
+  }
   const total = data.total || 0;
 
   return (
     <div className="space-y-4">
       <NotesToolbar />
-      {view === 'table' ? <NotesTable notes={data.notes} /> : <NotesGrid notes={data.notes} />}
+      {view === 'table' ? (
+        <NotesTable notes={data.notes} trashed={trashed === 'true'} />
+      ) : (
+        <NotesGrid notes={data.notes} trashed={trashed === 'true'} />
+      )}
       <NotesPagination total={total} limit={LIMIT} currentPage={pageNum} />
     </div>
   );

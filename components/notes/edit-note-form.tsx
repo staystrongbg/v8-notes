@@ -15,6 +15,7 @@ import { z } from 'zod';
 
 import { CharacterCounter } from '../shared/character-counter';
 import { SubmitButton } from '../shared/submit-button';
+import { MarkdownToolbar } from './markdown-toolbar';
 import { NotePreview } from './note-preview';
 
 const newNoteFormSchema = z.object({
@@ -41,6 +42,14 @@ const EditNoteForm = ({
   const textValue = useWatch({ control: form.control, name: 'text' });
   const formEl = useRef<HTMLFormElement>(null);
   useVimActions({ save: () => formEl.current?.requestSubmit() });
+  const bodyRef = useRef<HTMLTextAreaElement | null>(null);
+  const replaceBody = (next: string, selStart: number, selEnd: number) => {
+    form.setValue('text', next, { shouldDirty: true, shouldValidate: true });
+    requestAnimationFrame(() => {
+      bodyRef.current?.focus();
+      bodyRef.current?.setSelectionRange(selStart, selEnd);
+    });
+  };
 
   if (!note) {
     return <div>Note not found.</div>;
@@ -101,11 +110,16 @@ const EditNoteForm = ({
                 >
                   <span className="text-primary">❯</span> ./body.md
                 </FieldLabel>
+                <MarkdownToolbar editorRef={bodyRef} onReplace={replaceBody} />
                 <Textarea
                   {...field}
                   onChange={e => {
                     field.onChange(e);
                     onTextChange?.(e.target.value);
+                  }}
+                  ref={el => {
+                    field.ref(el);
+                    bodyRef.current = el;
                   }}
                   id={field.name}
                   placeholder="# markdown supported · ```code``` · :emoji:"

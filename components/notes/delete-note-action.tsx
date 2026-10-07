@@ -1,13 +1,13 @@
 'use client';
 
 import { useVimActions } from '@/components/vim/vim-provider';
-import { deleteNote } from '@/fetchers/delete-note';
+import { trashNote } from '@/fetchers/trash-note';
 import { Trash2Icon, TriangleAlertIcon, XIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-export const DeleteNoteAction = ({ noteId }: { noteId: string }) => {
+export const DeleteNoteAction = ({ noteId, userId }: { noteId: string; userId: string }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   useVimActions({ remove: () => setIsDeleting(true) });
 
@@ -25,7 +25,11 @@ export const DeleteNoteAction = ({ noteId }: { noteId: string }) => {
         </kbd>
       </button>
       {isDeleting && (
-        <DeleteNoteConfirmationDialog noteId={noteId} onClose={() => setIsDeleting(false)} />
+        <DeleteNoteConfirmationDialog
+          noteId={noteId}
+          userId={userId}
+          onClose={() => setIsDeleting(false)}
+        />
       )}
     </>
   );
@@ -33,9 +37,11 @@ export const DeleteNoteAction = ({ noteId }: { noteId: string }) => {
 
 const DeleteNoteConfirmationDialog = ({
   noteId,
+  userId,
   onClose,
 }: {
   noteId: string;
+  userId: string;
   onClose: () => void;
 }) => {
   const router = useRouter();
@@ -44,8 +50,8 @@ const DeleteNoteConfirmationDialog = ({
   const onDelete = async () => {
     try {
       setIsPending(true);
-      await deleteNote(noteId);
-      toast.success('Note deleted successfully');
+      await trashNote(noteId, userId);
+      toast.success('Note moved to trash');
       router.push('/notes');
     } catch {
       toast.error('Failed to delete note');
@@ -102,13 +108,13 @@ const DeleteNoteConfirmationDialog = ({
                 <span className="text-destructive" aria-hidden="true">
                   ❯{' '}
                 </span>
-                $ rm --force note?
+                $ trash note?
               </h2>
               <p
                 id="delete-note-desc"
                 className="text-muted-foreground mt-1 text-xs leading-relaxed"
               >
-                This action cannot be undone. The note will be permanently removed.
+                Move to trash. Restore within 30 days — older trash is purged automatically.
               </p>
               <p className="text-muted-foreground mt-2 min-w-0 truncate text-[11px]" title={noteId}>
                 target: <span className="text-foreground break-all">{noteId}</span>
@@ -130,7 +136,7 @@ const DeleteNoteConfirmationDialog = ({
               className="bg-destructive shadow-destructive/30 hover:bg-destructive/90 text-primary-foreground inline-flex h-9 cursor-pointer items-center justify-center gap-2 rounded-lg px-4 font-mono text-xs font-semibold shadow-lg transition-all active:scale-[0.98] disabled:opacity-50"
             >
               <Trash2Icon className="size-3.5" />
-              {isPending ? 'deleting...' : '--force'}
+              {isPending ? 'trashing...' : '--trash'}
             </button>
           </div>
         </div>

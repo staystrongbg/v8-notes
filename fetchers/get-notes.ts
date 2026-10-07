@@ -14,12 +14,15 @@ const sortOrder: Record<NotesSort, { updatedAt?: 'desc'; createdAt?: 'desc' | 'a
   oldest: { createdAt: 'asc' },
 };
 
+export type NotesFilter = 'all' | 'starred' | 'trashed';
+
 export const getNotes = async (
   userId: string,
-  filter?: 'all' | 'starred',
+  filter?: NotesFilter,
   page?: number,
   limit?: number,
   sort: NotesSort = 'updated',
+  query?: string,
 ): Promise<{ notes: Note[]; total: number }> => {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -29,9 +32,29 @@ export const getNotes = async (
     return unauthorized();
   }
 
+  const q = query?.trim() || undefined;
+
+  // Trashed notes are hidden everywhere except the trash view, which lists
+  // only trashed notes and lazily purges anything older than 30 days.
+  if (filter === 'trashed') {
+    await prisma.note.deleteMany({
+      where: {
+        userId,
+        deletedAt: { lt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) },
+      },
+    });
+  }
+
   const where = {
     userId,
     ...(filter === 'starred' && { isStarred: true }),
+    ...(filter === 'trashed' ? { deletedAt: { not: null } } : { deletedAt: null }),
+    ...(q && {
+      OR: [
+        { title: { contains: q, mode: 'insensitive' as const } },
+        { text: { contains: q, mode: 'insensitive' as const } },
+      ],
+    }),
   };
 
   const skip = page && limit ? (page - 1) * limit : 0;

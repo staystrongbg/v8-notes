@@ -3,17 +3,36 @@
 import { THEME_VALUES } from '@/lib/themes';
 import { useTheme } from 'next-themes';
 import { usePathname, useRouter } from 'next/navigation';
-import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { VimCommandBar, type VimCommandResult } from './vim-command-bar';
+import { VimPalette } from './vim-palette';
 
 export type VimActions = {
   save?: () => void;
   remove?: () => void;
   yank?: () => void;
+  focusSearch?: () => void;
+};
+
+type VimContextValue = {
+  register: (actions: VimActions) => () => void;
+  invoke: (key: keyof VimActions) => boolean;
+  snapshot: () => (keyof VimActions)[];
+  paletteOpen: boolean;
+  openPalette: () => void;
+  setPaletteOpen: (open: boolean) => void;
 };
 
 const VimActionsContext = createContext<(actions: VimActions) => () => void>(() => () => {});
+
+const VimContext = createContext<VimContextValue | null>(null);
+
+export const useVim = () => {
+  const ctx = useContext(VimContext);
+  if (!ctx) throw new Error('useVim must be used inside VimProvider');
+  return ctx;
+};
 
 export const useVimActions = (actions: VimActions) => {
   const register = useContext(VimActionsContext);
@@ -28,9 +47,11 @@ const isTypingTarget = (target: EventTarget | null) =>
     target.isContentEditable);
 
 /** Note id when on `/notes/<id>`, otherwise null. */
-const viewedNoteId = (pathname: string) => {
+export const viewedNoteId = (pathname: string) => {
   const segments = pathname.split('/').filter(Boolean);
-  return segments.length === 2 && segments[0] === 'notes' ? segments[1] : null;
+  if (segments.length !== 2 || segments[0] !== 'notes') return null;
+  const [, id] = segments;
+  return id === 'new' ? null : id;
 };
 
 export const VimProvider = ({ children }: { children: React.ReactNode }) => {
@@ -38,7 +59,36 @@ export const VimProvider = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const { setTheme } = useTheme();
   const [cmdOpen, setCmdOpen] = useState(false);
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  const [available, setAvailable] = useState<(keyof VimActions)[]>([]);
   const actionsRef = useRef<VimActions>({});
+
+  // Close overlays on navigation (render-phase adjustment: own state only).
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    setCmdOpen(false);
+    setPaletteOpen(false);
+  }
+
+  const snapshot = useCallback((): (keyof VimActions)[] => {
+    const actions = actionsRef.current;
+    return (Object.keys(actions) as (keyof VimActions)[]).filter(key => actions[key] !== undefined);
+  }, []);
+
+  const invoke = useCallback((key: keyof VimActions): boolean => {
+    const action = actionsRef.current[key];
+    if (action) {
+      action();
+      return true;
+    }
+    return false;
+  }, []);
+
+  const openPalette = useCallback(() => {
+    setAvailable(snapshot());
+    setPaletteOpen(true);
+  }, [snapshot]);
 
   const register = useCallback((actions: VimActions) => {
     const prev = actionsRef.current;
@@ -137,30 +187,51 @@ export const VimProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        openPalette();
+        return;
+      }
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       if (e.key === 'Escape') {
         setCmdOpen(false);
+        setPaletteOpen(false);
         return;
       }
-      if (cmdOpen || isTypingTarget(e.target)) return;
+      if (cmdOpen || paletteOpen || isTypingTarget(e.target)) return;
       if (e.key === ':') {
         e.preventDefault();
         setCmdOpen(true);
       }
+      if (e.key === '/') {
+        const focusSearch = actionsRef.current.focusSearch;
+        if (focusSearch) {
+          e.preventDefault();
+          focusSearch();
+        }
+      }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [cmdOpen]);
+  }, [cmdOpen, paletteOpen, openPalette]);
+
+  const value: VimContextValue = useMemo(
+    () => ({ register, invoke, snapshot, paletteOpen, openPalette, setPaletteOpen }),
+    [register, invoke, snapshot, paletteOpen, openPalette]
+  );
 
   return (
     <VimActionsContext.Provider value={register}>
-      {children}
-      <VimCommandBar
-        key={cmdOpen ? 'open' : 'shut'}
-        open={cmdOpen}
-        onRun={runCommand}
-        onClose={() => setCmdOpen(false)}
-      />
+      <VimContext.Provider value={value}>
+        {children}
+        <VimCommandBar
+          key={cmdOpen ? 'open' : 'shut'}
+          open={cmdOpen}
+          onRun={runCommand}
+          onClose={() => setCmdOpen(false)}
+        />
+        <VimPalette available={available} />
+      </VimContext.Provider>
     </VimActionsContext.Provider>
   );
 };

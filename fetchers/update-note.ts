@@ -9,7 +9,7 @@ import { Note } from "@prisma/client";
 import { noteInputSchema } from "@/fetchers/note-input-schema";
 
 export const updateNote = async (
-  note: Omit<Note, "createdAt" | "updatedAt" | "user">
+  note: Omit<Note, "createdAt" | "updatedAt" | "user" | "deletedAt">
 ): Promise<Note> => {
   const session = await auth.api.getSession({
     headers: await headers(),

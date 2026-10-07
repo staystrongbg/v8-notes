@@ -1,8 +1,9 @@
 import { Note } from '@prisma/client';
 import { ArrowRightIcon, StarIcon } from 'lucide-react';
 import Link from 'next/link';
+import { PurgeNoteButton, RestoreNoteButton } from './trash-note-actions';
 
-export default function NoteCard({ note }: { note: Note }) {
+export default function NoteCard({ note, trashed = false }: { note: Note; trashed?: boolean }) {
   const preview = note.text.trim().split('\n')[0]?.slice(0, 120) || '// empty file';
 
   return (
@@ -42,6 +43,12 @@ export default function NoteCard({ note }: { note: Note }) {
           $ open
           <ArrowRightIcon className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
         </Link>
+        {trashed && (
+          <div className="mt-3 flex items-center gap-4 border-t border-dashed border-border/60 pt-3">
+            <RestoreNoteButton noteId={note.id} userId={note.userId} />
+            <PurgeNoteButton noteId={note.id} userId={note.userId} />
+          </div>
+        )}
       </div>
     </article>
   );

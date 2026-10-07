@@ -14,6 +14,7 @@ import { FieldError } from "../ui/field";
 import { newNote } from "@/fetchers/new-note";
 import { SubmitButton } from "../shared/submit-button";
 import { CharacterCounter } from "../shared/character-counter";
+import { MarkdownToolbar } from "./markdown-toolbar";
 import { NotePreview } from "./note-preview";
 
 const newNoteFormSchema = z.object({
@@ -59,6 +60,14 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
   const textValue = useWatch({ control: form.control, name: "text" });
   const formEl = useRef<HTMLFormElement>(null);
   useVimActions({ save: () => formEl.current?.requestSubmit() });
+  const bodyRef = useRef<HTMLTextAreaElement | null>(null);
+  const replaceBody = (next: string, selStart: number, selEnd: number) => {
+    form.setValue("text", next, { shouldDirty: true, shouldValidate: true });
+    requestAnimationFrame(() => {
+      bodyRef.current?.focus();
+      bodyRef.current?.setSelectionRange(selStart, selEnd);
+    });
+  };
   return (
     <form ref={formEl} onSubmit={form.handleSubmit(onSubmit)} className="font-mono">
       <div className="grid gap-4 lg:grid-cols-2">
@@ -89,8 +98,13 @@ export const NewNoteForm = ({ userId }: { userId: string }) => {
               <FieldLabel htmlFor={field.name} className="text-xs tracking-wider uppercase">
                 <span className="text-primary">❯</span> ./body.md
               </FieldLabel>
+              <MarkdownToolbar editorRef={bodyRef} onReplace={replaceBody} />
               <Textarea
                 {...field}
+                ref={(el) => {
+                  field.ref(el);
+                  bodyRef.current = el;
+                }}
                 id={field.name}
                 placeholder="# markdown supported · ```code``` · :emoji:"
                 aria-invalid={fieldState.invalid}

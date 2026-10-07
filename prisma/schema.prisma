@@ -79,6 +79,7 @@ model Note {
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   isStarred Boolean @default(false)
-  
+  deletedAt DateTime?
+
   @@map("note")
 }

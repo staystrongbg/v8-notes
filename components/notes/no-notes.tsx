@@ -3,15 +3,28 @@ import { TerminalIcon } from 'lucide-react';
 import Link from 'next/link';
 
 type NoNotesProps = {
-  variant?: 'all' | 'starred';
+  variant?: 'all' | 'starred' | 'search' | 'trash';
+  query?: string;
 };
 
-export const NoNotes = ({ variant = 'all' }: NoNotesProps) => {
+export const NoNotes = ({ variant = 'all', query }: NoNotesProps) => {
   const isStarredView = variant === 'starred';
-  const headline = isStarredView ? 'No starred notes yet' : '0 notes found';
-  const subcopy = isStarredView
-    ? "Star notes you want to keep handy and they'll appear here."
-    : 'Create a note to capture your first idea.';
+  const isSearchView = variant === 'search';
+  const isTrashView = variant === 'trash';
+  const headline = isSearchView
+    ? '0 matches'
+    : isStarredView
+      ? 'No starred notes yet'
+      : isTrashView
+        ? 'Trash is empty'
+        : '0 notes found';
+  const subcopy = isSearchView
+    ? `No notes match "${query ?? ''}".`
+    : isStarredView
+      ? "Star notes you want to keep handy and they'll appear here."
+      : isTrashView
+        ? 'Deleted notes rest here for 30 days before automatic purge.'
+        : 'Create a note to capture your first idea.';
 
   return (
     <div>
@@ -26,9 +39,15 @@ export const NoNotes = ({ variant = 'all' }: NoNotesProps) => {
             <span className="text-primary">$</span> ls ./notes <span className="text-muted-foreground/60"># → {headline}</span>
           </p>
           <h2 className="font-mono text-lg font-bold text-foreground">{headline}</h2>
-          <p className="max-w-sm font-mono text-xs text-muted-foreground">{subcopy}</p>
+          <p className="max-w-sm font-mono text-xs break-words text-muted-foreground">{subcopy}</p>
           <Button variant="default" type="button" asChild className="font-mono">
-            <Link href="/notes/new">$ touch ./new.md</Link>
+            {isSearchView ? (
+              <Link href="/notes">$ reset query</Link>
+            ) : isTrashView ? (
+              <Link href="/notes">$ cd ~/notes</Link>
+            ) : (
+              <Link href="/notes/new">$ touch ./new.md</Link>
+            )}
           </Button>
         </div>
       </div>

@@ -29,6 +29,7 @@ import { noteMarkdownComponents } from '../../helpers/note-markdown-components';
 import { DeleteNoteAction } from './delete-note-action';
 import { NoteContentLoading } from './loaders-ui/note-content-loading';
 import { NotesError } from './notes-error';
+import { TrashedNotePanel } from './trashed-note-panel';
 import { StarredNote } from './starred-note';
 import { VimStatusline } from './vim-statusline';
 
@@ -44,6 +45,9 @@ export const NoteContent = ({ noteId }: { noteId: string }) => {
   if (!note) {
     return <NotesError message="Note not found" />;
   }
+  if (note.deletedAt) {
+    return <TrashedNotePanel noteId={noteId} userId={note.userId} title={note.title} />;
+  }
 
   const words = note.text.trim() ? note.text.trim().split(/\s+/).length : 0;
   const chars = note.text.length;
@@ -52,7 +56,13 @@ export const NoteContent = ({ noteId }: { noteId: string }) => {
 
   return (
     <div className="mx-auto max-w-4xl">
-      <NoteToolbar noteId={noteId} isStarred={note.isStarred} title={note.title} text={note.text} />
+      <NoteToolbar
+        noteId={noteId}
+        isStarred={note.isStarred}
+        userId={note.userId}
+        title={note.title}
+        text={note.text}
+      />
 
       <TerminalWindow
         title={`~/notes/${noteId}`}
@@ -159,11 +169,13 @@ const HudStat = ({
 const NoteToolbar = ({
   noteId,
   isStarred,
+  userId,
   title,
   text,
 }: {
   noteId: string;
   isStarred: boolean;
+  userId: string;
   title: string;
   text: string;
 }) => {
@@ -217,7 +229,7 @@ const NoteToolbar = ({
             <span className="hidden sm:inline">vim</span>
           </Link>
           <StarredNote noteId={noteId} isStarred={isStarred} />
-          <DeleteNoteAction noteId={noteId} />
+          <DeleteNoteAction noteId={noteId} userId={userId} />
         </div>
       </div>
     </div>
