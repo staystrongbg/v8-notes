@@ -1,19 +1,20 @@
-import { betterAuth } from "better-auth";
-import { prismaAdapter } from "better-auth/adapters/prisma";
-import prisma from "@/lib/prisma";
 import {
+  betterAuthUrl,
   githubClientId,
   githubClientSecret,
   googleClientId,
   googleClientSecret,
-  betterAuthUrl,
-} from "@/constants";
-import { nextCookies } from "better-auth/next-js";
-import { sendMail } from "./nodemailer";
+} from '@/constants';
+import { betterAuth } from 'better-auth';
+import { prismaAdapter } from 'better-auth/adapters/prisma';
+import { nextCookies } from 'better-auth/next-js';
+
+import { sendMail } from './nodemailer';
+import prisma from './prisma';
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
-    provider: "postgresql",
+    provider: 'postgresql',
   }),
   baseURL: betterAuthUrl,
   emailAndPassword: {
@@ -35,9 +36,9 @@ export const auth = betterAuth({
     autoSignInAfterVerification: true,
     async sendVerificationEmail({ url, user }) {
       await sendMail({
-        email: "ddamajadev@gmail.com",
+        email: 'ddamajadev@gmail.com',
         sendTo: user.email,
-        subject: "Verify your email",
+        subject: 'Verify your email',
         text: `Click the link below to verify your email: ${url}`,
         // html: `<p>Click the link below to verify your email: <a href="${url}">${url}</a></p>`,
       });
@@ -48,7 +49,7 @@ export const auth = betterAuth({
       enabled: true,
     },
   },
-  trustedOrigins: ["https://v8-notes.vercel.app", "http://localhost:3000"],
+  trustedOrigins: ['https://v8-notes.vercel.app', 'http://localhost:3000'],
   plugins: [nextCookies()],
 });
 
