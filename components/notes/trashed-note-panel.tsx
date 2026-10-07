@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { ArrowLeftIcon, HistoryIcon, Trash2Icon, TriangleAlertIcon } from 'lucide-react';
@@ -18,33 +18,23 @@ export const TrashedNotePanel = ({
   title: string;
 }) => {
   const router = useRouter();
-  const [isPending, setIsPending] = useState(false);
-
-  const onRestore = async () => {
-    try {
-      setIsPending(true);
-      await restoreNote(noteId, userId);
+  const restore = useMutation({
+    mutationFn: () => restoreNote(noteId, userId),
+    onSuccess: () => {
       toast.success('Note restored');
       router.push('/notes');
-    } catch {
-      toast.error('Failed to restore note');
-    } finally {
-      setIsPending(false);
-    }
-  };
-
-  const onPurge = async () => {
-    try {
-      setIsPending(true);
-      await purgeNote(noteId, userId);
+    },
+    onError: () => toast.error('Failed to restore note'),
+  });
+  const purge = useMutation({
+    mutationFn: () => purgeNote(noteId, userId),
+    onSuccess: () => {
       toast.success('Note permanently deleted');
       router.push('/notes?trashed=true');
-    } catch {
-      toast.error('Failed to delete note');
-    } finally {
-      setIsPending(false);
-    }
-  };
+    },
+    onError: () => toast.error('Failed to delete note'),
+  });
+  const isPending = restore.isPending || purge.isPending;
 
   return (
     <div className="mx-auto w-full max-w-4xl">
@@ -79,20 +69,20 @@ export const TrashedNotePanel = ({
               $ cd ..
             </button>
             <button
-              onClick={onRestore}
+              onClick={() => restore.mutate()}
               disabled={isPending}
               className="inline-flex h-9 cursor-pointer items-center gap-2 rounded-lg bg-primary px-4 font-mono text-xs font-bold text-primary-foreground transition-all hover:brightness-110 disabled:opacity-50"
             >
               <HistoryIcon className="size-3.5" />
-              {isPending ? 'restoring...' : '$ restore'}
+              {restore.isPending ? 'restoring...' : '$ restore'}
             </button>
             <button
-              onClick={onPurge}
+              onClick={() => purge.mutate()}
               disabled={isPending}
               className="inline-flex h-9 cursor-pointer items-center gap-2 rounded-lg bg-destructive px-4 font-mono text-xs font-bold text-primary-foreground transition-all hover:bg-destructive/90 disabled:opacity-50"
             >
               <Trash2Icon className="size-3.5" />
-              {isPending ? 'purging...' : '$ purge'}
+              {purge.isPending ? 'purging...' : '$ purge'}
             </button>
           </div>
         </div>

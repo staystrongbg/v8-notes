@@ -1,31 +1,24 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { HistoryIcon, Trash2Icon } from 'lucide-react';
 import { purgeNote, restoreNote } from '@/fetchers/trash-note';
 
 export const RestoreNoteButton = ({ noteId, userId }: { noteId: string; userId: string }) => {
-  const router = useRouter();
-  const [isPending, setIsPending] = useState(false);
-
-  const onRestore = async () => {
-    try {
-      setIsPending(true);
-      await restoreNote(noteId, userId);
+  const queryClient = useQueryClient();
+  const { mutate, isPending } = useMutation({
+    mutationFn: () => restoreNote(noteId, userId),
+    onSuccess: async () => {
       toast.success('Note restored');
-      router.refresh();
-    } catch {
-      toast.error('Failed to restore note');
-    } finally {
-      setIsPending(false);
-    }
-  };
+      await queryClient.invalidateQueries({ queryKey: ['notes'] });
+    },
+    onError: () => toast.error('Failed to restore note'),
+  });
 
   return (
     <button
-      onClick={onRestore}
+      onClick={() => mutate()}
       disabled={isPending}
       className="text-primary hover:text-primary/80 inline-flex cursor-pointer items-center gap-1.5 font-mono text-xs font-bold transition-colors disabled:opacity-50"
     >
@@ -36,25 +29,19 @@ export const RestoreNoteButton = ({ noteId, userId }: { noteId: string; userId: 
 };
 
 export const PurgeNoteButton = ({ noteId, userId }: { noteId: string; userId: string }) => {
-  const router = useRouter();
-  const [isPending, setIsPending] = useState(false);
-
-  const onPurge = async () => {
-    try {
-      setIsPending(true);
-      await purgeNote(noteId, userId);
+  const queryClient = useQueryClient();
+  const { mutate, isPending } = useMutation({
+    mutationFn: () => purgeNote(noteId, userId),
+    onSuccess: async () => {
       toast.success('Note permanently deleted');
-      router.refresh();
-    } catch {
-      toast.error('Failed to delete note');
-    } finally {
-      setIsPending(false);
-    }
-  };
+      await queryClient.invalidateQueries({ queryKey: ['notes'] });
+    },
+    onError: () => toast.error('Failed to delete note'),
+  });
 
   return (
     <button
-      onClick={onPurge}
+      onClick={() => mutate()}
       disabled={isPending}
       className="text-destructive/80 hover:text-destructive inline-flex cursor-pointer items-center gap-1.5 font-mono text-xs font-bold transition-colors disabled:opacity-50"
     >

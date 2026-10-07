@@ -2,8 +2,10 @@
 
 import { addNoteToStarred } from "@/fetchers/add-note-to-starred";
 import { removeNoteFromStarred } from "@/fetchers/remove-note-from-starred";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Star } from "lucide-react";
-import { useState, useTransition } from "react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface StarredNoteProps {
   noteId: string;
@@ -14,25 +16,28 @@ export const StarredNote = ({
   noteId,
   isStarred: initialStarred,
 }: StarredNoteProps) => {
+  const queryClient = useQueryClient();
   const [isStarred, setIsStarred] = useState(initialStarred);
-  const [isPending, startTransition] = useTransition();
 
-  const toggleStarred = () => {
-    startTransition(async () => {
-      if (isStarred) {
-        await removeNoteFromStarred(noteId);
-        setIsStarred(false);
-      } else {
-        await addNoteToStarred(noteId);
-        setIsStarred(true);
-      }
-    });
-  };
+  const { mutate, isPending } = useMutation({
+    mutationFn: (next: boolean) =>
+      next ? addNoteToStarred(noteId) : removeNoteFromStarred(noteId),
+    onMutate: (next) => {
+      setIsStarred(next);
+    },
+    onError: (_error, next) => {
+      setIsStarred(!next);
+      toast.error('Failed to update starred status');
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['notes'] });
+    },
+  });
 
   return (
     <button
       type="button"
-      onClick={toggleStarred}
+      onClick={() => mutate(!isStarred)}
       disabled={isPending}
       className={`inline-flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 font-mono text-xs font-medium tracking-wide uppercase transition-all disabled:opacity-50 ${
         isStarred
