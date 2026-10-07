@@ -10,7 +10,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'V8 Notes',
-  description: 'Yet another notes app',
+  description: 'Markdown notes. Nothing else.',
 };
 
 export default function RootLayout({

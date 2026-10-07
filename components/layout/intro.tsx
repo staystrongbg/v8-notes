@@ -52,7 +52,8 @@ export const Intro = () => {
             </h1>
             <p className="text-muted-foreground mt-3 max-w-xl font-mono text-sm leading-relaxed">
               Plain markdown notes with syntax-highlighted code blocks, starring, and grid or table
-              views. No lock-in — just text.
+              views. No lock-in — just text. Vim-style commands and a command
+              palette keep everything one keystroke away — on keyboard and on touch.
             </p>
 
             <p className="text-muted-foreground mt-8 mb-2 font-mono text-xs tracking-wider uppercase">

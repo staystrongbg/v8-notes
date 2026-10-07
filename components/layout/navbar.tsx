@@ -15,6 +15,13 @@ export default function Navbar() {
   return (
     <NavigationHeader>
       <nav className="flex items-center justify-around gap-4 py-3" aria-label="Primary">
+        <div className="bg-background flex flex-col items-center rounded-lg px-4 py-2">
+          <span className="font-mono text-xl font-bold">
+            {/* <span className="text-foreground">#</span> */}
+            <span className="text-primary">v8</span>
+          </span>
+          {/* <span className="text-muted-foreground text-xs">notes</span> */}
+        </div>
         <ul className="hidden items-center gap-2 sm:flex sm:gap-4">
           {LINKS.map(item => (
             <li key={item.name}>
