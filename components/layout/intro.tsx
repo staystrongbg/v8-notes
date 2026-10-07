@@ -9,7 +9,7 @@ const ROUTES = [
   { path: '/profile', desc: 'account and settings' },
 ] as const;
 
-const FEATURES = ['markdown + code highlight', 'starred filter', 'grid / table views', '7 themes'] as const;
+const FEATURES = ['markdown + code highlight', 'starred filter', 'grid / table views', '8 themes'] as const;
 
 const SHORTCUTS = [
   { keys: ':', desc: 'open command bar' },

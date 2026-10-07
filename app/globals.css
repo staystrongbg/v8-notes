@@ -298,6 +298,41 @@ h1.cyber {
   --sidebar-ring: #e5e5e5;
 }
 
+.blossom {
+  color-scheme: light;
+  --background: #fdf2f8;
+  --foreground: #581c42;
+  --card: #ffffff;
+  --card-foreground: #581c42;
+  --popover: #ffffff;
+  --popover-foreground: #581c42;
+  --primary: #9333ea;
+  --primary-foreground: #fdf4ff;
+  --secondary: #fce7f3;
+  --secondary-foreground: #831843;
+  --muted: #fce7f3;
+  --muted-foreground: #9d5c8a;
+  --accent: #e9d5ff;
+  --accent-foreground: #6b21a8;
+  --destructive: #e11d48;
+  --border: #f5c6e0;
+  --input: #f5c6e0;
+  --ring: #c026d3;
+  --chart-1: #e11d48;
+  --chart-2: #ec4899;
+  --chart-3: #d946ef;
+  --chart-4: #a855f7;
+  --chart-5: #8b5cf6;
+  --sidebar: #fff7fb;
+  --sidebar-foreground: #581c42;
+  --sidebar-primary: #9333ea;
+  --sidebar-primary-foreground: #fdf4ff;
+  --sidebar-accent: #fce7f3;
+  --sidebar-accent-foreground: #831843;
+  --sidebar-border: #f5c6e0;
+  --sidebar-ring: #c026d3;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

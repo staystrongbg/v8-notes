@@ -19,6 +19,7 @@ const THEME_OPTIONS = [
   { value: "ocean", label: "Ocean", swatch: "#5eb1ff" },
   { value: "crimson", label: "Crimson", swatch: "#ff6b5e" },
   { value: "midnight", label: "Midnight", swatch: "#e5e5e5" },
+  { value: "blossom", label: "Blossom", swatch: "#ec4899" },
   { value: "system", label: "System", swatch: undefined, icon: Monitor },
 ] as const;
 

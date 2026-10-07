@@ -6,6 +6,7 @@ export const THEME_VALUES = [
   'ocean',
   'crimson',
   'midnight',
+  'blossom',
 ] as const;
 
 export type ThemeValue = (typeof THEME_VALUES)[number];
