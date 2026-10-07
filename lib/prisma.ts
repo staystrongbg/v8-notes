@@ -1,19 +1,24 @@
+import { PrismaPg } from '@prisma/adapter-pg';
+
 import { PrismaClient } from '../node_modules/.prisma/client';
-import { withAccelerate } from '@prisma/extension-accelerate';
 
 const globalForPrisma = global as unknown as {
   prisma: PrismaClient;
 };
 
-// NOTE: DATABASE_URL is a Prisma Accelerate URL (prisma+postgres://…).
-// It must NOT go through a driver adapter (PrismaPg expects a direct
-// Postgres connection string and times out on Accelerate URLs) — pass it
-// as accelerateUrl with the extension instead. Temporary until the
-// Accelerate retirement (Dec 1, 2026); then switch to a direct URL +
-// PrismaPg adapter.
+// NOTE: DATABASE_URL must be a direct (pooled) Postgres URL — not an
+// Accelerate (prisma+postgres://) URL. Do NOT add statement_timeout here:
+// this proxy rejects it at connect time ("Failed to connect to upstream
+// database"). Per-query timeouts belong in application code if needed.
 const prisma =
   globalForPrisma.prisma ||
-  new PrismaClient({ accelerateUrl: process.env.DATABASE_URL }).$extends(withAccelerate());
+  new PrismaClient({
+    adapter: new PrismaPg({
+      connectionString: process.env.DATABASE_URL,
+      max: 10,
+      idleTimeoutMillis: 30000,
+    }),
+  });
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
