@@ -16,8 +16,10 @@ export default function Navbar() {
     <NavigationHeader>
       <nav className="flex items-center justify-around gap-4 py-3" aria-label="Primary">
         <div className="bg-background flex flex-col items-center rounded-lg px-4 py-2">
-          <span className="font-mono text-xl font-bold">
-            <span className="text-primary">v8</span>
+          <span className="flex items-center gap-0.5 font-mono text-xl font-bold">
+            <span className="text-primary">❯</span>
+            <span className="text-foreground mt-1 text-3xl">8</span>
+            <span className="bg-foreground text-primary mt-1 h-7 w-4 p-1"></span>
           </span>
           <span className="text-muted-foreground text-xs">v1.0</span>
         </div>

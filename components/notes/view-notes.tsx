@@ -57,7 +57,11 @@ export const ViewNotes = ({ userId }: Props) => {
   if (!data || !data.notes || data.notes.length === 0) {
     return (
       <div className="space-y-4">
-        <NotesToolbar />
+        <NotesToolbar
+          notesTotal={counts?.all}
+          notesStarredTotal={counts?.starred}
+          notesTrashedTotal={counts?.trashed}
+        />
         <TagCloud userId={userId} />
         <NoNotes
           variant={
