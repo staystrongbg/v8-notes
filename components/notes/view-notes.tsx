@@ -1,7 +1,7 @@
 'use client';
 
 import { LIMIT } from '@/constants';
-import { type NotesFilter, type NotesSort, getNotes } from '@/fetchers/get-notes';
+import { type NotesFilter, type NotesSort, getNoteCounts, getNotes } from '@/fetchers/get-notes';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 
@@ -46,6 +46,13 @@ export const ViewNotes = ({ userId }: Props) => {
     queryFn: () => getNotes(userId, notesFilter, pageNum, LIMIT, notesSort, q, tag),
   });
 
+  // Keyed under ['notes', …] so every existing ['notes'] invalidation
+  // (trash/restore/purge/star/delete) refreshes the tab counts too.
+  const { data: counts } = useQuery({
+    queryKey: ['notes', userId, 'counts'],
+    queryFn: () => getNoteCounts(userId),
+  });
+
   if (isPending) return <NotesGridLoading />;
   if (!data || !data.notes || data.notes.length === 0) {
     return (
@@ -62,10 +69,13 @@ export const ViewNotes = ({ userId }: Props) => {
     );
   }
   const total = data.total || 0;
-
   return (
     <div className="space-y-4">
-      <NotesToolbar />
+      <NotesToolbar
+        notesTotal={counts?.all}
+        notesStarredTotal={counts?.starred}
+        notesTrashedTotal={counts?.trashed}
+      />
       <TagCloud userId={userId} />
       {view === 'table' ? (
         <NotesTable

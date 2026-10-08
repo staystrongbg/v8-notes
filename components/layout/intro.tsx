@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import { GeekyBackdrop, TerminalWindow } from '../shared/terminal';
+import { DonateButton } from '../shared/donate-button';
 import { SignUpButton } from './signup-button';
 
 const ROUTES = [
@@ -104,6 +105,7 @@ export const Intro = () => {
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <SignUpButton />
+              <DonateButton className="px-2 py-3 text-sm font-bold" />
               <Link
                 href="/notes"
                 className="text-primary decoration-primary/50 inline-flex items-center gap-2 px-2 py-3 font-mono text-sm font-bold underline decoration-dotted underline-offset-4 hover:decoration-solid"

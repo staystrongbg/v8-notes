@@ -1,4 +1,4 @@
-import { Book, HomeIcon, Star } from "lucide-react";
+import { Book, HomeIcon } from "lucide-react";
 //
 // Number of notes to display per page
 export const LIMIT = 6;
@@ -33,3 +33,7 @@ export const resendApiKey = process.env.RESEND_API_KEY as string;
 
 export const nodemailerEmail = process.env.NODEMAILER_EMAIL as string;
 export const nodemailerPassword = process.env.NODEMAILER_PASSWORD as string;
+
+// Donation link (Ko-fi, GitHub Sponsors, …). Empty = donate buttons stay
+// hidden everywhere, so no dead links ever render.
+export const DONATE_URL = "https://github.com/sponsors/staystrongbg";

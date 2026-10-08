@@ -17,6 +17,30 @@ const sortOrder: Record<NotesSort, { updatedAt?: 'desc'; createdAt?: 'desc' | 'a
 export type NotesFilter = 'all' | 'starred' | 'trashed';
 export type NoteWithTags = Note & { tags: Tag[] };
 
+export type NoteCounts = {
+  all: number;
+  starred: number;
+  trashed: number;
+};
+
+export const getNoteCounts = async (userId: string): Promise<NoteCounts> => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user || session.user.id !== userId) {
+    return unauthorized();
+  }
+
+  const [all, starred, trashed] = await prisma.$transaction([
+    prisma.note.count({ where: { userId, deletedAt: null } }),
+    prisma.note.count({ where: { userId, deletedAt: null, isStarred: true } }),
+    prisma.note.count({ where: { userId, deletedAt: { not: null } } }),
+  ]);
+
+  return { all, starred, trashed };
+};
+
 export const getNotes = async (
   userId: string,
   filter?: NotesFilter,

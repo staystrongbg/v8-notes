@@ -93,10 +93,11 @@ export const VimPalette = ({ available }: { available: (keyof VimActions)[] }) =
     queryFn: () => getNotes(userId ?? '', 'all', 1, 5, 'updated'),
     enabled: paletteOpen && !!userId && !q,
   });
+
   const {
     data: found,
     error: searchError,
-    isPending,
+    isLoading,
   } = useQuery({
     queryKey: ['palette-search', userId, q],
     queryFn: () => getNotes(userId ?? '', 'all', 1, 7, 'updated', q),
@@ -225,14 +226,14 @@ export const VimPalette = ({ available }: { available: (keyof VimActions)[] }) =
             aria-label="Command palette"
             autoComplete="off"
             spellCheck={false}
-            className="text-foreground placeholder:text-muted-foreground/50 min-w-0 flex-1 bg-transparent font-mono text-sm outline-none"
+            className="placeholder:text-muted-foreground/50 min-w-0 flex-1 bg-transparent font-mono text-sm outline-none"
           />
           <kbd className="border-border/60 bg-muted text-muted-foreground shrink-0 rounded border px-1.5 py-0.5 font-mono text-[11px]">
             esc
           </kbd>
         </div>
         <div ref={listRef} className="max-h-[50vh] overflow-y-auto p-1.5">
-          {isPending && <Loader2 className="text-muted-foreground mx-auto h-4 w-4 animate-spin" />}
+          {isLoading && <Loader2 className="text-muted-foreground mx-auto h-4 w-4 animate-spin" />}
           {rows.length === 0 && (
             <p className="text-muted-foreground px-3 py-6 text-center font-mono text-xs">
               0 matches

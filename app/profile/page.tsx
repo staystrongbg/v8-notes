@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { unauthorized } from "next/navigation";
 import { GeekyBackdrop, GeekyPrompt, TerminalWindow } from "@/components/shared/terminal";
+import { DonateButton } from "@/components/shared/donate-button";
 
 export default async function ProfilePage() {
   const session = await requireUserSession();
@@ -63,6 +64,9 @@ export default async function ProfilePage() {
           </div>
           <UserDetails />
         </TerminalWindow>
+        <div className="mt-4 text-center">
+          <DonateButton />
+        </div>
         {!session.user.emailVerified && (
           <div className="mt-4 text-center">
             <Button variant="link" size="sm" type="button" asChild className="font-mono text-xs">
