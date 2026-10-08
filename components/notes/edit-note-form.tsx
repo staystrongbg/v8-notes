@@ -8,6 +8,7 @@ import { useVimActions } from '@/components/vim/vim-provider';
 import { updateNote } from '@/fetchers/update-note';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Note } from '@prisma/client';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
@@ -50,6 +51,23 @@ const EditNoteForm = ({
   const textValue = useWatch({ control: form.control, name: 'text' });
   const formEl = useRef<HTMLFormElement>(null);
   useVimActions({ save: () => formEl.current?.requestSubmit() });
+  const {
+    mutate,
+    isPending: isMutating,
+    isError,
+    error: mutationError,
+  } = useMutation({
+    mutationFn: (data: z.infer<typeof newNoteFormSchema>) =>
+      updateNote({
+        ...data,
+        tags: parseTagsInput(data.tags),
+        id: note?.id ?? '',
+        userId: note?.userId ?? '',
+        isStarred: note?.isStarred ?? false,
+      }),
+    onSuccess: () => router.push('/notes'),
+  });
+
   const bodyRef = useRef<HTMLTextAreaElement | null>(null);
   const replaceBody = (next: string, selStart: number, selEnd: number) => {
     form.setValue('text', next, { shouldDirty: true, shouldValidate: true });
@@ -63,26 +81,15 @@ const EditNoteForm = ({
     return <div>Note not found.</div>;
   }
 
-  const onSubmit = async (data: z.infer<typeof newNoteFormSchema>) => {
-    try {
-      await updateNote({
-        ...data,
-        tags: parseTagsInput(data.tags),
-        id: note.id,
-        userId: note.userId,
-        isStarred: note.isStarred,
-      });
-      router.push('/notes');
-    } catch (error) {
-      form.setError('root', {
-        type: 'manual',
-        message:
-          error instanceof Error ? error.message : 'Failed to update note. Please try again.',
-      });
-    }
+  const onSubmit = (data: z.infer<typeof newNoteFormSchema>) => {
+    mutate(data);
   };
-  const isLoading = form.formState.isSubmitting;
-  const error = form.formState.errors.root?.message;
+  const isLoading = isMutating;
+  const error = isError
+    ? mutationError instanceof Error
+      ? mutationError.message
+      : 'Failed to update note. Please try again.'
+    : undefined;
   return (
     <form ref={formEl} onSubmit={form.handleSubmit(onSubmit)} className="font-mono">
       <div className="grid gap-4 lg:grid-cols-2">
@@ -92,10 +99,7 @@ const EditNoteForm = ({
             control={form.control}
             render={({ field, fieldState }) => (
               <Field>
-                <FieldLabel
-                  htmlFor={field.name}
-                  className="text-xs tracking-wider uppercase"
-                >
+                <FieldLabel htmlFor={field.name} className="text-xs tracking-wider uppercase">
                   <span className="text-primary">❯</span> ./title
                 </FieldLabel>
                 <Input
@@ -113,10 +117,7 @@ const EditNoteForm = ({
             control={form.control}
             render={({ field, fieldState }) => (
               <Field>
-                <FieldLabel
-                  htmlFor={field.name}
-                  className="text-xs tracking-wider uppercase"
-                >
+                <FieldLabel htmlFor={field.name} className="text-xs tracking-wider uppercase">
                   <span className="text-primary">❯</span> ./body.md
                 </FieldLabel>
                 <MarkdownToolbar editorRef={bodyRef} onReplace={replaceBody} />
@@ -145,10 +146,7 @@ const EditNoteForm = ({
             control={form.control}
             render={({ field, fieldState }) => (
               <Field>
-                <FieldLabel
-                  htmlFor={field.name}
-                  className="text-xs tracking-wider uppercase"
-                >
+                <FieldLabel htmlFor={field.name} className="text-xs tracking-wider uppercase">
                   <span className="text-primary">❯</span> ./tags
                 </FieldLabel>
                 <Input
@@ -157,7 +155,7 @@ const EditNoteForm = ({
                   placeholder="$ tag --add work, urgent"
                   aria-invalid={fieldState.invalid}
                 />
-                <p className="font-mono text-[11px] text-muted-foreground/60">
+                <p className="text-muted-foreground/60 font-mono text-[11px]">
                   comma-separated · a-z 0-9 - _ · max 10 tags
                 </p>
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}

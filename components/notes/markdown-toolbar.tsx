@@ -1,6 +1,5 @@
 'use client';
 
-import type { RefObject } from 'react';
 import {
   BoldIcon,
   CodeIcon,
@@ -13,10 +12,16 @@ import {
   SquareCodeIcon,
   StrikethroughIcon,
 } from 'lucide-react';
+import type { RefObject } from 'react';
 
 type Selection = { text: string; start: number; end: number };
 type Replacement = { text: string; selStart: number; selEnd: number };
 
+//1. takes the text, start, and end positions
+//2. gets the selected text
+//3. if there is selected text, it wraps it with the before and after strings
+//4. if there is no selected text, it uses the placeholder
+//5. returns the new text and the new selection range
 const wrap = (before: string, after: string, placeholder: string) => {
   return ({ text, start, end }: Selection): Replacement => {
     const selected = text.slice(start, end);
@@ -29,6 +34,11 @@ const wrap = (before: string, after: string, placeholder: string) => {
   };
 };
 
+//1. takes the text, start, and end positions
+//2. finds the start of the current line
+//3. gets the body of the current line
+//4. prefixes each line with the prefix
+//5. returns the new text and the new selection range
 const prefixLines = (prefix: string | ((index: number) => string)) => {
   return ({ text, start, end }: Selection): Replacement => {
     const lineStart = text.lastIndexOf('\n', start - 1) + 1;
@@ -105,7 +115,11 @@ export const MarkdownToolbar = ({
   const run = (apply: (sel: Selection) => Replacement) => {
     const el = editorRef.current;
     if (!el) return;
-    const result = apply({ text: el.value, start: el.selectionStart ?? 0, end: el.selectionEnd ?? 0 });
+    const result = apply({
+      text: el.value,
+      start: el.selectionStart ?? 0,
+      end: el.selectionEnd ?? 0,
+    });
     onReplace(result.text, result.selStart, result.selEnd);
     requestAnimationFrame(() => {
       el.focus();
@@ -117,7 +131,7 @@ export const MarkdownToolbar = ({
     <div
       role="toolbar"
       aria-label="Markdown formatting"
-      className="flex flex-wrap items-center gap-1 rounded-lg border border-border/40 bg-muted/40 p-1"
+      className="border-border/40 bg-muted/40 flex flex-wrap items-center gap-1 rounded-lg border p-1"
     >
       {ACTIONS.map(action => (
         <button
@@ -126,7 +140,7 @@ export const MarkdownToolbar = ({
           title={`${action.label} (${action.hint})`}
           aria-label={action.label}
           onClick={() => run(action.apply)}
-          className="cursor-pointer rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          className="text-muted-foreground hover:bg-muted hover:text-foreground cursor-pointer rounded-md p-1.5 transition-colors"
         >
           <action.icon className="size-4" />
         </button>
