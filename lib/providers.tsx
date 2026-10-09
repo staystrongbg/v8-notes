@@ -2,6 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
+import { THEME_VALUES } from "./themes";
 
 const queryClient = new QueryClient();
 
@@ -13,7 +14,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         defaultTheme="system"
         enableSystem
         disableTransitionOnChange
-        themes={["light", "dark", "system", "matrix", "ocean", "crimson", "midnight", "blossom"]}
+        themes={[...THEME_VALUES]}
       >
         {children}
       </ThemeProvider>

@@ -2,7 +2,7 @@
 
 import { auth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
-import { Note, Tag } from '@prisma/client';
+import { Note, Tag, type Prisma } from '@prisma/client';
 import { headers } from 'next/headers';
 import { unauthorized } from 'next/navigation';
 
@@ -72,18 +72,28 @@ export const getNotes = async (
     });
   }
 
-  const where = {
-    userId,
-    ...(filter === 'starred' && { isStarred: true }),
-    ...(filter === 'trashed' ? { deletedAt: { not: null } } : { deletedAt: null }),
-    ...(tag && { tags: { some: { name: tag } } }),
-    ...(q && {
-      OR: [
-        { title: { contains: q, mode: 'insensitive' as const } },
-        { text: { contains: q, mode: 'insensitive' as const } },
-      ],
-    }),
-  };
+  const where: Prisma.NoteWhereInput = { userId };
+
+  if (filter === 'starred') {
+    where.isStarred = true;
+  }
+
+  if (filter === 'trashed') {
+    where.deletedAt = { not: null };
+  } else {
+    where.deletedAt = null;
+  }
+
+  if (tag) {
+    where.tags = { some: { name: tag } };
+  }
+
+  if (q) {
+    where.OR = [
+      { title: { contains: q, mode: 'insensitive' } },
+      { text: { contains: q, mode: 'insensitive' } },
+    ];
+  }
 
   const skip = page && limit ? (page - 1) * limit : 0;
   const take = limit;

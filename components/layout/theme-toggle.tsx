@@ -1,27 +1,26 @@
-"use client";
+'use client';
 
+import { THEMES, type ThemeValue } from '@/lib/themes';
+import { cn } from '@/lib/utils';
+import { Check, Monitor, Moon, Sun } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { useSyncExternalStore } from 'react';
+
+import { Button } from '../ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
-import { Sun, Moon, Monitor, Check } from "lucide-react";
-import { useTheme } from "next-themes";
-import { useSyncExternalStore } from "react";
-import { cn } from "@/lib/utils";
+} from '../ui/dropdown-menu';
 
-const THEME_OPTIONS = [
-  { value: "light", label: "Light", swatch: "#f0f2f5", icon: Sun },
-  { value: "dark", label: "Dark", swatch: "#7aa2f7", icon: Moon },
-  { value: "matrix", label: "Matrix", swatch: "#34ff88" },
-  { value: "ocean", label: "Ocean", swatch: "#5eb1ff" },
-  { value: "crimson", label: "Crimson", swatch: "#ff6b5e" },
-  { value: "midnight", label: "Midnight", swatch: "#e5e5e5" },
-  { value: "blossom", label: "Blossom", swatch: "#ec4899" },
-  { value: "system", label: "System", swatch: undefined, icon: Monitor },
-] as const;
+const THEME_ICONS: Partial<Record<ThemeValue, typeof Sun>> = {
+  light: Sun,
+  dark: Moon,
+  system: Monitor,
+};
+
+const THEME_OPTIONS = THEMES;
 
 export const ThemeToggle = () => {
   // Gate theme-dependent UI behind mount: the server can't know the stored
@@ -29,19 +28,20 @@ export const ThemeToggle = () => {
   const mounted = useSyncExternalStore(
     () => () => {},
     () => true,
-    () => false
+    () => false,
   );
+
   const { setTheme, theme } = useTheme();
-  const active = mounted ? THEME_OPTIONS.find((option) => option.value === theme) : undefined;
+  const active = mounted ? THEME_OPTIONS.find(option => option.value === theme) : undefined;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" title={`Theme: ${active?.label ?? "…"}`}>
+        <Button variant="ghost" size="icon" title={`Theme: ${active?.label ?? '…'}`}>
           {active?.swatch ? (
             <span
               aria-hidden
-              className="size-4 rounded-sm border border-border"
+              className="border-border size-4 rounded-sm border"
               style={{ backgroundColor: active.swatch }}
             />
           ) : (
@@ -51,18 +51,18 @@ export const ThemeToggle = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="font-mono">
-        {THEME_OPTIONS.map((option) => {
-          const Icon = "icon" in option ? option.icon : undefined;
+        {THEME_OPTIONS.map(option => {
+          const Icon = THEME_ICONS[option.value];
           return (
             <DropdownMenuItem
               key={option.value}
               onClick={() => setTheme(option.value)}
-              className={cn(mounted && theme === option.value && "text-primary")}
+              className={cn(mounted && theme === option.value && 'text-primary')}
             >
               {option.swatch ? (
                 <span
                   aria-hidden
-                  className="mr-2 size-3.5 shrink-0 rounded-sm border border-border"
+                  className="border-border mr-2 size-3.5 shrink-0 rounded-sm border"
                   style={{ backgroundColor: option.swatch }}
                 />
               ) : (

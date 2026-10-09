@@ -1,6 +1,7 @@
+import type { NoteWithTags } from '@/fetchers/get-notes';
 import { ArrowRightIcon, StarIcon } from 'lucide-react';
 import Link from 'next/link';
-import type { NoteWithTags } from '@/fetchers/get-notes';
+
 import { PurgeNoteButton, RestoreNoteButton } from './trash-note-actions';
 
 export default function NoteCard({
@@ -21,10 +22,12 @@ export default function NoteCard({
   };
 
   return (
-    <article className="group border-border/60 bg-card hover:border-primary/50 hover:shadow-primary/10 flex flex-col overflow-hidden rounded-xl border transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl">
+    <article className="group border-border/60 bg-card hover:border-primary/50 flex flex-col overflow-hidden rounded-xl border transition-all duration-300">
       <div className="border-border/50 bg-muted/40 flex items-center gap-1.5 border-b px-3.5 py-2">
         <span className="text-primary font-mono text-[11px] font-bold">❯</span>
-        <span className="text-muted-foreground min-w-0 flex-1 truncate font-mono text-[11px]">./{note.id}</span>
+        <span className="text-muted-foreground min-w-0 flex-1 truncate font-mono text-[11px]">
+          ./{note.id}
+        </span>
         {note.isStarred && (
           <StarIcon
             className="fill-primary text-primary ml-auto h-3.5 w-3.5 shrink-0"
@@ -47,7 +50,7 @@ export default function NoteCard({
               <Link
                 key={tag.id}
                 href={chipHref(tag.name)}
-                className="text-primary/80 hover:text-primary rounded border border-border/50 bg-muted/50 px-1.5 py-0.5 transition-colors"
+                className="text-primary/80 hover:text-primary border-border/50 bg-muted/50 rounded border px-1.5 py-0.5 transition-colors"
               >
                 #{tag.name}
               </Link>
@@ -71,7 +74,7 @@ export default function NoteCard({
           <ArrowRightIcon className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
         </Link>
         {trashed && (
-          <div className="mt-3 flex items-center gap-4 border-t border-dashed border-border/60 pt-3">
+          <div className="border-border/60 mt-3 flex items-center gap-4 border-t border-dashed pt-3">
             <RestoreNoteButton noteId={note.id} userId={note.userId} />
             <PurgeNoteButton noteId={note.id} userId={note.userId} />
           </div>
